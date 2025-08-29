@@ -1,0 +1,122 @@
+/* ===== Admin Add Product — Boxed, clean, professional ===== */
+
+:host { display: block; background: #f5f7fb; min-height: 100vh; }
+
+.ap-wrap { padding: 32px 20px; max-width: 1120px; margin: 0 auto; }
+
+.ap-card {
+  background: #fff;
+  border: 1px solid #e6e8ee;
+  border-radius: 16px;
+  box-shadow: 0 14px 40px rgba(18, 28, 45, .08);
+  padding: 28px;
+}
+
+.ap-card__head { margin-bottom: 18px; }
+.ap-title { margin: 0 0 6px; font-size: 28px; line-height: 1.2; color: #0f172a; font-weight: 800; }
+.ap-sub   { margin: 0; color: #667085; font-size: 14px; }
+
+/* Grid */
+.ap-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+@media (min-width: 820px) {
+  .ap-grid { grid-template-columns: 1fr 1fr; gap: 22px; }
+}
+.ap-field--span2 { grid-column: 1 / -1; }
+
+/* Fields */
+.ap-field { display: flex; flex-direction: column; gap: 8px; }
+.ap-label { font-weight: 700; color: #0f172a; font-size: 14px; }
+
+.ap-input,
+.ap-textarea {
+  display: block;
+  width: 100%;
+  background: #fff;
+  border: 2px solid #e6e8ee;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: #0f172a;
+  outline: none;
+  transition: border .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.ap-textarea { min-height: 120px; resize: vertical; }
+
+.ap-input:focus,
+.ap-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 6px rgba(37, 99, 235, .15);
+  transform: translateY(-1px);
+}
+
+.ap-hint { color: #8a93a4; font-size: 12px; }
+
+/* Input group (price) */
+.ap-inputGroup { position: relative; }
+.ap-prefix {
+  position: absolute; left: 12px; top: 0; bottom: 0;
+  display: grid; place-items: center; color: #8a93a4; font-weight: 700;
+}
+.ap-input--withPrefix { padding-left: 28px; }
+
+/* Upload */
+.ap-upload {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+.ap-upload__zone {
+  display: grid; place-items: center;
+  min-height: 140px;
+  border: 2px dashed #d9ddea;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fafbff, #f7f9ff);
+  cursor: pointer;
+  transition: border .18s ease, background .18s ease, transform .18s ease;
+  padding: 16px;
+}
+.ap-upload__zone:hover { border-color: #2563eb; background: #f4f7ff; transform: translateY(-1px); }
+.ap-upload__zone input[type="file"] { display: none; }
+
+.ap-upload__content { display: flex; align-items: center; gap: 14px; text-align: left; }
+.ap-upload__icon { font-size: 22px; }
+.ap-upload__text { color: #0f172a; font-size: 14px; line-height: 1.35; }
+.ap-muted { color: #8a93a4; font-weight: 500; }
+.ap-link { color: #2563eb; text-decoration: underline; }
+
+.ap-previewBox { display: grid; gap: 10px; justify-items: center; }
+.ap-preview {
+  width: 140px; height: 140px; object-fit: cover;
+  border: 2px solid #e6e8ee; border-radius: 12px;
+  box-shadow: 0 12px 26px rgba(18,28,45,.08);
+}
+
+/* Buttons */
+.ap-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px; }
+.ap-btn {
+  appearance: none; border: 0; cursor: pointer;
+  padding: 12px 16px; border-radius: 12px; font-weight: 800; font-size: 14px;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.ap-btn:active { transform: translateY(0); }
+
+.ap-btn--primary {
+  background: linear-gradient(180deg, #2563eb, #1e40af);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, .22), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.ap-btn--primary:hover { transform: translateY(-1px); }
+
+.ap-btn--ghost {
+  background: #f2f4f8; color: #0f172a; border: 2px solid #e6e8ee;
+}
+.ap-btn--ghost:hover { transform: translateY(-1px); }
+
+.ap-btn--sm { padding: 8px 12px; font-size: 13px; }
+
+.ap-error { color: #ef4444; font-size: 13px; font-weight: 600; }

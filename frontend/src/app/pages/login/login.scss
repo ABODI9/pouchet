@@ -1,0 +1,97 @@
+/* Auth page wrapper */
+.auth-wrap {
+  max-width: 520px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+/* Card */
+.card {
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+}
+
+/* Title */
+h2 {
+  margin: 0 0 1rem;
+  text-align: left;
+}
+
+/* Labels */
+label {
+  display: block;
+  margin-top: .5rem;
+  font-weight: 600;
+}
+
+/* Inputs */
+input {
+  display: block;
+  width: 100%;
+  padding: .55rem .7rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: .25rem 0 .6rem;
+  background: #fff;
+  transition: border-color .15s ease, box-shadow .15s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #0a58ff;
+    box-shadow: 0 0 0 3px rgba(10, 88, 255, .12);
+  }
+}
+
+/* Button */
+button {
+  margin-top: .5rem;
+  padding: .6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity .15s ease, transform .04s ease;
+
+  &:hover { opacity: .92; }
+  &:active { transform: translateY(1px); }
+  &:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+  }
+}
+
+/* Error text */
+.err {
+  color: #c00;
+  margin-bottom: .75rem;
+  font-weight: 600;
+}
+
+/* Small hint under forms */
+.hint {
+  margin-top: .75rem;
+  font-size: .95rem;
+  color: #555;
+}
+
+/* Links inside hint (remove underline) */
+.hint a {
+  cursor: pointer;
+  text-decoration: none;   /* يشيل الخط */
+  color: #0a58ff;
+  font-weight: 500;
+}
+
+.hint a:hover {
+  text-decoration: underline; /* (اختياري) يظهر عند الهوفر */
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .auth-wrap { margin: 2rem auto; }
+  .card { padding: 14px; }
+}

@@ -1,0 +1,20 @@
+<div class="wrap">
+  <h2>Create account</h2>
+
+  <form (ngSubmit)="submit()">
+    <label>Name</label>
+    <input [(ngModel)]="name" name="name" required />
+
+    <label>Email</label>
+    <input [(ngModel)]="email" name="email" required type="email" />
+
+    <label>Password</label>
+    <input [(ngModel)]="password" name="password" required type="password" minlength="6" />
+
+    <label>Confirm password</label>
+    <input [(ngModel)]="confirm" name="confirm" required type="password" minlength="6" />
+
+    <button type="submit" [disabled]="loading">Create account</button>
+    <p class="err" *ngIf="error">{{ error }}</p>
+  </form>
+</div>

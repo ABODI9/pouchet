@@ -1,0 +1,10 @@
+<section class="list">
+  <h3>Products</h3>
+  <div *ngIf="loading">Loading...</div>
+  <ul *ngIf="!loading">
+    <li *ngFor="let p of items">
+      <img [src]="p.imageUrl" width="60" height="40" />
+      <strong>{{ p.title }}</strong> – {{ p.price | currency:'TL':'symbol' }}
+    </li>
+  </ul>
+</section>

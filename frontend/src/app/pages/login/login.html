@@ -1,0 +1,44 @@
+<div class="auth-wrap">
+  <h2 *ngIf="mode==='login'">Sign in</h2>
+  <h2 *ngIf="mode==='register'">Create account</h2>
+
+  <p class="err" *ngIf="error">{{ error }}</p>
+
+  <!-- Login -->
+  <form *ngIf="mode==='login'" #loginForm="ngForm" (ngSubmit)="submitLogin(loginForm)" class="card" novalidate>
+    <label>Email</label>
+    <input [(ngModel)]="email" name="email" type="email" required email />
+
+    <label>Password</label>
+    <input [(ngModel)]="password" name="password" type="password" required minlength="6" />
+
+    <button type="submit" [disabled]="loading || loginForm.invalid">Login</button>
+
+    <p class="hint">
+      Don’t have an account?
+      <a href="" (click)="$event.preventDefault(); switchMode('register')">Create one</a>
+    </p>
+  </form>
+
+  <!-- Register -->
+  <form *ngIf="mode==='register'" #regForm="ngForm" (ngSubmit)="submitRegister(regForm)" class="card" novalidate>
+    <label>Name</label>
+    <input [(ngModel)]="rname" name="name" required />
+
+    <label>Email</label>
+    <input [(ngModel)]="remail" name="remail" type="email" required email />
+
+    <label>Password</label>
+    <input [(ngModel)]="rpassword" name="rpassword" type="password" required minlength="6" />
+
+    <label>Confirm password</label>
+    <input [(ngModel)]="confirm" name="confirm" type="password" required minlength="6" />
+
+    <button type="submit" [disabled]="loading || regForm.invalid">Create account</button>
+
+    <p class="hint">
+      Already have an account?
+      <a href="" (click)="$event.preventDefault(); switchMode('login')">Sign in</a>
+    </p>
+  </form>
+</div>

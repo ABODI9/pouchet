@@ -1,0 +1,56 @@
+<header class="header">
+  <!-- يسار: الشعار -->
+  <a routerLink="/" class="logo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    Pouchet
+  </a>
+
+  <!-- وسط/يمين: روابط أساسية -->
+  <nav class="nav" [class.open]="mobileOpen()">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+
+    <!-- رابط Admin يظهر فقط لو الدور Admin -->
+    <ng-container *ngIf="user$ | async as u">
+      <a *ngIf="u?.role === 'admin'" routerLink="/admin" routerLinkActive="active">Admin</a>
+    </ng-container>
+  </nav>
+
+  <!-- يمين: حالة الضيف/المستخدم -->
+  <div class="right">
+    <!-- ضيف -->
+    <ng-container *ngIf="!(user$ | async); else loggedIn">
+      <a class="btn ghost" routerLink="/login">Sign in</a>
+      <a class="btn primary" routerLink="/register">Register</a>
+    </ng-container>
+
+    <!-- مسجّل -->
+    <ng-template #loggedIn>
+      <div class="userbox">
+        <ng-container *ngIf="user$ | async as u">
+          <span class="role" [class.admin]="u.role==='admin'">{{ u.role }}</span>
+          <button class="avatar" (click)="toggleMenu()" aria-haspopup="menu" [attr.aria-expanded]="menuOpen()">
+            {{ initial(u.email) }}
+          </button>
+                <div class="menu" *ngIf="menuOpen()" role="menu">
+                  <div class="info">
+                    <div class="email">{{ u.email }}</div>
+                    <div class="muted">Signed in</div>
+                  </div>
+                  <!-- رابط البروفايل للجميع -->
+                  <a *ngIf="(user$ | async)" routerLink="/profile" routerLinkActive="active">Profile</a>
+                
+                  <!-- رابط الأدمن -->
+                  <a *ngIf="u.role==='admin'" routerLink="/admin" (click)="closeMenu()" role="menuitem">Admin</a>
+
+                  <button (click)="logout()" role="menuitem">Logout</button>
+                </div>
+
+        </ng-container>
+      </div>
+    </ng-template>
+
+    <!-- زر موبايل -->
+    <button class="hamburger" (click)="toggleMobile()" aria-label="Menu" [attr.aria-expanded]="mobileOpen()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>

@@ -1,0 +1,5 @@
+<div class="slider" *ngIf="images?.length">
+  <button class="nav left" (click)="prev()">&lt;</button>
+  <img [src]="images[index]" alt="slide">
+  <button class="nav right" (click)="next()">&gt;</button>
+</div>

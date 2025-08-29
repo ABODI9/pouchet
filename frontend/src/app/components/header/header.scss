@@ -1,0 +1,82 @@
+.header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; background: #fff; border-bottom: 1px solid #eee;
+
+  .logo {
+    font-weight: 700; letter-spacing: .3px; color: #111;
+    text-decoration: none; /* يشيل الخط */
+  }
+}
+
+.nav {
+  display: flex; gap: 18px;
+
+  a {
+    color: #222;
+    text-decoration: none;   /* يشيل الخط */
+    padding: 6px 0;
+  }
+
+  a.active { color: #0a58ff; font-weight: 600; }
+}
+
+.right { display: flex; align-items: center; gap: 10px; }
+
+/* أزرار */
+.btn {
+  border-radius: 999px; padding: 6px 14px; font-weight: 600;
+  border: 1px solid #e5e7eb; text-decoration: none; /* مهم لو العنصر <a> */
+  display: inline-block;
+
+  &.primary { background: #0a58ff; color: #fff; border-color: #0a58ff; }
+  &.ghost   { background: transparent; color: #111; }
+}
+
+/* صندوق المستخدم/القائمة */
+.userbox { position: relative; display: flex; align-items: center; gap: 8px; }
+
+.role {
+  font-size: 12px; padding: 2px 8px; border-radius: 999px; font-weight: 700;
+  background: #e8eefc; color: #0a3dda; border: 1px solid #c9d7ff;
+  &.admin { background: #ffe8e8; color: #b00020; border-color: #ffc9c9; }
+}
+
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 700;
+  background: #111; color: #fff; border: 2px solid #111;
+  cursor: pointer;
+}
+
+.menu {
+  position: absolute; top: 44px; right: 0; min-width: 260px;
+  background: #0b1220; border: 1px solid #1d2939; border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(2,6,23,.28); padding: 10px; color: #eaf2ff;
+
+  .info {
+    padding: 10px; border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 6px;
+    .email { color: #ffffff; font-weight: 700; }
+    .muted { color: #94a3b8; font-size: 12px; margin-top: 2px; }
+  }
+
+  a, button {
+    width: 100%; text-align: left; background: transparent; border: 0;
+    color: #eaf2ff; padding: 10px 12px; border-radius: 8px; cursor: pointer;
+    text-decoration: none;   /* يشيل الخط من روابط المينيو */
+  }
+
+  a:hover, button:hover { background: rgba(255,255,255,.06); }
+}
+
+/* موبايل */
+.hamburger { display: none; background: transparent; border: 0; }
+@media (max-width: 900px) {
+  .nav {
+    position: absolute; left: 0; right: 0; top: 56px; display: none; background: #fff;
+    border-bottom: 1px solid #eee; padding: 10px 20px;
+  }
+  .nav.open { display: flex; flex-direction: column; gap: 12px; }
+  .hamburger { display: inline-grid; gap: 3px; }
+  .hamburger span { width: 22px; height: 2px; background: #111; display: block; }
+}

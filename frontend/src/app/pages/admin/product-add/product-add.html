@@ -1,0 +1,75 @@
+<div class="ap-wrap">
+  <div class="ap-card">
+    <div class="ap-card__head">
+      <h1 class="ap-title">Add New Product</h1>
+      <p class="ap-sub">Provide product details and upload an image (max 2MB).</p>
+    </div>
+
+    <form (ngSubmit)="addProduct()" class="ap-grid" novalidate>
+      <!-- Name -->
+      <div class="ap-field">
+        <label class="ap-label" for="name">Product Name</label>
+        <input id="name" class="ap-input" type="text" [(ngModel)]="product.title"
+               name="name" required placeholder="Classic Tote" />
+        <small class="ap-hint">Short and descriptive works best.</small>
+      </div>
+
+      <!-- Price -->
+      <div class="ap-field">
+        <label class="ap-label" for="price">Price</label>
+        <div class="ap-inputGroup">
+          <span class="ap-prefix">$</span>
+          <input id="price" class="ap-input ap-input--withPrefix" type="number"
+                 min="0" step="0.01" [(ngModel)]="product.price" name="price"
+                 required placeholder="0.00" />
+        </div>
+        <small class="ap-hint">Currency can be changed in settings.</small>
+      </div>
+
+      <!-- Description -->
+      <div class="ap-field ap-field--span2">
+        <label class="ap-label" for="description">Description</label>
+        <textarea id="description" class="ap-textarea" [(ngModel)]="product.description"
+                  name="description" placeholder="Materials, dimensions, care, warranty…"></textarea>
+      </div>
+
+      <!-- Image -->
+      <div class="ap-field ap-field--span2">
+        <label class="ap-label" for="image">Product Image</label>
+
+        <div class="ap-upload">
+          <label class="ap-upload__zone">
+            <input id="image" type="file" (change)="onFileSelected($event)" name="image"
+                   accept="image/png,image/jpeg,image/webp,image/gif" />
+            <div class="ap-upload__content">
+              <div class="ap-upload__icon" aria-hidden="true">⬆️</div>
+              <div class="ap-upload__text">
+                <strong>Drag & drop</strong> your image here or <span class="ap-link">browse</span><br />
+                <span class="ap-muted">PNG · JPG · WEBP · GIF — up to 2MB</span>
+              </div>
+            </div>
+          </label>
+
+          <div class="ap-previewBox" *ngIf="preview">
+            <img class="ap-preview" [src]="preview" alt="Preview" />
+            <button type="button" class="ap-btn ap-btn--sm ap-btn--ghost"
+                    (click)="preview=null; product.image=null">Remove</button>
+          </div>
+        </div>
+
+        <div class="ap-error" *ngIf="fileError">{{ fileError }}</div>
+      </div>
+
+      <!-- Actions -->
+      <div class="ap-actions ap-field--span2">
+        <button type="button" class="ap-btn ap-btn--ghost"
+          (click)="product={title:'',description:'',price:0,image:null}; preview=null; fileError=''">
+          Reset
+        </button>
+        <button type="submit" class="ap-btn ap-btn--primary" [disabled]="!!fileError">
+          Save Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
