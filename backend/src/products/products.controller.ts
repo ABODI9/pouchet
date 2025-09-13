@@ -16,7 +16,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-
 import { ProductsService } from './products.service';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -24,6 +23,7 @@ import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 
 const allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
 const fileFilter = (_req: any, file: Express.Multer.File, cb: Function) => {
   if (!allowedMimes.includes(file.mimetype)) {
     return cb(new BadRequestException('INVALID_TYPE'), false);
@@ -51,15 +51,15 @@ export class ProductsController {
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: 'uploads', // backend/uploads
+        destination: 'uploads',               // ← يحفظ داخل backend/uploads
         filename: (_req, file, cb) => {
           const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname || '');
           cb(null, `${unique}${ext}`);
         },
       }),
-      limits: { fileSize: 2 * 2024 * 2024 }, // 2MB
-      fileFilter,
+      limits: { fileSize: 2 * 1024 * 1024 },  // ← 2MB صحيحة
+      fileFilter,                              // ← تقييد الأنواع
     }),
   )
   async create(
@@ -72,10 +72,8 @@ export class ProductsController {
       throw new BadRequestException('title and price are required');
     }
 
-    const base = `${req.protocol}://${req.get('host')}`; // مثال: http://localhost:3000
-    const imageUrl = file
-      ? `${base}/uploads/${file.filename}`
-      : body.imageUrl || '';
+    const base = `${req.protocol}://${req.get('host')}`; // مثل http://localhost:3000
+    const imageUrl = file ? `${base}/uploads/${file.filename}` : body.imageUrl || '';
 
     const numericPrice = Number(price);
     if (Number.isNaN(numericPrice)) {
@@ -86,7 +84,7 @@ export class ProductsController {
       title,
       price: numericPrice,
       imageUrl,
-      // @ts-ignore: allow extra props
+      // @ts-ignore
       description: description ?? null,
     } as any);
   }

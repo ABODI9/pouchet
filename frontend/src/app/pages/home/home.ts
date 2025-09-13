@@ -1,16 +1,17 @@
 // src/app/pages/home/home.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Slider } from '../../components/slider/slider';
+import { SliderComponent } from '../../components/slider/slider'; // ✅ use SliderComponent
 import { Tabs, HomeTab } from '../../components/tabs/tabs';
 import { ProductCardComponent, Product as UiProduct }
   from '../../components/product-card/product-card';
 import { ProductsService, Product as ApiProduct }
   from '../../services/products.service';
+
 @Component({
   standalone: true,
   selector: 'app-home',
-  imports: [CommonModule, Slider, Tabs, ProductCardComponent],
+  imports: [CommonModule, SliderComponent, Tabs, ProductCardComponent], // ✅
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
@@ -22,7 +23,7 @@ export class Home implements OnInit {
   ];
 
   activeTab: HomeTab = 'filter';
-  products: UiProduct[] = [];   // <-- UI shape
+  products: UiProduct[] = [];
 
   constructor(private productsApi: ProductsService) {}
 
@@ -30,8 +31,8 @@ export class Home implements OnInit {
     this.productsApi.list().subscribe((api: ApiProduct[]) => {
       this.products = api.map(p => ({
         id: Number(p.id),
-        name: p.title,        // map title -> name
-        image: p.imageUrl,    // map imageUrl -> image
+        name: p.title,
+        image: p.imageUrl,
         price: p.price,
         rating: p.rating ?? 0
       }));

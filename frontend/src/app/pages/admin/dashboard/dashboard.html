@@ -1,10 +1,68 @@
+<!-- Admin Top Bar -->
 <nav class="admin-navbar">
-  <div class="nav-brand">Product control</div>
+  <div class="nav-left">
+    <div class="nav-brand">
+      <span class="brand-title">Product control</span>
+      <span class="brand-subtitle">Manage your catalog</span>
+    </div>
+  </div>
+
   <ul class="nav-links">
-    <li><a routerLink="/admin/products/add" routerLinkActive="active">add a new product</a></li>
-    <li><a routerLink="/admin/products" routerLinkActive="active">Show product</a></li>
+    <!-- Products -->
+    <li>
+      <a
+        routerLink="/admin/products/add"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="btn btn-primary"
+      >
+        + Add product
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/admin/products"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="link"
+      >
+        Products
+      </a>
+    </li>
+
+    <li class="divider"></li>
+
+    <!-- Featured banners -->
+    <li>
+      <a
+        routerLink="/admin/featured/add"
+        routerLinkActive="active"
+        class="btn btn-primary"
+      >
+        + Add banner
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/admin/featured"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="link"
+      >
+        Banners
+      </a>
+    </li>
   </ul>
 </nav>
+
+<!-- Breadcrumb (optional) -->
+<div class="breadcrumb">
+  <span>Home</span>
+  <span class="sep">/</span>
+  <span>Admin</span>
+  <span class="sep">/</span>
+  <strong>Product control</strong>
+</div>
 
 <div class="dashboard-content">
   <router-outlet></router-outlet>

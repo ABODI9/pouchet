@@ -1,10 +1,28 @@
-<section class="list">
-  <h3>Products</h3>
-  <div *ngIf="loading">Loading...</div>
-  <ul *ngIf="!loading">
-    <li *ngFor="let p of items">
-      <img [src]="p.imageUrl" width="60" height="40" />
-      <strong>{{ p.title }}</strong> – {{ p.price | currency:'TL':'symbol' }}
-    </li>
-  </ul>
-</section>
+<div class="pl-wrap">
+  <div class="pl-head">
+    <h1>Products</h1>
+    <a class="btn btn-primary" routerLink="/admin/products/add">+ Add Product</a>
+  </div>
+
+  <div *ngIf="loading" class="state">Loading…</div>
+  <div *ngIf="error" class="state state--err">{{ error }}</div>
+
+  <div class="pl-grid" *ngIf="!loading && !error">
+    <div class="pl-card" *ngFor="let p of products; trackBy: trackById">
+      <div class="pl-img">
+        <img [src]="p.imageUrl || 'assets/placeholder.png'" [alt]="p.title" />
+      </div>
+
+      <div class="pl-body">
+        <div class="pl-title">{{ p.title }}</div>
+        <div class="pl-price">{{ p.price | currency:'USD' }}</div>
+        <div class="pl-rating" *ngIf="p.rating !== undefined">⭐ {{ p.rating }}</div>
+      </div>
+
+      <div class="pl-actions">
+        <a class="btn btn-ghost" [routerLink]="['/admin/products', p.id, 'edit']">Edit</a>
+        <button class="btn btn-danger" (click)="confirmDelete(p)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

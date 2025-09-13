@@ -1,6 +1,5 @@
-<!-- src/app/pages/home/home.html -->
 <main class="container">
-  <app-slider [images]="sliderImages"></app-slider>
+  <app-slider></app-slider> <!-- ⬅️ remove [images] -->
   <app-tabs [active]="activeTab" (tabChange)="activeTab = $event"></app-tabs>
 
   <section class="grid">

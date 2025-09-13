@@ -1,0 +1,49 @@
+<div class="ap-wrap" *ngIf="!loading">
+  <div class="ap-card">
+    <div class="ap-card__head">
+      <h1 class="ap-title">Edit Banner</h1>
+      <p class="ap-sub">Replace image, change order or status.</p>
+    </div>
+
+    <form (ngSubmit)="save()" class="ap-grid" novalidate>
+      <div class="ap-field ap-field--span2">
+        <label class="ap-label" for="image">Image</label>
+        <div class="ap-upload">
+          <label class="ap-upload__zone">
+            <input id="image" type="file" (change)="onFileSelected($event)" accept="image/*" />
+            <div class="ap-upload__content">
+              <div class="ap-upload__icon" aria-hidden="true">⬆️</div>
+              <div class="ap-upload__text">
+                <strong>Drag & drop</strong> or <span class="ap-link">browse</span><br />
+                <span class="ap-muted">PNG · JPG · WEBP — up to 2MB</span>
+              </div>
+            </div>
+          </label>
+
+          <div class="ap-previewBox" *ngIf="preview">
+            <img class="ap-preview" [src]="preview" alt="Preview" />
+          </div>
+        </div>
+        <div class="ap-error" *ngIf="fileError">{{ fileError }}</div>
+      </div>
+
+      <div class="ap-field">
+        <label class="ap-label" for="order">Order</label>
+        <input id="order" class="ap-input" type="number" min="0" step="1" [(ngModel)]="model.order" name="order"/>
+      </div>
+
+      <div class="ap-field">
+        <label class="ap-label" for="active">Status</label>
+        <select id="active" class="ap-input" [(ngModel)]="model.active" name="active">
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Hidden</option>
+        </select>
+      </div>
+
+      <div class="ap-actions ap-field--span2">
+        <a class="ap-btn ap-btn--ghost" routerLink="/admin/featured">Cancel</a>
+        <button class="ap-btn ap-btn--primary" type="submit" [disabled]="!!fileError">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

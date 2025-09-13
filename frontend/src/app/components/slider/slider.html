@@ -1,5 +1,46 @@
-<div class="slider" *ngIf="images?.length">
-  <button class="nav left" (click)="prev()">&lt;</button>
-  <img [src]="images[index]" alt="slide">
-  <button class="nav right" (click)="next()">&gt;</button>
+<div class="hero"
+     *ngIf="banners.length; else empty"
+     (mouseenter)="pause()"
+     (mouseleave)="resume()"
+     (touchstart)="onTouchStart($event)"
+     (touchend)="onTouchEnd($event)">
+
+  <div class="slides">
+    <ng-container *ngFor="let b of banners; index as k; trackBy: trackById">
+      <!-- لو عنده productId خليه رابط، غير كذا div -->
+      <a *ngIf="linkTo(b) as link"
+         class="slide"
+         [class.active]="k === i"
+         [routerLink]="link"
+         [target]="b.openInNewTab ? '_blank' : undefined"
+         [style.background-image]="'url(' + b.imageUrl + ')'">
+        <div class="grad"></div>
+        <div class="caption" *ngIf="b.caption">{{ b.caption }}</div>
+      </a>
+
+      <div *ngIf="!linkTo(b)"
+           class="slide"
+           [class.active]="k === i"
+           [style.background-image]="'url(' + b.imageUrl + ')'">
+        <div class="grad"></div>
+        <div class="caption" *ngIf="b.caption">{{ b.caption }}</div>
+      </div>
+    </ng-container>
+  </div>
+
+  <button class="nav prev" aria-label="Previous" (click)="prev()">‹</button>
+  <button class="nav next" aria-label="Next" (click)="next()">›</button>
+
+  <div class="dots" *ngIf="banners.length > 1">
+    <button *ngFor="let _ of banners; index as k"
+            [class.on]="k === i"
+            (click)="go(k)"></button>
+  </div>
 </div>
+
+<ng-template #empty>
+  <!-- حالة لا يوجد بانرات -->
+  <div class="hero hero--empty">
+    <div class="empty">No banners yet.</div>
+  </div>
+</ng-template>

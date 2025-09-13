@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
+import { FeaturedModule } from './featured/featured.module';
 
 @Module({
   imports: [
@@ -24,9 +25,9 @@ import { ProductsModule } from './products/products.module';
 
     // تقديم ملفات الرفع (صور المنتجات)
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads'), 
-      serveRoot: '/uploads',
-    })
+        rootPath: join(process.cwd(), 'uploads'), // ✅ ثابت في dev/prod
+        serveRoot: '/uploads',
+      }),
 
     // قاعدة البيانات
     TypeOrmModule.forRootAsync({
@@ -47,6 +48,7 @@ import { ProductsModule } from './products/products.module';
     UsersModule,
     AuthModule,
     ProductsModule,
+    FeaturedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,20 +1,28 @@
 .header {
-  position: sticky; top: 0; z-index: 50;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 20px; background: #fff; border-bottom: 1px solid #eee;
+  position: relative;
+  z-index: 200; /* أعلى من admin-navbar */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
 
   .logo {
-    font-weight: 700; letter-spacing: .3px; color: #111;
-    text-decoration: none; /* يشيل الخط */
+    font-weight: 700;
+    letter-spacing: .3px;
+    color: #111;
+    text-decoration: none;
   }
 }
 
 .nav {
-  display: flex; gap: 18px;
+  display: flex;
+  gap: 18px;
 
   a {
     color: #222;
-    text-decoration: none;   /* يشيل الخط */
+    text-decoration: none;
     padding: 6px 0;
   }
 
@@ -23,17 +31,13 @@
 
 .right { display: flex; align-items: center; gap: 10px; }
 
-/* أزرار */
 .btn {
   border-radius: 999px; padding: 6px 14px; font-weight: 600;
-  border: 1px solid #e5e7eb; text-decoration: none; /* مهم لو العنصر <a> */
-  display: inline-block;
-
+  border: 1px solid #e5e7eb; text-decoration: none; display: inline-block;
   &.primary { background: #0a58ff; color: #fff; border-color: #0a58ff; }
   &.ghost   { background: transparent; color: #111; }
 }
 
-/* صندوق المستخدم/القائمة */
 .userbox { position: relative; display: flex; align-items: center; gap: 8px; }
 
 .role {
@@ -45,12 +49,12 @@
 .avatar {
   width: 36px; height: 36px; border-radius: 50%;
   display: grid; place-items: center; font-weight: 700;
-  background: #111; color: #fff; border: 2px solid #111;
-  cursor: pointer;
+  background: #111; color: #fff; border: 2px solid #111; cursor: pointer;
 }
 
+/* القائمة المنسدلة فوق الجميع */
 .menu {
-  position: absolute; top: 44px; right: 0; min-width: 260px;
+  position: absolute; top: 44px; right: 0; min-width: 260px; z-index: 300;
   background: #0b1220; border: 1px solid #1d2939; border-radius: 12px;
   box-shadow: 0 12px 28px rgba(2,6,23,.28); padding: 10px; color: #eaf2ff;
 
@@ -63,9 +67,8 @@
   a, button {
     width: 100%; text-align: left; background: transparent; border: 0;
     color: #eaf2ff; padding: 10px 12px; border-radius: 8px; cursor: pointer;
-    text-decoration: none;   /* يشيل الخط من روابط المينيو */
+    text-decoration: none;
   }
-
   a:hover, button:hover { background: rgba(255,255,255,.06); }
 }
 

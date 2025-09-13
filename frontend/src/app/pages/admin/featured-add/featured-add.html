@@ -1,0 +1,44 @@
+<div class="ap-wrap">
+  <div class="ap-card">
+    <div class="ap-card__head">
+      <h1 class="ap-title">Add Banners</h1>
+      <p class="ap-sub">Pick one or multiple images (max 2MB each). That’s it.</p>
+    </div>
+
+    <form (ngSubmit)="save()" class="ap-grid" novalidate>
+      <div class="ap-field ap-field--span2">
+        <label class="ap-label" for="images">Images</label>
+        <div class="ap-upload">
+          <label class="ap-upload__zone">
+            <input id="images" type="file" (change)="onFilesSelected($event)" accept="image/*" multiple />
+            <div class="ap-upload__content">
+              <div class="ap-upload__icon" aria-hidden="true">⬆️</div>
+              <div class="ap-upload__text">
+                <strong>Drag & drop</strong> or <span class="ap-link">browse</span><br />
+                <span class="ap-muted">PNG · JPG · WEBP — up to 2MB each</span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div class="ap-error" *ngIf="fileError">{{ fileError }}</div>
+      </div>
+
+      <div class="ap-field ap-field--span2" *ngIf="previews.length">
+        <div class="fa-grid">
+          <div class="fa-item" *ngFor="let src of previews; index as i">
+            <img [src]="src" alt="preview" />
+            <button type="button" class="ap-btn ap-btn--sm ap-btn--ghost" (click)="removeAt(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ap-actions ap-field--span2">
+        <a class="ap-btn ap-btn--ghost" routerLink="/admin/featured">Cancel</a>
+        <button class="ap-btn ap-btn--primary" type="submit" [disabled]="loading">
+          {{ loading ? 'Uploading…' : 'Save' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

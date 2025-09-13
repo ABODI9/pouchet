@@ -9,7 +9,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    // ✅ يضيف Authorization تلقائياً لكل /api (عدا login/register) ويتعامل مع 401
+    // يضيف Authorization فقط لطلبات /api ولا يلمس Content-Type (مهم لرفع الصور)
     provideHttpClient(withInterceptors([authInterceptor])),
   ]
 };

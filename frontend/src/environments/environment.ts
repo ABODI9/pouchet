@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  api: '/api'
+  api: '/api',     // 👈 مهم
 };

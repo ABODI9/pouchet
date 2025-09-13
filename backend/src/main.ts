@@ -4,12 +4,13 @@ import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import featuredRoutes from './routes/featured'; // <-- add
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
   app.use(helmet({
-  crossOriginResourcePolicy: { policy: 'cross-origin' }, // أو false لتعطيله
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
   }));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
@@ -17,24 +18,29 @@ async function bootstrap() {
   const FRONTEND = cfg.get<string>('FRONTEND_ORIGIN') ?? 'http://localhost:4200';
   app.enableCors({ origin: [FRONTEND, 'http://localhost'], credentials: false });
 
-  // كل شيء تحت /api (ما عدا healthz)
+  // All controller routes under /api (except /healthz)
   app.setGlobalPrefix('api', { exclude: ['healthz'] });
 
-  // تنبيه على متغيرات البيئة
+  // Mount existing Express router under /api/featured/*
+  app.use('/featured', featuredRoutes);
+
+  // Env warning (optional)
   const reqEnv = ['JWT_SECRET','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'] as const;
   const missing = reqEnv.filter(k => !process.env[k] || String(process.env[k]).trim() === '');
   if (missing.length) console.warn('[BOOT] Missing env vars →', missing.join(', '));
 
-  // Self-check للـJWT (لا ترسل issuer/audience لو فاضية)
+  // JWT self-check (optional)
   try {
     const jwt = app.get(JwtService);
-    const token = await jwt.signAsync({ sub: 'selftest', email: 'self@test', role: 'user' }, {
-      secret: cfg.get('JWT_SECRET', 'dev_secret_change_me'),
-      expiresIn: '5m',
-      ...(cfg.get('JWT_ISSUER')?.trim() ? { issuer: cfg.get('JWT_ISSUER')!.trim() } : {}),
-      ...(cfg.get('JWT_AUDIENCE')?.trim() ? { audience: cfg.get('JWT_AUDIENCE')!.trim() } : {}),
-    });
-
+    const token = await jwt.signAsync(
+      { sub: 'selftest', email: 'self@test', role: 'user' },
+      {
+        secret: cfg.get('JWT_SECRET', 'dev_secret_change_me'),
+        expiresIn: '5m',
+        ...(cfg.get('JWT_ISSUER')?.trim() ? { issuer: cfg.get('JWT_ISSUER')!.trim() } : {}),
+        ...(cfg.get('JWT_AUDIENCE')?.trim() ? { audience: cfg.get('JWT_AUDIENCE')!.trim() } : {}),
+      }
+    );
     await jwt.verifyAsync(token, {
       secret: cfg.get('JWT_SECRET', 'dev_secret_change_me'),
       ...(cfg.get('JWT_ISSUER')?.trim() ? { issuer: cfg.get('JWT_ISSUER')!.trim() } : {}),

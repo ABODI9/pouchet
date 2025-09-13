@@ -1,0 +1,149 @@
+/* === Featured Edit — extras on top of Nova === */
+
+/* Fallbacks (لو ما كانت متعرفة في Nova) */
+:host {
+  --border: #{if(global-variable-exists(border), $border, #e6e8ee)};
+  --text:   #{if(global-variable-exists(fg), $fg, #0f172a)};
+  --muted:  #{if(global-variable-exists(muted), $muted, #6b7280)};
+  --brand:  #{if(global-variable-exists(primary), $primary, #16a34a)};
+  --surface:#fff;
+}
+
+/* 1) Inline radio group (Text position) */
+.ap-inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--surface) 90%, #fff);
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color .18s ease, background .18s ease, transform .18s ease;
+  }
+
+  input[type="radio"] {
+    accent-color: var(--brand);
+  }
+
+  /* badge-like selected state (requires :has) */
+  label:has(input[type="radio"]:checked) {
+    background: color-mix(in oklab, var(--surface) 70%, var(--brand) 30%);
+    border-color: color-mix(in oklab, var(--border), var(--brand) 60%);
+    transform: translateY(-1px);
+  }
+}
+
+/* 2) Range (Overlay strength) */
+input[type="range"].ap-input,
+.ap-field input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 26px;
+  background: transparent;
+  padding: 0;
+
+  &::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, color-mix(in oklab, var(--brand) 60%, #000 0%), #d1d5db);
+  }
+  &::-moz-range-track {
+    height: 6px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, color-mix(in oklab, var(--brand) 60%, #000 0%), #d1d5db);
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -6px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--brand);
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    cursor: grab;
+  }
+  &::-moz-range-thumb {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--brand);
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    cursor: grab;
+  }
+}
+
+/* 3) Upload + Preview: larger thumbs and labeled badges for Desktop/Mobile */
+.ap-upload {
+  align-items: start;
+}
+
+/* Desktop preview sizing */
+.ap-upload:has(#imageDesktop) .ap-preview {
+  width: 260px;
+  height: 146px; /* ~16:9 */
+}
+
+/* Mobile preview sizing */
+.ap-upload:has(#imageMobile) .ap-preview {
+  width: 160px;
+  height: 260px; /* ~9:16 */
+}
+
+/* Preview badge */
+.ap-upload:has(#imageDesktop) .ap-previewBox .ap-preview::after,
+.ap-upload:has(#imageMobile)  .ap-previewBox .ap-preview::after {
+  content: attr(data-badge);
+  position: absolute;
+  top: 8px; left: 8px;
+  font-size: 11px; font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--brand) 80%, #000 0%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
+/* Inject the label via CSS (no HTML changes needed) */
+.ap-upload:has(#imageDesktop) .ap-previewBox .ap-preview { position: relative; }
+.ap-upload:has(#imageDesktop) .ap-previewBox .ap-preview::after { content: 'Desktop'; }
+.ap-upload:has(#imageMobile)  .ap-previewBox .ap-preview::after { content: 'Mobile'; }
+
+/* 4) Small utilities */
+.ap-hint { font-size: 12px; color: var(--muted); }
+
+.ap-field .note {
+  font-size: 12px;
+  color: var(--muted);
+  background: color-mix(in oklab, var(--surface) 85%, #000);
+  border: 1px dashed var(--border);
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+/* 5) Responsive tweaks */
+@media (max-width: 860px) {
+  .ap-upload:has(#imageDesktop) .ap-preview { width: 220px; height: 124px; }
+  .ap-upload:has(#imageMobile)  .ap-preview { width: 140px; height: 220px; }
+}
+
+/* 6) Optional: make the two image fields sit nicer when stacked */
+.ap-field--span2 .ap-upload__zone {
+  min-height: 160px;
+}
+
+/* 7) Optional: emphasize required sections when in error (hook to your TS if needed) */
+.ap-field.is-invalid .ap-input,
+.ap-field.is-invalid .ap-upload__zone {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, .18);
+}
