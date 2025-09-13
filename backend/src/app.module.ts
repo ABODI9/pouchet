@@ -24,9 +24,9 @@ import { ProductsModule } from './products/products.module';
 
     // تقديم ملفات الرفع (صور المنتجات)
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
+      rootPath: join(process.cwd(), 'uploads'), 
       serveRoot: '/uploads',
-    }),
+    })
 
     // قاعدة البيانات
     TypeOrmModule.forRootAsync({

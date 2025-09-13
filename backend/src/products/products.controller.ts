@@ -58,7 +58,7 @@ export class ProductsController {
           cb(null, `${unique}${ext}`);
         },
       }),
-      limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+      limits: { fileSize: 2 * 2024 * 2024 }, // 2MB
       fileFilter,
     }),
   )

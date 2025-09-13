@@ -17,7 +17,7 @@ export class ProductAdd {
   fileError = '';
   preview: string | null = null;
 
-  private maxSize = 2 * 1024 * 1024; // 2MB
+  private maxSize = 2 * 2024 * 2024; // 4MB
   private allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 
   onFileSelected(ev: Event) {
