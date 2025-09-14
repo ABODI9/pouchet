@@ -1,149 +1,145 @@
-/* === Featured Edit — extras on top of Nova === */
-
-/* Fallbacks (لو ما كانت متعرفة في Nova) */
+/* ===== SCOPE على مستوى الكومبوننت ===== */
 :host {
-  --border: #{if(global-variable-exists(border), $border, #e6e8ee)};
-  --text:   #{if(global-variable-exists(fg), $fg, #0f172a)};
-  --muted:  #{if(global-variable-exists(muted), $muted, #6b7280)};
-  --brand:  #{if(global-variable-exists(primary), $primary, #16a34a)};
-  --surface:#fff;
+  display: block;
+  --ap-bg: #0f1722;       /* خلفية البطاقة الداكنة */
+  --ap-border: #233045;   /* حدود خفيفة */
+  --ap-muted: #9aa9bf;    /* نص ثانوي */
+  --ap-text: #e7edf6;     /* نص أساسي */
+  --ap-primary: #2f6df6;  /* زر أساسي */
+  --ap-danger: #e34b4b;
 }
 
-/* 1) Inline radio group (Text position) */
-.ap-inputGroup {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-
-  label {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: color-mix(in oklab, var(--surface) 90%, #fff);
-    font-size: 13px;
-    cursor: pointer;
-    user-select: none;
-    transition: border-color .18s ease, background .18s ease, transform .18s ease;
-  }
-
-  input[type="radio"] {
-    accent-color: var(--brand);
-  }
-
-  /* badge-like selected state (requires :has) */
-  label:has(input[type="radio"]:checked) {
-    background: color-mix(in oklab, var(--surface) 70%, var(--brand) 30%);
-    border-color: color-mix(in oklab, var(--border), var(--brand) 60%);
-    transform: translateY(-1px);
-  }
+/* ===== الحاويات العامة ===== */
+.ap-wrap {
+  padding: 24px 20px;
 }
 
-/* 2) Range (Overlay strength) */
-input[type="range"].ap-input,
-.ap-field input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 26px;
-  background: transparent;
-  padding: 0;
-
-  &::-webkit-slider-runnable-track {
-    height: 6px;
-    border-radius: 6px;
-    background: linear-gradient(90deg, color-mix(in oklab, var(--brand) 60%, #000 0%), #d1d5db);
-  }
-  &::-moz-range-track {
-    height: 6px;
-    border-radius: 6px;
-    background: linear-gradient(90deg, color-mix(in oklab, var(--brand) 60%, #000 0%), #d1d5db);
-  }
-
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    margin-top: -6px;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: var(--brand);
-    border: 2px solid #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,.25);
-    cursor: grab;
-  }
-  &::-moz-range-thumb {
-    width: 18px; height: 18px; border-radius: 50%;
-    background: var(--brand);
-    border: 2px solid #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,.25);
-    cursor: grab;
-  }
+.ap-card {
+  background: var(--ap-bg);
+  border: 1px solid var(--ap-border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  color: var(--ap-text);
 }
 
-/* 3) Upload + Preview: larger thumbs and labeled badges for Desktop/Mobile */
-.ap-upload {
-  align-items: start;
+.ap-card__head {
+  margin-bottom: 18px;
+}
+.ap-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+.ap-sub {
+  margin: 6px 0 0;
+  color: var(--ap-muted);
 }
 
-/* Desktop preview sizing */
-.ap-upload:has(#imageDesktop) .ap-preview {
-  width: 260px;
-  height: 146px; /* ~16:9 */
+/* ===== الشبكة ===== */
+.ap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.ap-field--span2 { grid-column: 1 / -1; }
+
+@media (max-width: 900px) {
+  .ap-grid { grid-template-columns: 1fr; }
+  .ap-field--span2 { grid-column: 1; }
 }
 
-/* Mobile preview sizing */
-.ap-upload:has(#imageMobile) .ap-preview {
-  width: 160px;
-  height: 260px; /* ~9:16 */
+/* ===== التسمية والحقل ===== */
+.ap-field { display: flex; flex-direction: column; gap: 8px; }
+.ap-label { font-weight: 600; }
+.ap-input {
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--ap-border);
+  background: #0b1320;
+  color: var(--ap-text);
+  padding: 0 12px;
+  outline: none;
+}
+.ap-input:focus { border-color: var(--ap-primary); }
+
+/* ===== منطقة الرفع (دروب-زون) ===== */
+.ap-upload { display: grid; gap: 14px; }
+.ap-upload__zone {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  border: 2px dashed #2a3a54;
+  border-radius: 14px;
+  color: var(--ap-muted);
+  background: #0b1320;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+  position: relative;
 }
 
-/* Preview badge */
-.ap-upload:has(#imageDesktop) .ap-previewBox .ap-preview::after,
-.ap-upload:has(#imageMobile)  .ap-previewBox .ap-preview::after {
-  content: attr(data-badge);
+/* 👇 هذا يُخفي input الأصلي ويجعله يغطي المنطقة ككل */
+.ap-upload__zone > input[type="file"] {
   position: absolute;
-  top: 8px; left: 8px;
-  font-size: 11px; font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--brand) 80%, #000 0%);
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ap-upload__zone:hover {
+  border-color: var(--ap-primary);
+  background: #0c1527;
+}
+
+.ap-upload__content { text-align: center; }
+.ap-upload__icon { font-size: 28px; margin-bottom: 8px; }
+.ap-link { color: var(--ap-primary); text-decoration: underline; }
+.ap-muted { color: var(--ap-muted); }
+
+/* ===== المعاينة ===== */
+.ap-previewBox {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--ap-border);
+  background: #0b1320;
+}
+.ap-preview {
+  display: block;
+  width: 100%;
+  height: 320px;
+  object-fit: contain;
+  background: #0b1320;
+}
+
+/* ===== الأكشنات ===== */
+.ap-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+.ap-btn {
+  border: 1px solid var(--ap-border);
+  background: #0b1320;
+  color: var(--ap-text);
+  border-radius: 10px;
+  height: 40px;
+  padding: 0 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ap-btn--primary {
+  background: var(--ap-primary);
+  border-color: var(--ap-primary);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25);
 }
+.ap-btn--ghost:hover { border-color: var(--ap-primary); }
+.ap-btn:disabled { opacity: .6; cursor: not-allowed; }
 
-/* Inject the label via CSS (no HTML changes needed) */
-.ap-upload:has(#imageDesktop) .ap-previewBox .ap-preview { position: relative; }
-.ap-upload:has(#imageDesktop) .ap-previewBox .ap-preview::after { content: 'Desktop'; }
-.ap-upload:has(#imageMobile)  .ap-previewBox .ap-preview::after { content: 'Mobile'; }
-
-/* 4) Small utilities */
-.ap-hint { font-size: 12px; color: var(--muted); }
-
-.ap-field .note {
-  font-size: 12px;
-  color: var(--muted);
-  background: color-mix(in oklab, var(--surface) 85%, #000);
-  border: 1px dashed var(--border);
-  padding: 8px 10px;
-  border-radius: 8px;
-}
-
-/* 5) Responsive tweaks */
-@media (max-width: 860px) {
-  .ap-upload:has(#imageDesktop) .ap-preview { width: 220px; height: 124px; }
-  .ap-upload:has(#imageMobile)  .ap-preview { width: 140px; height: 220px; }
-}
-
-/* 6) Optional: make the two image fields sit nicer when stacked */
-.ap-field--span2 .ap-upload__zone {
-  min-height: 160px;
-}
-
-/* 7) Optional: emphasize required sections when in error (hook to your TS if needed) */
-.ap-field.is-invalid .ap-input,
-.ap-field.is-invalid .ap-upload__zone {
-  border-color: #ef4444 !important;
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, .18);
+/* ===== رسائل الخطأ ===== */
+.ap-error {
+  margin-top: 6px;
+  color: #ffb4b4;
+  font-size: 13px;
 }

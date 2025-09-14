@@ -1,0 +1,46 @@
+<main class="cart container">
+  <h1>My Cart</h1>
+
+  <ng-container *ngIf="!loading; else loadingTpl">
+    <ng-container *ngIf="items.length; else emptyTpl">
+      <div class="list">
+        <div class="row" *ngFor="let it of items">
+          <img class="thumb" [src]="it.productImage || ''" [alt]="it.productName" />
+
+          <div class="meta">
+            <div class="name">{{ it.productName }}</div>
+            <div class="price">{{ toNum(it.unitPrice) | currency:'USD' }}</div>
+          </div>
+
+          <div class="qty">
+            <button (click)="dec(it)">−</button>
+            <span>{{ it.quantity }}</span>
+            <button (click)="inc(it)">+</button>
+          </div>
+
+          <div class="sum">
+            {{ lineTotal(it) | currency:'USD' }}
+          </div>
+
+          <button class="remove" (click)="remove(it)">✕</button>
+        </div>
+      </div>
+
+      <div class="footer">
+        <button class="btn ghost" (click)="clear()">Clear</button>
+        <div class="total">
+          Total: <strong>{{ total() | currency:'USD' }}</strong>
+        </div>
+        <button class="btn primary" (click)="checkoutWhatsApp()">Checkout on WhatsApp</button>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loadingTpl>
+    <p>Loading…</p>
+  </ng-template>
+
+  <ng-template #emptyTpl>
+    <p>Your cart is empty.</p>
+  </ng-template>
+</main>

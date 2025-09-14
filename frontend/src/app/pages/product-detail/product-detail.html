@@ -1,0 +1,31 @@
+<main class="pd container" *ngIf="!loading; else loadingTpl">
+  <ng-container *ngIf="product; else notFoundTpl">
+    <div class="wrap">
+      <div class="left">
+        <img class="hero" [src]="product!.image || ''" [alt]="product!.name">
+      </div>
+
+      <div class="right">
+        <h1 class="title">{{ product!.name }}</h1>
+        <div class="price">{{ product!.price | currency:'USD' }}</div>
+
+        <div class="actions">
+          <button class="btn primary" (click)="addToCart()">Add to cart</button>
+          <button class="btn ghost" (click)="buyNow()">Buy on WhatsApp</button>
+        </div>
+
+        <div class="desc" *ngIf="product!.description">
+          {{ product!.description }}
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</main>
+
+<ng-template #loadingTpl>
+  <div class="container"><p>Loading…</p></div>
+</ng-template>
+
+<ng-template #notFoundTpl>
+  <div class="container"><p>Product not found.</p></div>
+</ng-template>

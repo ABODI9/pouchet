@@ -1,46 +1,40 @@
-<div class="hero"
-     *ngIf="banners.length; else empty"
-     (mouseenter)="pause()"
-     (mouseleave)="resume()"
-     (touchstart)="onTouchStart($event)"
-     (touchend)="onTouchEnd($event)">
-
+<div class="hero hero--fullbleed hero--cover" *ngIf="banners.length; else empty"
+     role="region" aria-label="Featured slider"
+     (mouseenter)="pause()" (mouseleave)="resume()"
+     (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+     
   <div class="slides">
     <ng-container *ngFor="let b of banners; index as k; trackBy: trackById">
-      <!-- لو عنده productId خليه رابط، غير كذا div -->
+      <!-- إن كان عنده رابط منتج -->
       <a *ngIf="linkTo(b) as link"
-         class="slide"
-         [class.active]="k === i"
-         [routerLink]="link"
-         [target]="b.openInNewTab ? '_blank' : undefined"
-         [style.background-image]="'url(' + b.imageUrl + ')'">
+         class="slide" [class.active]="k===i" [routerLink]="link"
+         [target]="b.openInNewTab ? '_blank' : undefined" rel="noopener noreferrer"
+         [attr.aria-hidden]="k===i ? null : true">
+        <img class="slide-img" [src]="b.imageUrl" [alt]="b.caption || 'banner'" decoding="async" />
         <div class="grad"></div>
         <div class="caption" *ngIf="b.caption">{{ b.caption }}</div>
       </a>
 
-      <div *ngIf="!linkTo(b)"
-           class="slide"
-           [class.active]="k === i"
-           [style.background-image]="'url(' + b.imageUrl + ')'">
+      <!-- بدون رابط -->
+      <div *ngIf="!linkTo(b)" class="slide" [class.active]="k===i" [attr.aria-hidden]="k===i ? null : true">
+        <img class="slide-img" [src]="b.imageUrl" [alt]="b.caption || 'banner'" decoding="async" />
         <div class="grad"></div>
         <div class="caption" *ngIf="b.caption">{{ b.caption }}</div>
       </div>
     </ng-container>
   </div>
 
-  <button class="nav prev" aria-label="Previous" (click)="prev()">‹</button>
-  <button class="nav next" aria-label="Next" (click)="next()">›</button>
+  <!-- مناطق نقر خفيّة للتنقل (السهم مخفي نهائيًا) -->
+  <button class="hot prev" type="button" aria-label="Previous" (click)="prev()"></button>
+  <button class="hot next" type="button" aria-label="Next" (click)="next()"></button>
 
-  <div class="dots" *ngIf="banners.length > 1">
+  <div class="dots" *ngIf="banners.length > 1" role="tablist" aria-label="Slides">
     <button *ngFor="let _ of banners; index as k"
-            [class.on]="k === i"
-            (click)="go(k)"></button>
+            role="tab" [attr.aria-selected]="k===i" [class.on]="k===i"
+            type="button" (click)="go(k)"></button>
   </div>
 </div>
 
 <ng-template #empty>
-  <!-- حالة لا يوجد بانرات -->
-  <div class="hero hero--empty">
-    <div class="empty">No banners yet.</div>
-  </div>
+  <div class="hero hero--empty"><div class="empty">No banners yet.</div></div>
 </ng-template>

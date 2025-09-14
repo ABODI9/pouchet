@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './slider.html',
   styleUrls: ['./slider.scss'],
 })
-export class SliderComponent implements OnDestroy {
+export class Slider implements OnDestroy {
   private api = inject(FeaturedService);
 
   banners: FeaturedItem[] = [];
@@ -20,12 +20,11 @@ export class SliderComponent implements OnDestroy {
   intervalMs = 5000;
   hovering = false;
   touchStartX = 0;
-
-  private sub?: Subscription;
+  sub?: Subscription;
+  reduceMotion = matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 
   ngOnInit() {
     this.load();
-    // لو صار أي تحديث من أي صفحة (إضافة/تعديل/حذف) أعد التحميل
     this.sub = this.api.updated$.subscribe(() => this.load());
   }
 
@@ -42,23 +41,20 @@ export class SliderComponent implements OnDestroy {
     });
   }
 
-  // ==== Auto-play ====
   startAuto() {
     this.stopAuto();
-    if (this.banners.length > 1 && !this.hovering) {
+    if (this.reduceMotion) return;
+    if (this.banners.length > 1 && !this.hovering)
       this.timer = setInterval(() => this.next(), this.intervalMs);
-    }
   }
   stopAuto() { if (this.timer) { clearInterval(this.timer); this.timer = null; } }
   pause()  { this.hovering = true;  this.stopAuto(); }
   resume() { this.hovering = false; this.startAuto(); }
 
-  // ==== Navigation ====
   prev() { if (this.banners.length) this.i = (this.i - 1 + this.banners.length) % this.banners.length; }
   next() { if (this.banners.length) this.i = (this.i + 1) % this.banners.length; }
   go(k: number) { this.i = k; this.startAuto(); }
 
-  // ==== Touch (mobile swipe) ====
   onTouchStart(e: TouchEvent) { this.touchStartX = e.changedTouches[0].clientX; }
   onTouchEnd(e: TouchEvent) {
     const dx = e.changedTouches[0].clientX - this.touchStartX;
@@ -66,7 +62,7 @@ export class SliderComponent implements OnDestroy {
     this.startAuto();
   }
 
-  // ==== Keyboard arrows ====
+  // تنقّل بالكيبورد (اختياري)
   @HostListener('document:keydown', ['$event'])
   onKey(e: KeyboardEvent) {
     if (!this.banners.length) return;
@@ -74,14 +70,8 @@ export class SliderComponent implements OnDestroy {
     if (e.key === 'ArrowRight') { this.next(); this.startAuto(); }
   }
 
-  linkTo(b: FeaturedItem) {
-    return b.productId ? ['/product', b.productId] : null;
-  }
-
+  linkTo(b: FeaturedItem) { return b.productId ? ['/product', b.productId] : null; }
   trackById = (_: number, b: FeaturedItem) => b.id;
 
-  ngOnDestroy() {
-    this.stopAuto();
-    this.sub?.unsubscribe();
-  }
+  ngOnDestroy() { this.stopAuto(); this.sub?.unsubscribe(); }
 }

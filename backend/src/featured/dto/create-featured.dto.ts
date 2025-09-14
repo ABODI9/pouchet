@@ -1,27 +1,33 @@
-import { IsBooleanString, IsOptional, IsString, IsInt } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
+
+function toBool(v: any): boolean {
+  if (typeof v === 'boolean') return v;
+  const s = String(v).toLowerCase();
+  return s === 'true' || s === '1' || s === 'on' || s === 'yes';
+}
 
 export class CreateFeaturedDto {
-  // سيتم تجاهل الصور هنا لأنها عبر multipart
-
   @IsOptional()
-  @Type(() => Number)
+  @Type(() => Number)            // يحوّل "100" => 100
   @IsInt()
   order?: number;
 
   @IsOptional()
-  @IsBooleanString()
-  active?: string; // 'true' | 'false'
+  @Transform(({ value }) => toBool(value)) // "true"/"1"/"on" => true
+  @IsBoolean()
+  active?: boolean;
 
   @IsOptional()
   @IsString()
-  productId?: string;
+  productId?: string | null;
 
   @IsOptional()
   @IsString()
-  caption?: string;
+  caption?: string | null;
 
   @IsOptional()
-  @IsBooleanString()
-  openInNewTab?: string; // 'true' | 'false'
+  @Transform(({ value }) => toBool(value))
+  @IsBoolean()
+  openInNewTab?: boolean | null;
 }

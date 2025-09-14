@@ -1,7 +1,8 @@
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -10,14 +11,24 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
-export class Header {
+export class Header implements OnInit {
+  // Auth
   public auth = inject(AuthService);
-  // استخدام واحد للـ user$ في القالب لتفادي تكرار async
   user$ = this.auth.user$;
 
-  // واجهة بسيطة للقائمة المنسدلة + قائمة الموبايل
+  // Cart
+  private cartSvc = inject(CartService);
+  /** نُمرر Observable العداد إلى القالب */
+  count$ = this.cartSvc.count$;
+
+  // قوائم
   menuOpen = signal(false);
   mobileOpen = signal(false);
+
+  ngOnInit() {
+    // نضمن تحديث العداد عند فتح الصفحة
+    this.cartSvc.syncCount();
+  }
 
   toggleMenu() { this.menuOpen.update(v => !v); }
   closeMenu() { this.menuOpen.set(false); }
@@ -37,7 +48,6 @@ export class Header {
   @HostListener('document:click', ['$event'])
   onDocClick(ev: MouseEvent) {
     const target = ev.target as HTMLElement;
-    // اغلق القائمة لو النقر خارج الأفاتار/القائمة
     if (!target.closest('.userbox')) this.closeMenu();
   }
 }

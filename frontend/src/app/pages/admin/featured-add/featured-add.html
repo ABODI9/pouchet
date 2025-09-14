@@ -5,37 +5,89 @@
       <p class="ap-sub">Pick one or multiple images (max 2MB each). That’s it.</p>
     </div>
 
+    <!-- (ngSubmit) يعمل الآن بوجود FormsModule -->
     <form (ngSubmit)="save()" class="ap-grid" novalidate>
+      <!-- صور -->
       <div class="ap-field ap-field--span2">
         <label class="ap-label" for="images">Images</label>
+
+        <!-- منطقة السحب والإفلات -->
         <div class="ap-upload">
-          <label class="ap-upload__zone">
-            <input id="images" type="file" (change)="onFilesSelected($event)" accept="image/*" multiple />
+          <label class="ap-upload__zone"
+                 [class.ap-upload__zone--drag]="dragging"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event)">
+            <input id="images"
+                   type="file"
+                   (change)="onFilesSelected($event)"
+                   accept=".jpg,.jpeg,.png,.webp,.avif"
+                   multiple />
             <div class="ap-upload__content">
               <div class="ap-upload__icon" aria-hidden="true">⬆️</div>
               <div class="ap-upload__text">
                 <strong>Drag & drop</strong> or <span class="ap-link">browse</span><br />
-                <span class="ap-muted">PNG · JPG · WEBP — up to 2MB each</span>
+                <span class="ap-muted">JPG · PNG · WEBP · AVIF — up to 2MB each</span>
               </div>
             </div>
           </label>
         </div>
 
+        <!-- أخطاء اختيار الملفات -->
         <div class="ap-error" *ngIf="fileError">{{ fileError }}</div>
       </div>
 
+      <!-- المعاينات -->
       <div class="ap-field ap-field--span2" *ngIf="previews.length">
         <div class="fa-grid">
           <div class="fa-item" *ngFor="let src of previews; index as i">
             <img [src]="src" alt="preview" />
-            <button type="button" class="ap-btn ap-btn--sm ap-btn--ghost" (click)="removeAt(i)">Remove</button>
+            <button type="button"
+                    class="ap-btn ap-btn--sm ap-btn--ghost"
+                    (click)="removeAt(i)">Remove</button>
           </div>
+        </div>
+        <div class="ap-muted" style="margin-top:.5rem">
+          {{ previews.length }} file(s) selected
         </div>
       </div>
 
+      <!-- الحقول الاختيارية -->
+      <div class="ap-field">
+        <label class="ap-label" for="caption">Caption (optional)</label>
+        <input id="caption" class="ap-input" type="text" [(ngModel)]="model.caption" name="caption" maxlength="120" />
+      </div>
+
+      <div class="ap-field">
+        <label class="ap-label" for="productId">Product ID (optional)</label>
+        <input id="productId" class="ap-input" type="text" [(ngModel)]="model.productId" name="productId" />
+      </div>
+
+      <div class="ap-field">
+        <label class="ap-label" for="order">Order</label>
+        <input id="order" class="ap-input" type="number" min="0" step="1" [(ngModel)]="model.order" name="order" />
+      </div>
+
+      <div class="ap-field">
+        <label class="ap-label" for="active">Status</label>
+        <select id="active" class="ap-input" [(ngModel)]="model.active" name="active">
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Hidden</option>
+        </select>
+      </div>
+
+      <div class="ap-field ap-field--span2">
+        <label class="ap-checkbox">
+          <input type="checkbox" [(ngModel)]="model.openInNewTab" name="openInNewTab" />
+          <span>Open link in new tab</span>
+        </label>
+        <div class="ap-hint">يُستخدم فقط إذا كان للراية Product ID (يولّد رابط المنتج).</div>
+      </div>
+
+      <!-- الأزرار -->
       <div class="ap-actions ap-field--span2">
         <a class="ap-btn ap-btn--ghost" routerLink="/admin/featured">Cancel</a>
-        <button class="ap-btn ap-btn--primary" type="submit" [disabled]="loading">
+        <button class="ap-btn ap-btn--primary" type="submit" [disabled]="loading || !files.length">
           {{ loading ? 'Uploading…' : 'Save' }}
         </button>
       </div>

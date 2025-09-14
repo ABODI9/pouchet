@@ -1,8 +1,36 @@
 <main class="container">
-  <app-slider></app-slider> <!-- ⬅️ remove [images] -->
-  <app-tabs [active]="activeTab" (tabChange)="activeTab = $event"></app-tabs>
+  <app-slider></app-slider>
 
-  <section class="grid">
-    <app-product-card *ngFor="let p of filteredProducts()" [product]="p"></app-product-card>
-  </section>
+  <!-- Tabs (Filter / Most sells / Favorite) -->
+  <div class="tabs">
+    <button [class.on]="activeTab==='filter'" (click)="setTab('filter')">Filter</button>
+    <button [class.on]="activeTab==='most'"   (click)="setTab('most')">The Most Sells</button>
+    <button [class.on]="activeTab==='fav'"    (click)="setTab('fav')">Favorite</button>
+  </div>
+
+  <!-- حالة التحميل -->
+  <ng-container *ngIf="!loading; else loadingTpl">
+    <!-- حالة الخطأ -->
+    <div *ngIf="error" class="state err">{{ error }}</div>
+
+    <!-- شبكة المنتجات -->
+    <section class="grid" *ngIf="!error">
+      <div *ngIf="!viewProducts.length" class="state">No products yet.</div>
+
+      <!-- اربط الكارد بصفحة التفاصيل -->
+      <a
+        class="card-link"
+        *ngFor="let p of viewProducts; trackBy: trackById"
+        [routerLink]="['/product', p.id]"
+      >
+        <app-product-card [product]="p" (click)="$event.preventDefault()"></app-product-card>
+      </a>
+    </section>
+  </ng-container>
+
+  <ng-template #loadingTpl>
+    <section class="grid">
+      <div class="skeleton" *ngFor="let _ of skeletons"></div>
+    </section>
+  </ng-template>
 </main>

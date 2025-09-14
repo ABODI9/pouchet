@@ -1,68 +1,120 @@
-/* ===== Slider (autoplay + hover pause + swipe) ===== */
-:host { display:block; }
+/* ارتفاع الهيدر (لو عندك هيدر ثابت) */
+:root { --header-h: 88px; } /* عدّلها حسب موقعك */
 
+/* الحاوية العامة */
 .hero {
   position: relative;
-  border-radius: 18px;
   overflow: hidden;
-  background: #0b1220;
-  min-height: 260px;
-  user-select: none;
+  background: transparent;     /* شفافية الخلفية حول الصورة */
 }
-@media (min-width: 900px) { .hero { min-height: 380px; } }
 
-.hero--empty {
-  display: grid; place-items: center;
-  color: #94a3b8; background: #0b1220;
-  border: 1px solid #1f2937;
+/* فل-بليد: يمتد من اليمين لليسار بعرض الشاشة */
+.hero--fullbleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw); /* يوسّط ويمتد لحواف المتصفح */
+  margin-top: 0;
+  border-radius: 0;
 }
-.empty { padding: 40px 0; font-weight: 700; }
 
-.slides { height: 100%; position: relative; }
+/* مساحة السلايدز — بطول الشاشة تقريبًا */
+.slides {
+  position: relative;
+  /* ارتفاع ديناميكي: من 420px إلى (100vh - الهيدر) وحتى 980px كحد علوي */
+  height: clamp(420px, calc(100vh - var(--header-h, 0px)), 980px);
+  background: transparent;
+}
 
+/* الشريحة (div/a) */
 .slide {
   position: absolute; inset: 0;
-  background-size: cover; background-position: center;
-  transform: scale(1.02);
-  opacity: 0; transition: opacity .5s ease, transform .6s ease;
-  display: block; color: inherit; text-decoration: none;
+  display: block;
+  opacity: 0;
+  transition: opacity .35s ease;
+  background: transparent;
 }
-.slide.active { opacity: 1; transform: scale(1); }
+.slide.active { opacity: 1; }
 
-.grad {
+/* الصورة: الوضع الافتراضي (contain) */
+.slide-img {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.45));
+  width: 100%;
+  height: 100%;
+  object-fit: contain;         /* تظهر كاملة */
+  object-position: center;
+  display: block;
+  background: transparent;
 }
 
+/* ⛳️ وضع COVER مثل الموقع المرجعي (فعّل via hero--cover على الحاوية) */
+.hero--cover .slide-img {
+  object-fit: cover;           /* تملأ المساحة مع قصّ الحواف */
+  object-position: center;     /* عدّلها مثل 50% 35% لو تبغى تركيز أعلى */
+}
+
+/* تدرّج وتعليق */
+.grad { position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,.35)); }
 .caption {
-  position: absolute; left: 20px; bottom: 18px;
-  color: #fff; font-weight: 800; font-size: 22px;
-  text-shadow: 0 2px 12px rgba(0,0,0,.35);
-}
-@media (min-width: 900px) {
-  .caption { left: 30px; bottom: 26px; font-size: 28px; }
+  position: absolute; left: 16px; bottom: 14px;
+  color: #fff; font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0,0,0,.45);
+  z-index: 6;
 }
 
-.nav {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 40px; height: 40px; border-radius: 50%;
-  background: rgba(17,24,39,.6); color: #fff;
-  border: 1px solid rgba(255,255,255,.15);
-  display: grid; place-items: center; font-size: 24px;
-  cursor: pointer; transition: background .2s ease, transform .1s ease;
-}
-.nav:hover { background: rgba(17,24,39,.8); }
-.nav:active { transform: translateY(-50%) scale(.98); }
-.prev { left: 10px; }
-.next { right: 10px; }
+/* ◀▶ الأسهم الأصلية مخفية (لو وجدت) */
+.hero .nav { display: none !important; }
 
+/* مناطق النقر الجانبية الخفية (بديل الأسهم) */
+.hot {
+  position: absolute; top: 0; bottom: 0;
+  width: 22vw; min-width: 120px;
+  background: transparent; border: 0; cursor: pointer;
+  z-index: 5; outline: none;
+}
+.hot.prev { left: 0; }
+.hot.next { right: 0; }
+
+/* المؤشرات (كانت دوائر → صارت خطوط) */
 .dots {
-  position: absolute; bottom: 10px; left: 0; right: 0;
-  display: flex; gap: 6px; justify-content: center;
+  position: absolute;
+  left: 50%; bottom: 12px; transform: translateX(-50%);
+  display: flex; gap: 8px;
 }
+
+/* كل "نقطة" عبارة عن خط */
 .dots button {
-  width: 8px; height: 8px; border-radius: 50%;
-  border: 0; background: rgba(255,255,255,.45);
-  cursor: pointer; transition: transform .2s ease, background .2s ease;
+  width: 28px;                  /* طول الخط */
+  height: 4px;                  /* سماكة الخط */
+  border: 0;
+  border-radius: 999px;         /* أطراف مستديرة */
+  background: #fff;
+  opacity: .35;
+  cursor: pointer;
+  padding: 0;
 }
-.dots button.on { background: #fff; transform: scale(1.15); }
+
+/* الخط النشط */
+.dots button.on { opacity: 1; }
+
+/* تحسين تفاعل المؤشر/الكيبورد */
+.dots button:hover,
+.dots button:focus-visible { opacity: .75; outline: none; }
+
+/* يمكنك جعل الخط النشط أطول إذا رغبت */
+/* .dots button.on { width: 36px; } */
+
+/* Responsive tweaks */
+@media (max-width: 1200px) {
+  .slides { height: clamp(360px, calc(100vh - var(--header-h, 0px)), 820px); }
+}
+@media (max-width: 992px)  {
+  .slides { height: clamp(320px, calc(100vh - var(--header-h, 0px)), 720px); }
+}
+@media (max-width: 768px)  {
+  .slides { height: clamp(280px, calc(100vh - var(--header-h, 0px)), 640px); }
+  .hot { width: 28vw; min-width: 90px; }
+  .dots button { width: 18px; height: 5px; } /* خطوط أقصر وأسمك قليلاً على الموبايل */
+}
+@media (max-width: 560px)  {
+  .slides { height: clamp(240px, calc(100vh - var(--header-h, 0px)), 560px); }
+}

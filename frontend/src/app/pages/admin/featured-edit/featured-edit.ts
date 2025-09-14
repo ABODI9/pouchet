@@ -1,3 +1,4 @@
+// frontend/src/app/pages/admin/featured-edit/featured-edit.ts
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,6 +10,7 @@ import { FeaturedService, FeaturedItem } from '../../../services/featured.servic
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './featured-edit.html',
+  styleUrls: ['./featured-edit.scss'], // 👈 مهم: يربط ملف الـCSS
 })
 export class FeaturedEdit {
   private route = inject(ActivatedRoute);
@@ -20,6 +22,10 @@ export class FeaturedEdit {
   preview: string | null = null;
   fileError = '';
   loading = true;
+
+  // قيود الرفع
+  private readonly ALLOWED_MIME = new Set(['image/jpeg','image/png','image/webp','image/avif']);
+  private readonly MAX_SIZE = 2 * 1024 * 1024; // 2MB
 
   ngOnInit() {
     this.id = String(this.route.snapshot.paramMap.get('id'));
@@ -38,9 +44,23 @@ export class FeaturedEdit {
   }
 
   onFileSelected(ev: Event) {
-    const f = (ev.target as HTMLInputElement).files?.[0];
+    const input = ev.target as HTMLInputElement;
+    const f = input.files?.[0];
     if (!f) return;
-    if (f.size > 2 * 1024 * 1024) { this.fileError = 'Image exceeds 2MB'; return; }
+
+    // فحص النوع والحجم
+    const okType = this.ALLOWED_MIME.has(f.type) || /\.(jpg|jpeg|png|webp|avif)$/i.test(f.name);
+    if (!okType) {
+      this.fileError = 'Only JPG / PNG / WEBP / AVIF are allowed';
+      input.value = '';
+      return;
+    }
+    if (f.size > this.MAX_SIZE) {
+      this.fileError = 'Image exceeds 2MB';
+      input.value = '';
+      return;
+    }
+
     this.fileError = '';
     const r = new FileReader();
     r.onload = () => this.preview = r.result as string;
@@ -51,6 +71,7 @@ export class FeaturedEdit {
     const fd = new FormData();
     fd.append('order', String(this.model.order ?? 0));
     fd.append('active', String(!!this.model.active));
+
     const file = (document.getElementById('image') as HTMLInputElement | null)?.files?.[0];
     if (file) fd.append('image', file);
 

@@ -1,0 +1,83 @@
+/* صندوق المنتج */
+.pcard{
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+
+  background: #fff;                 /* يمنع الخلفية السوداء */
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.pcard:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.10);
+}
+
+/* إطار الصورة */
+.pcard .img{
+  width: 100%;
+  aspect-ratio: 1 / 1;              /* مربع أنيق بدل ارتفاعات عشوائية */
+  border-radius: 10px;
+  overflow: hidden;
+
+  background: #fff;                 /* يمنع ظهور مساحات داكنة */
+  display: grid;
+  place-items: center;              /* يوسّط الصورة داخل الإطار */
+}
+
+/* الصورة نفسها */
+.pcard .img img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;              /* تظهر كاملة بدون قص */
+  display: block;
+}
+
+/* الاسم والسعر */
+.pcard .name{
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.pcard .price{
+  font-weight: 700;
+  color: #111827;
+  margin-top: -.25rem;
+}
+
+/* أزرار الإجراءات */
+.pcard .actions{
+  margin-top: .25rem;
+  display: flex;
+  gap: .5rem;
+}
+
+.btn{
+  height: 36px;
+  padding: 0 .9rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #111827;
+  color: #fff;
+  font-weight: 600;
+  font-size: .9rem;
+  cursor: pointer;
+}
+.btn:hover{ filter: brightness(1.05); }
+
+.btn.ghost{
+  background: #1f2937;
+  color: #fff;
+  border-color: #1f2937;
+}
+
+/* على الشاشات الصغيرة */
+@media (max-width: 520px){
+  .pcard{ padding: 10px; }
+  .btn{ height: 34px; font-size: .85rem; }
+}

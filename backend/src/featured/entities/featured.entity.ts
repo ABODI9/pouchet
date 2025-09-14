@@ -1,9 +1,6 @@
-import {
-  Entity, PrimaryGeneratedColumn, Column,
-  CreateDateColumn, UpdateDateColumn, Index
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity({ name: 'featured' })
+@Entity('featured')
 export class Featured {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -11,8 +8,15 @@ export class Featured {
   @Column({ type: 'varchar' })
   imageUrl!: string; // مثال: /uploads/123.png
 
-  @Index()
-  @Column({ type: 'int', default: 0 })
+  // استخدم bigint لتفادي overflow مع Date.now()
+  @Column({
+    type: 'bigint',
+    default: () => '0',
+    transformer: {
+      to: (v?: number | null) => (v ?? 0),
+      from: (v: string) => Number(v),
+    },
+  })
   order!: number;
 
   @Column({ type: 'boolean', default: true })

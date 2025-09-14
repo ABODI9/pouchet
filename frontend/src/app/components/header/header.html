@@ -14,8 +14,16 @@
     </ng-container>
   </nav>
 
-  <!-- يمين: حالة الضيف/المستخدم -->
+  <!-- يمين: سلة + حالة الضيف/المستخدم -->
   <div class="right">
+
+    <!-- زر السلة دائمًا -->
+    <a class="nav-cart" routerLink="/cart" aria-label="Cart">
+      <span class="icon" aria-hidden="true">👜</span>
+      <span class="badge" *ngIf="(count$ | async) as c" [class.hide]="!c">{{ c }}</span>
+    </a>
+    
+
     <!-- ضيف -->
     <ng-container *ngIf="!(user$ | async); else loggedIn">
       <a class="btn ghost" routerLink="/login">Sign in</a>
@@ -30,20 +38,21 @@
           <button class="avatar" (click)="toggleMenu()" aria-haspopup="menu" [attr.aria-expanded]="menuOpen()">
             {{ initial(u.email) }}
           </button>
-                <div class="menu" *ngIf="menuOpen()" role="menu">
-                  <div class="info">
-                    <div class="email">{{ u.email }}</div>
-                    <div class="muted">Signed in</div>
-                  </div>
-                  <!-- رابط البروفايل للجميع -->
-                  <a *ngIf="(user$ | async)" routerLink="/profile" routerLinkActive="active">Profile</a>
-                
-                  <!-- رابط الأدمن -->
-                  <a *ngIf="u.role==='admin'" routerLink="/admin" (click)="closeMenu()" role="menuitem">Admin</a>
 
-                  <button (click)="logout()" role="menuitem">Logout</button>
-                </div>
+          <div class="menu" *ngIf="menuOpen()" role="menu">
+            <div class="info">
+              <div class="email">{{ u.email }}</div>
+              <div class="muted">Signed in</div>
+            </div>
 
+            <!-- رابط البروفايل للجميع -->
+            <a routerLink="/profile" routerLinkActive="active" role="menuitem" (click)="closeMenu()">Profile</a>
+
+            <!-- رابط الأدمن -->
+            <a *ngIf="u.role==='admin'" routerLink="/admin" role="menuitem" (click)="closeMenu()">Admin</a>
+
+            <button (click)="logout()" role="menuitem">Logout</button>
+          </div>
         </ng-container>
       </div>
     </ng-template>

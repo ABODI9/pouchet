@@ -35,12 +35,25 @@ export class FeaturedList {
     if (j < 0 || j >= this.items.length) return;
 
     const a = this.items[i], b = this.items[j];
+    const prevA = a.order ?? 0, prevB = b.order ?? 0;
+
     if (a.order == null) a.order = 0;
     if (b.order == null) b.order = 0;
-
     [a.order, b.order] = [b.order, a.order];
     this.items = [...this.items].sort((x, y) => (x.order ?? 0) - (y.order ?? 0));
-    // TODO: API لإعادة الترتيب إن رغبت
+
+    this.api.reorder([
+      { id: a.id, order: a.order! },
+      { id: b.id, order: b.order! },
+    ]).subscribe({
+      next: () => {},
+      error: (e) => {
+        console.error('reorder failed', e?.status, e?.error);
+        a.order = prevA; b.order = prevB;
+        this.items = [...this.items].sort((x, y) => (x.order ?? 0) - (y.order ?? 0));
+        alert(e?.error?.message || 'Failed to save new order');
+      }
+    });
   }
 
   toggle(row: FeaturedItem) {
