@@ -30,7 +30,14 @@ export class ProductDetailPage {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    if (!id) { this.error = 'Missing product id'; this.loading = false; return; }
+    console.log('[product-detail] id =', id);
+
+    // ✅ حارس مبكر — يوقف NaN أو عدم وجود id
+    if (!id || id === 'NaN') {
+      this.error = 'Invalid product id';
+      this.loading = false;
+      return;
+    }
 
     this.api.getOne(id).subscribe({
       next: (p: ApiProduct) => {
@@ -40,7 +47,6 @@ export class ProductDetailPage {
           image: p.imageUrl ?? null,
           price: Number(p.price ?? 0),
           rating: p.rating ?? null,
-          // واجهتك الحالية Product ما فيها description، لذلك نقرأه إن وُجد
           description: (p as any).description ?? null,
         };
         this.loading = false;
@@ -55,13 +61,12 @@ export class ProductDetailPage {
       productId: this.product.id,
       productName: this.product.name,
       productImage: this.product.image ?? null,
-      unitPrice: String(this.product.price), // كـ string حسب خدمة السلة
+      unitPrice: String(this.product.price),
       quantity: 1,
     }).subscribe({
       next: () => {
-        // لو لديك syncCount في CartService حدّث عدّاد السلة
         (this.cart as any).syncCount?.();
-        // ممكن تضيف Toast هنا لو عندك ToastService
+        // يمكن استبدال التنبيه بتوست إن وُجد
         // this.toast.show('Added to cart ✅', 'ok');
       },
       error: () => {
@@ -73,7 +78,7 @@ export class ProductDetailPage {
 
   buyNow() {
     if (!this.product) return;
-    const phone = environment.whatsappPhone || '905522808900'; // رقم افتراضي مقنّع
+    const phone = environment.whatsappPhone || '905522808900';
     const base  = (environment.siteBaseUrl ?? '').replace(/\/$/, '');
     const url   = `${base}/product/${this.product.id}`;
     const text  = encodeURIComponent(

@@ -7,7 +7,9 @@
   <div class="price">{{ product.price | currency:'USD' }}</div>
 
   <div class="actions">
-    <button class="btn" (click)="addToCart()">Add to cart</button>
-    <button class="btn ghost" (click)="buyNow()">Buy on Now</button>
+    <button class="btn primary" (click)="addToCart()">Add to cart</button>
+    <button class="btn gold" (click)="buyNow()">Buy Now</button>
+    <!-- بديل ثالث إن رغبت:
+    <button class="btn ghost">Wishlist</button> -->
   </div>
 </article>

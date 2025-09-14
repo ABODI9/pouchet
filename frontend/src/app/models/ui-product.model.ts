@@ -1,7 +1,9 @@
-export interface UiProduct {
-  id: number;
+export type UiProduct = {
+  id: string;
   name: string;
-  image?: string | null;
+  image: string | null;
   price: number;
-  rating?: number;
-}
+  // اختياري ويسمح بـ null
+  rating?: number | null;
+  description?: string | null;
+};

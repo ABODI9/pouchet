@@ -5,26 +5,28 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Product {
-  id: string | number;             // يدعم النص والرقم
+  id: string | number;
   title: string;
   price: number;
-  imageUrl?: string | null;        // اختياري
-  rating?: number | null;          // اختياري
-  description?: string | null;     // ⬅️ مضاف للوصف
+  imageUrl: string | null;
+  rating: number | null;
+  description?: string | null; // اختياري
 }
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   private http = inject(HttpClient);
-  private base = environment.api.replace(/\/$/, ''); // شيل / آخرية إن وجدت
+  private base = environment.api.replace(/\/$/, '');
 
   list(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.base}/products`);
   }
 
-  getOne(id: string | number): Observable<Product> {
-    return this.http.get<Product>(`${this.base}/products/${id}`);
-  }
+getOne(id: string | number) {
+  const safe = encodeURIComponent(String(id));           // ← يمنع أي مسافات/أحرف
+  return this.http.get<Product>(`${this.base}/products/${safe}`);
+}
+
 
   create(body: FormData): Observable<Product> {
     return this.http.post<Product>(`${this.base}/products`, body);
@@ -38,3 +40,4 @@ export class ProductsService {
     return this.http.delete<void>(`${this.base}/products/${id}`);
   }
 }
+

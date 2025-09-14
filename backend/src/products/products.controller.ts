@@ -12,6 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
   Req,
+  ParseUUIDPipe, // ✅
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -40,8 +41,9 @@ export class ProductsController {
     return this.svc.findAll();
   }
 
+  // ✅ يمنع أي id غير UUID ويعيد 400 بدل 500
   @Get(':id')
-  get(@Param('id') id: string) {
+  get(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.svc.findOne(id);
   }
 
@@ -51,15 +53,15 @@ export class ProductsController {
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: 'uploads',               // ← يحفظ داخل backend/uploads
+        destination: 'uploads',
         filename: (_req, file, cb) => {
           const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname || '');
           cb(null, `${unique}${ext}`);
         },
       }),
-      limits: { fileSize: 2 * 1024 * 1024 },  // ← 2MB صحيحة
-      fileFilter,                              // ← تقييد الأنواع
+      limits: { fileSize: 2 * 1024 * 1024 },
+      fileFilter,
     }),
   )
   async create(
@@ -72,7 +74,7 @@ export class ProductsController {
       throw new BadRequestException('title and price are required');
     }
 
-    const base = `${req.protocol}://${req.get('host')}`; // مثل http://localhost:3000
+    const base = `${req.protocol}://${req.get('host')}`;
     const imageUrl = file ? `${base}/uploads/${file.filename}` : body.imageUrl || '';
 
     const numericPrice = Number(price);
@@ -92,14 +94,17 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+  update(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string, // ✅
+    @Body() dto: UpdateProductDto,
+  ) {
     return this.svc.update(id, dto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) { // ✅
     return this.svc.remove(id);
   }
 }

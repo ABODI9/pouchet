@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Slider } from '../../components/slider/slider';              // ← لا تغييره
-// (لا نستخدم مكوّن Tabs هنا، لذلك لا نستورده لتجنّب التحذير)
-import { ProductsService, Product as ApiProduct } from '../../services/products.service';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
+import { catchError, map, shareReplay, startWith } from 'rxjs/operators';
+
+import { Slider } from '../../components/slider/slider';
 import { Card } from '../../components/product-card/card';
+import { ProductsService, Product as ApiProduct } from '../../services/products.service';
 import { UiProduct } from '../../models/ui-product.model';
 
-// نوع التبويبات الذي نستخدمه محليًا
 type HomeTab = 'filter' | 'most' | 'fav';
 
 @Component({
@@ -15,62 +16,55 @@ type HomeTab = 'filter' | 'most' | 'fav';
   selector: 'app-home',
   imports: [CommonModule, RouterLink, Slider, Card],
   templateUrl: './home.html',
-  styleUrls: ['./home.scss']
+  styleUrls: ['./home.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Home implements OnInit {
-  // حالة التحميل/الخطأ
-  loading = true;
-  error = '';
+export class Home {
+  // ✅ استخدم inject بدلاً من حقن الكونسركتر لتفادي التحذير
+  private productsApi = inject(ProductsService);
 
-  // التبويب الحالي
-  activeTab: HomeTab = 'filter';
+  // ✅ public عشان القالب يقرأها
+  tab$ = new BehaviorSubject<HomeTab>('filter');
+  setTab(tab: HomeTab) { this.tab$.next(tab); }
 
-  // البيانات
-  products: UiProduct[] = [];
-
-  // عناصر هيكلية للتحميل
   skeletons = Array.from({ length: 8 });
 
-  constructor(private productsApi: ProductsService) {}
+  // نحمّل الـ API، ونحوّل الخطأ لقيمة قابلة للعرض بدل رميه
+  private productsRaw$ = this.productsApi.list().pipe(
+    startWith(null as unknown as ApiProduct[]),      // يشغل حالة التحميل
+    catchError(() => of([] as ApiProduct[])),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
 
-  ngOnInit() {
-    this.fetchProducts();
-  }
+  // تحويل API → UI (id كنصي)
+  products$ = this.productsRaw$.pipe(
+    map(list => Array.isArray(list) ? list : []),
+    map(list => list.map<UiProduct>(p => ({
+      id: String(p.id),
+      name: p.title,
+      image: p.imageUrl ?? null,
+      price: Number(p.price ?? 0),
+      rating: p.rating ?? null,
+      description: (p as any).description ?? null,
+    }))),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
 
-  private fetchProducts() {
-    this.loading = true;
-    this.error = '';
-    this.productsApi.list().subscribe({
-      next: (api: ApiProduct[]) => {
-        // نحرص أن تكون الأنواع رقمية كما تتطلب UiProduct
-        this.products = api.map((p): UiProduct => ({
-          id: Number(p.id),
-          name: p.title,
-          image: p.imageUrl ?? null,
-          price: Number(p.price ?? 0),
-          rating: Number(p.rating ?? 0),
-        }));
-        this.loading = false;
-      },
-      error: () => {
-        this.error = 'Failed to load products.';
-        this.loading = false;
-      }
-    });
-  }
+  // حالات الواجهة
+  loading$ = this.productsRaw$.pipe(map(x => x === (null as any)));
+  error$   = this.productsRaw$.pipe(
+    map(x => (x === (null as any) ? '' : Array.isArray(x) ? '' : 'Failed to load products.'))
+  );
 
-  setTab(tab: HomeTab) {
-    this.activeTab = tab;
-  }
+  // اختيار العرض حسب التبويب
+  viewProducts$ = combineLatest([this.products$, this.tab$]).pipe(
+    map(([list, tab]) => {
+      if (tab === 'most') return [...list].sort((a, b) => b.price - a.price);
+      if (tab === 'fav')  return list.filter(p => (p.rating ?? 0) >= 4);
+      return list;
+    })
+  );
 
-  // مصفوفة العرض حسب التبويب
-  get viewProducts(): UiProduct[] {
-    if (this.activeTab === 'filter') return this.products;
-    if (this.activeTab === 'most')   return [...this.products].sort((a, b) => b.price - a.price);
-    if (this.activeTab === 'fav')    return this.products.filter(p => (p.rating ?? 0) >= 4);
-    return this.products;
-  }
-
-  // trackBy لتقليل إعادة التصيير
+  // trackBy يرجّع string
   trackById = (_: number, p: UiProduct) => p.id;
 }

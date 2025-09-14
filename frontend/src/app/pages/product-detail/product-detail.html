@@ -1,5 +1,8 @@
 <main class="pd container" *ngIf="!loading; else loadingTpl">
-  <ng-container *ngIf="product; else notFoundTpl">
+  <!-- ✅ عرض رسالة خطأ واضحة إن كان id غير صالح أو المنتج غير موجود -->
+  <div *ngIf="error" class="container"><p class="state err">{{ error }}</p></div>
+
+  <ng-container *ngIf="!error && product; else notFoundTpl">
     <div class="wrap">
       <div class="left">
         <img class="hero" [src]="product!.image || ''" [alt]="product!.name">
