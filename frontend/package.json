@@ -1,20 +1,20 @@
 {
   "name": "frontend",
   "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "dev": "ng serve --proxy-config proxy.conf.json"
+    "dev": "ng serve --proxy-config proxy.conf.json",
+    "vercel-build": "ng build --configuration production"
   },
   "prettier": {
     "overrides": [
       { "files": "*.html", "options": { "parser": "angular" } }
     ]
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "^20.1.0",
     "@angular/compiler": "^20.1.0",
