@@ -18,36 +18,23 @@ export class Header implements OnInit {
 
   // Cart
   private cartSvc = inject(CartService);
-  /** نُمرر Observable العداد إلى القالب */
   count$ = this.cartSvc.count$;
 
   // قوائم
   menuOpen = signal(false);
   mobileOpen = signal(false);
 
-  ngOnInit() {
-    // نضمن تحديث العداد عند فتح الصفحة
-    this.cartSvc.syncCount();
-  }
+  ngOnInit() { this.cartSvc.syncCount(); }
+  toggleMenu()  { this.menuOpen.update(v => !v); }
+  closeMenu()   { this.menuOpen.set(false); }
+  toggleMobile(){ this.mobileOpen.update(v => !v); }
 
-  toggleMenu() { this.menuOpen.update(v => !v); }
-  closeMenu() { this.menuOpen.set(false); }
-  toggleMobile() { this.mobileOpen.update(v => !v); }
-
-  logout() {
-    this.auth.logout();
-    this.closeMenu();
-  }
-
-  initial(email?: string | null) {
-    if (!email) return 'U';
-    const c = email.trim()[0] ?? 'U';
-    return c.toUpperCase();
-  }
+  logout(){ this.auth.logout(); this.closeMenu(); }
+  initial(email?: string | null){ return (email?.trim()?.[0] ?? 'U').toUpperCase(); }
 
   @HostListener('document:click', ['$event'])
   onDocClick(ev: MouseEvent) {
-    const target = ev.target as HTMLElement;
-    if (!target.closest('.userbox')) this.closeMenu();
+    const t = ev.target as HTMLElement;
+    if (!t.closest('.userbox')) this.closeMenu();
   }
 }

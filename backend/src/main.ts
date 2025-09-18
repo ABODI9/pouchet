@@ -8,22 +8,25 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-app.useGlobalPipes(new ValidationPipe({
-  whitelist: true,
-  transform: true,
-  transformOptions: { enableImplicitConversion: true }, // 👈 مهم
-}));
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true,
+    transformOptions: { enableImplicitConversion: true },
+  }));
 
   const cfg = app.get(ConfigService);
-  const FRONTEND = cfg.get<string>('FRONTEND_ORIGIN') ?? 'http://localhost:4200';
-  app.enableCors({ origin: [FRONTEND, 'http://localhost'], credentials: false });
 
-  // كل المسارات تحت /api (ما عدا /healthz لو عندك)
+  // FRONTEND_ORIGIN يدعم قائمة مفصولة بفواصل
+  const origins = (cfg.get<string>('FRONTEND_ORIGIN') ?? 'http://localhost:4200')
+    .split(',')
+    .map(s => s.trim());
+
+  app.enableCors({ origin: origins, credentials: false });
+
   app.setGlobalPrefix('api', { exclude: ['healthz'] });
 
-  app.enableShutdownHooks();
-  const port = cfg.get<number>('PORT') ?? 3000;
-  await app.listen(port);
-  console.log(`[BOOT] Server running on http://localhost:${port}`);
+  const port = Number(process.env.PORT ?? cfg.get<number>('PORT') ?? 3000);
+  await app.listen(port, '0.0.0.0');     // مهم لبيئات الاستضافة
+  console.log(`[BOOT] Server running on :${port}`);
 }
 bootstrap();

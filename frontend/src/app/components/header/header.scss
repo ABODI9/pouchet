@@ -1,96 +1,94 @@
-.header {
-  position: relative;
-  z-index: 200; /* أعلى من admin-navbar */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 20px;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+/* ===== Top marquee (seamless) ===== */
+.top-marquee{
+  position:relative;
+  overflow:hidden;
+  background:#174a2e;      /* أخضر غامق */
+  color:#c5a03c;           /* ذهبي */
+  height:36px; line-height:36px;
+  border:0;
+}
+.top-marquee .track{
+  position:absolute; top:0; left:0;
+  display:flex; gap:2rem;
+  white-space:nowrap;
+  padding:0 1rem;
+  will-change: transform;
+  animation: marquee-left 28s linear infinite;
+}
+.top-marquee .track--dup{ left:100%; animation-delay:-14s; }
+.top-marquee .track span{ padding:0 .5rem; }
 
-  .logo {
-    font-weight: 700;
-    letter-spacing: .3px;
-    color: #111;
-    text-decoration: none;
+@keyframes marquee-left{ from{transform:translateX(0)} to{transform:translateX(-100%)} }
+
+@media (max-width:640px){
+  .top-marquee{ height:32px; line-height:32px; }
+  .top-marquee .track{ gap:1.25rem; }
+}
+
+/* ===== Header ===== */
+.header{
+  position:sticky; top:0; z-index:50;
+  background:#ffffffee;                      /* أبيض شفاف */
+  backdrop-filter:saturate(120%) blur(6px);
+  border-bottom:1px solid #e6efe8;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.9rem 1rem;
+
+  .logo{font-weight:900; letter-spacing:.12em; color:#111; text-decoration:none}
+
+  .nav{display:flex; gap:1.1rem; align-items:center}
+  .nav a{ color:#c5a03c; text-decoration:none; font-weight:700 } /* ذهبي */
+  .nav a:hover, .nav a.active{ text-decoration:underline }
+
+  /* Admin أسود */
+  .nav a.admin-link{ color:#111 !important; }
+  .nav a.admin-link:hover{ color:#000 !important; }
+
+  .right{display:flex; gap:.6rem; align-items:center}
+  .nav-cart{position:relative; display:inline-flex; align-items:center; color:#111; text-decoration:none}
+  .nav-cart .badge{
+    position:absolute; top:-8px; right:-8px;
+    min-width:18px; height:18px; display:grid; place-items:center;
+    padding:0 4px; border-radius:0; font-size:11px; font-weight:800;
+    background:#16a34a; color:#041108;
+  }
+  .nav-cart .badge.hide{ display:none; }
+
+  .role{font-size:.78rem; text-transform:uppercase; opacity:.75}
+  .avatar{
+    width:32px; height:32px; border-radius:0; /* حواف حادة */
+    border:1px solid #d4a57433;
+    background:#d4a574; color:#0b0d0c; font-weight:800
+  }
+
+  .userbox{position:relative}
+  .menu{
+    position:absolute; right:0; top:42px; background:var(--card);
+    border:1px solid #223025; border-radius:0; min-width:200px;
+    display:flex; flex-direction:column; padding:.5rem; gap:.25rem;
+    box-shadow:0 12px 28px rgba(0,0,0,.25);
+    .info{padding:.4rem .5rem .6rem; border-bottom:1px solid #223025; margin-bottom:.3rem}
+    .email{font-weight:600}
+    .muted{opacity:.6; font-size:.85rem}
+    a,button{all:unset; padding:.5rem .6rem; border:1px solid transparent; cursor:pointer}
+    a:hover,button:hover{background:#141a16; border-color:#1e2a21}
+  }
+
+  .hamburger{display:none; background:transparent; border:0}
+  .hamburger span{display:block; width:20px; height:2px; background:#111; margin:4px 0}
+
+  @media (max-width: 880px){
+    .nav{display:none}
+    .nav.open{
+      display:flex; position:absolute; left:0; right:0; top:100%;
+      background:var(--base); padding:1rem; border-top:1px solid #1f241f
+    }
+    .hamburger{display:inline-flex}
   }
 }
 
-.nav {
-  display: flex;
-  gap: 18px;
-
-  a {
-    color: #222;
-    text-decoration: none;
-    padding: 6px 0;
-  }
-
-  a.active { color: #0a58ff; font-weight: 600; }
-}
-
-.right { display: flex; align-items: center; gap: 10px; }
-
-.btn {
-  border-radius: 999px; padding: 6px 14px; font-weight: 600;
-  border: 1px solid #e5e7eb; text-decoration: none; display: inline-block;
-  &.primary { background: #0a58ff; color: #fff; border-color: #0a58ff; }
-  &.ghost   { background: transparent; color: #111; }
-}
-
-.userbox { position: relative; display: flex; align-items: center; gap: 8px; }
-
-.role {
-  font-size: 12px; padding: 2px 8px; border-radius: 999px; font-weight: 700;
-  background: #e8eefc; color: #0a3dda; border: 1px solid #c9d7ff;
-  &.admin { background: #ffe8e8; color: #b00020; border-color: #ffc9c9; }
-}
-
-.avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  display: grid; place-items: center; font-weight: 700;
-  background: #111; color: #fff; border: 2px solid #111; cursor: pointer;
-}
-
-/* القائمة المنسدلة فوق الجميع */
-.menu {
-  position: absolute; top: 44px; right: 0; min-width: 260px; z-index: 300;
-  background: #0b1220; border: 1px solid #1d2939; border-radius: 12px;
-  box-shadow: 0 12px 28px rgba(2,6,23,.28); padding: 10px; color: #eaf2ff;
-
-  .info {
-    padding: 10px; border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 6px;
-    .email { color: #ffffff; font-weight: 700; }
-    .muted { color: #94a3b8; font-size: 12px; margin-top: 2px; }
-  }
-
-  a, button {
-    width: 100%; text-align: left; background: transparent; border: 0;
-    color: #eaf2ff; padding: 10px 12px; border-radius: 8px; cursor: pointer;
-    text-decoration: none;
-  }
-  a:hover, button:hover { background: rgba(255,255,255,.06); }
-}
-
-/* موبايل */
-.hamburger { display: none; background: transparent; border: 0; }
-@media (max-width: 900px) {
-  .nav {
-    position: absolute; left: 0; right: 0; top: 56px; display: none; background: #fff;
-    border-bottom: 1px solid #eee; padding: 10px 20px;
-  }
-  .nav.open { display: flex; flex-direction: column; gap: 12px; }
-  .hamburger { display: inline-grid; gap: 3px; }
-  .hamburger span { width: 22px; height: 2px; background: #111; display: block; }
-}
-
-.nav-cart{
-  position:relative; display:inline-flex; align-items:center; justify-content:center;
-  width:38px; height:38px; border-radius:50%; border:1px solid #e5e7eb; text-decoration:none;
-  .icon{ font-size:18px; }
-  .badge{
-    position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; padding:0 4px;
-    border-radius:999px; background:#ef4444; color:#fff; font-size:12px; display:grid; place-items:center;
-  }
-  .badge.hide{ display:none; }
+/* Helper لإخفاء العناصر بصريًا مع إبقائها لقارئات الشاشة */
+.sr-only{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); white-space:nowrap; border:0;
 }

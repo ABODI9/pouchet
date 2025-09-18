@@ -1,36 +1,50 @@
+<!-- Top marquee (seamless, duplicated tracks) -->
+<div class="top-marquee" aria-label="store updates">
+  <div class="track">
+    <span>Love is a timeless gift ♡</span>
+    <span>Worldwide shipping — 3-day exchanges</span>
+    <span>Personal WhatsApp concierge</span>
+    <span>Secure payments</span>
+    <span>Free returns on defects</span>
+  </div>
+  <div class="track track--dup" aria-hidden="true">
+    <span>Love is a timeless gift ♡</span>
+    <span>Worldwide shipping — 3-day exchanges</span>
+    <span>Personal WhatsApp concierge</span>
+    <span>Secure payments</span>
+    <span>Free returns on defects</span>
+  </div>
+</div>
+
 <header class="header">
-  <!-- يسار: الشعار -->
-  <a routerLink="/" class="logo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-    Pouchet
-  </a>
+  <a routerLink="/" class="logo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">DEEP TIME</a>
 
-  <!-- وسط/يمين: روابط أساسية -->
   <nav class="nav" [class.open]="mobileOpen()">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">Home</a>
+    <a routerLink="/#new">New</a>
+    <a routerLink="/#men">Men</a>
+    <a routerLink="/#women">Women</a>
+    <a routerLink="/#sell">Sell Your Watch</a>
 
-    <!-- رابط Admin يظهر فقط لو الدور Admin -->
     <ng-container *ngIf="user$ | async as u">
-      <a *ngIf="u?.role === 'admin'" routerLink="/admin" routerLinkActive="active">Admin</a>
+      <a *ngIf="u?.role === 'admin'"
+         class="admin-link"
+         routerLink="/admin"
+         routerLinkActive="active">Admin</a>
     </ng-container>
   </nav>
 
-  <!-- يمين: سلة + حالة الضيف/المستخدم -->
   <div class="right">
-
-    <!-- زر السلة دائمًا -->
     <a class="nav-cart" routerLink="/cart" aria-label="Cart">
       <span class="icon" aria-hidden="true">👜</span>
       <span class="badge" *ngIf="(count$ | async) as c" [class.hide]="!c">{{ c }}</span>
     </a>
-    
 
-    <!-- ضيف -->
     <ng-container *ngIf="!(user$ | async); else loggedIn">
       <a class="btn ghost" routerLink="/login">Sign in</a>
-      <a class="btn primary" routerLink="/register">Register</a>
+      <a class="btn gold"  routerLink="/register">Register</a>
     </ng-container>
 
-    <!-- مسجّل -->
     <ng-template #loggedIn>
       <div class="userbox">
         <ng-container *ngIf="user$ | async as u">
@@ -44,20 +58,14 @@
               <div class="email">{{ u.email }}</div>
               <div class="muted">Signed in</div>
             </div>
-
-            <!-- رابط البروفايل للجميع -->
-            <a routerLink="/profile" routerLinkActive="active" role="menuitem" (click)="closeMenu()">Profile</a>
-
-            <!-- رابط الأدمن -->
-            <a *ngIf="u.role==='admin'" routerLink="/admin" role="menuitem" (click)="closeMenu()">Admin</a>
-
+            <a routerLink="/profile" (click)="closeMenu()" role="menuitem">Profile</a>
+            <a *ngIf="u.role==='admin'" routerLink="/admin" (click)="closeMenu()" role="menuitem">Admin</a>
             <button (click)="logout()" role="menuitem">Logout</button>
           </div>
         </ng-container>
       </div>
     </ng-template>
 
-    <!-- زر موبايل -->
     <button class="hamburger" (click)="toggleMobile()" aria-label="Menu" [attr.aria-expanded]="mobileOpen()">
       <span></span><span></span><span></span>
     </button>

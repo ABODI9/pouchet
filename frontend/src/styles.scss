@@ -1,1 +1,221 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===============================
+   Global Variables
+   =============================== */
+:root {
+  --base: #0f1a13;      /* خلفية أساسية – أخضر داكن */
+  --base-2: #152118;    /* طبقة ثانية أخف */
+  --moss: #1a3527;      /* حدود */
+  --sage: #2d5a40;      /* أخضر وسط */
+  --gold: #c5a03c;      /* ذهبي غني */
+
+  --card: #1e2b21;      /* كروت */
+  --text: #f5f5f4;      /* نص فاتح */
+}
+
+/* ===============================
+   Reset & Sharp Corners
+   =============================== */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+  color: var(--text);
+  background: var(--base);
+}
+
+/* ===============================
+   Luxury Background
+   =============================== */
+body {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(197,160,60,.07), transparent 60%),
+    radial-gradient(900px 600px at -20% 110%, rgba(197,160,60,.06), transparent 60%),
+    linear-gradient(180deg, var(--base) 0%, var(--base-2) 100%);
+  position: relative;
+}
+body::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'>\
+      <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 0 .03'/></feComponentTransfer></filter>\
+      <rect width='100%' height='100%' filter='url(%23n)'/>\
+    </svg>") repeat;
+  mix-blend-mode: soft-light;
+  opacity: .5;
+}
+
+/* ===============================
+   Header / Navbar
+   =============================== */
+header, .admin-navbar {
+  background: rgba(15, 23, 18, 0.9);
+  border-bottom: 1px solid var(--moss);
+  box-shadow: 0 4px 12px rgba(0,0,0,.4);
+}
+header a, .admin-navbar a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  padding: .6rem 1rem;
+  transition: all .2s ease;
+}
+header a:hover, .admin-navbar a:hover {
+  color: var(--gold);
+}
+
+/* ===============================
+   Buttons
+   =============================== */
+button, .btn {
+  background: var(--sage);
+  color: var(--text);
+  border: 1px solid var(--moss);
+  padding: .6rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+button:hover, .btn:hover {
+  background: var(--gold);
+  color: #0b0d0c;
+}
+
+/* ===============================
+   Product Grid – صف أفقي
+   =============================== */
+/* غلاف الصف */
+.row-wrap {
+  position: relative;
+}
+
+/* الصف الأفقي */
+.row-wrap .row {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;      /* يمنع القفز للصفحة */
+  -webkit-overflow-scrolling: touch;   /* سلاسة على iOS */
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;       /* سناب للكروت */
+  padding: 0 2.5rem;                    /* مسافة يمين/يسار للأسهم أو الحواف */
+}
+
+/* إخفاء شريط السكروول بالكامل */
+.row-wrap .row::-webkit-scrollbar { display: none; }
+.row-wrap .row { scrollbar-width: none; -ms-overflow-style: none; }
+
+/* كروت المنتجات داخل الصف */
+.row-wrap .row app-product-card {
+  flex: 0 0 320px;                      /* عرض ثابت */
+  max-width: 320px;
+  scroll-snap-align: start;             /* يبدأ كل كارت عند الحافة */
+  background: var(--card);
+  border: 1px solid var(--moss);
+  box-shadow: 0 4px 10px rgba(0,0,0,.35);
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+}
+.row-wrap .row app-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,.38);
+  border-color: var(--gold);
+}
+
+/* تلميح بصري أن في تمرير (تلاشي على الجوانب) */
+.row-wrap::before,
+.row-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 28px;
+  pointer-events: none;
+}
+.row-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--base) 0%, transparent 100%);
+}
+.row-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--base) 0%, transparent 100%);
+}
+
+/* استجابة على الشاشات الصغيرة: كارت أضيق قليلاً */
+@media (max-width: 640px) {
+  .row-wrap .row { gap: 12px; padding: 0 1rem; }
+  .row-wrap .row app-product-card { flex-basis: 280px; max-width: 280px; }
+}
+
+
+/* ===============================
+   Dual Banners
+   =============================== */
+.dual-banners {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin: 1rem auto 2rem;
+}
+.banner {
+  position: relative;
+  border: 1px solid var(--moss);
+  background: var(--card);
+  overflow: hidden;
+}
+.banner img {
+  width: 100%; height: 320px; object-fit: cover;
+}
+.banner .caption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: .7rem 1rem;
+  background: rgba(0,0,0,.4);
+  color: #fff;
+}
+
+/* ===============================
+   Footer
+   =============================== */
+.site-footer {
+  background: var(--base-2);
+  border-top: 1px solid var(--moss);
+  margin-top: 2rem;
+}
+.site-footer .grid {
+  display: grid; gap: 1rem;
+  padding: 1.2rem 1rem;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+}
+.site-footer h4 {
+  margin: .2rem 0; color: var(--gold);
+}
+.site-footer h5 {
+  margin: .2rem 0; color: var(--sage);
+}
+.site-footer p, .site-footer li, .site-footer a {
+  color: #cbd8cb; text-decoration: none;
+}
+.site-footer ul {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: .3rem;
+}
+.site-footer .social {
+  display: flex; gap: .5rem;
+}
+.site-footer .social a {
+  display: inline-flex;
+  padding: .4rem .6rem;
+  border: 1px solid var(--moss);
+  background: #0f1511;
+}
+.copy {
+  text-align: center;
+  padding: .8rem 1rem;
+  border-top: 1px solid var(--moss);
+  color: #98a598;
+  font-size: .85rem;
+}

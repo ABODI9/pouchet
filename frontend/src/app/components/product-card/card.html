@@ -1,15 +1,17 @@
 <article class="pcard">
-  <div class="img">
+  <a class="img" [routerLink]="['/product', product.id]">
     <img [src]="product.image || ''" [alt]="product.name" />
-  </div>
+    <div class="flags">
+      <span class="badge" *ngIf="product?.rating">{{ product.rating | number:'1.1-1' }}★</span>
+      <span class="badge in">In stock</span>
+    </div>
+  </a>
 
-  <h3 class="name">{{ product.name }}</h3>
+  <a class="name" [routerLink]="['/product', product.id]">{{ product.name }}</a>
   <div class="price">{{ product.price | currency:'USD' }}</div>
 
   <div class="actions">
-    <button class="btn primary" (click)="addToCart()">Add to cart</button>
-    <button class="btn gold" (click)="buyNow()">Buy Now</button>
-    <!-- بديل ثالث إن رغبت:
-    <button class="btn ghost">Wishlist</button> -->
+    <button class="btn gold"  (click)="addToCart()">Add to cart</button>
+    <button class="btn ghost" (click)="buyNow()">Buy on WhatsApp</button>
   </div>
 </article>

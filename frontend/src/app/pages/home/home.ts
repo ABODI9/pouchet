@@ -1,70 +1,77 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { BehaviorSubject, combineLatest, of } from 'rxjs';
-import { catchError, map, shareReplay, startWith } from 'rxjs/operators';
-
+import { ProductsService, Product } from '../../services/products.service';
+import { UiProduct as UiProductModel } from '../../models/ui-product.model';
 import { Slider } from '../../components/slider/slider';
-import { Card } from '../../components/product-card/card';
-import { ProductsService, Product as ApiProduct } from '../../services/products.service';
-import { UiProduct } from '../../models/ui-product.model';
-
-type HomeTab = 'filter' | 'most' | 'fav';
+import { Tabs, HomeTab } from '../../components/tabs/tabs';
+import { Card as ProductCard } from '../../components/product-card/card';
+import { FeaturedService, FeaturedItem } from '../../services/featured.service';
 
 @Component({
-  standalone: true,
   selector: 'app-home',
-  imports: [CommonModule, RouterLink, Slider, Card],
+  standalone: true,
+  imports: [CommonModule, Slider, Tabs, ProductCard],
   templateUrl: './home.html',
-  styleUrls: ['./home.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./home.scss']
 })
-export class Home {
-  // ✅ استخدم inject بدلاً من حقن الكونسركتر لتفادي التحذير
-  private productsApi = inject(ProductsService);
+export class Home implements OnInit {
+  private api = inject(ProductsService);
+  private featuredApi = inject(FeaturedService);
 
-  // ✅ public عشان القالب يقرأها
-  tab$ = new BehaviorSubject<HomeTab>('filter');
-  setTab(tab: HomeTab) { this.tab$.next(tab); }
+  @ViewChild('row', { static: false }) row?: ElementRef<HTMLDivElement>;
 
-  skeletons = Array.from({ length: 8 });
+  loading = signal<boolean>(false);
+  error   = signal<string | null>(null);
 
-  // نحمّل الـ API، ونحوّل الخطأ لقيمة قابلة للعرض بدل رميه
-  private productsRaw$ = this.productsApi.list().pipe(
-    startWith(null as unknown as ApiProduct[]),      // يشغل حالة التحميل
-    catchError(() => of([] as ApiProduct[])),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
+  all = signal<UiProductModel[]>([]);
+  tab = signal<HomeTab>('filter');
 
-  // تحويل API → UI (id كنصي)
-  products$ = this.productsRaw$.pipe(
-    map(list => Array.isArray(list) ? list : []),
-    map(list => list.map<UiProduct>(p => ({
+  // بنرات ثنائية أسفل الشريط
+  banners = signal<FeaturedItem[]>([]);
+
+  filtered = computed(() => {
+    const list = this.all();
+    switch (this.tab()) {
+      case 'most': return [...list].sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
+      case 'fav':  return list.filter(p => (p.rating ?? 0) >= 4.5);
+      default:     return [...list].reverse();
+    }
+  });
+
+  ngOnInit() {
+    this.load();
+    this.featuredApi.list().subscribe({
+      next: (res) => this.banners.set((res || []).slice(0,2)),
+      error: () => this.banners.set([]),
+    });
+  }
+
+  private toUi(p: Product): UiProductModel {
+    return {
       id: String(p.id),
       name: p.title,
       image: p.imageUrl ?? null,
-      price: Number(p.price ?? 0),
+      price: Number(p.price || 0),
       rating: p.rating ?? null,
-      description: (p as any).description ?? null,
-    }))),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
+      description: p.description ?? null,
+    };
+  }
 
-  // حالات الواجهة
-  loading$ = this.productsRaw$.pipe(map(x => x === (null as any)));
-  error$   = this.productsRaw$.pipe(
-    map(x => (x === (null as any) ? '' : Array.isArray(x) ? '' : 'Failed to load products.'))
-  );
+  private load() {
+    this.loading.set(true);
+    this.error.set(null);
+    this.api.list().subscribe({
+      next: (res) => { this.all.set((res || []).map(p => this.toUi(p))); this.loading.set(false); },
+      error: () => { this.error.set('Failed to load products.'); this.loading.set(false); }
+    });
+  }
 
-  // اختيار العرض حسب التبويب
-  viewProducts$ = combineLatest([this.products$, this.tab$]).pipe(
-    map(([list, tab]) => {
-      if (tab === 'most') return [...list].sort((a, b) => b.price - a.price);
-      if (tab === 'fav')  return list.filter(p => (p.rating ?? 0) >= 4);
-      return list;
-    })
-  );
+  onTabChange(t: HomeTab) { this.tab.set(t); }
 
-  // trackBy يرجّع string
-  trackById = (_: number, p: UiProduct) => p.id;
+  // أسهم الشريط
+  scrollBy(px:number){ this.row?.nativeElement.scrollBy({ left: px, behavior: 'smooth' }); }
+  next(){ this.scrollBy(800); }
+  prev(){ this.scrollBy(-800); }
+
+    currentYear = new Date().getFullYear();
 }

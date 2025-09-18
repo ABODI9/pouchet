@@ -1,16 +1,5 @@
-.tabs{
-  display:flex;
-  justify-content:center;   /* center them */
-  gap:18px;
-  margin:12px 0 16px;
-
-  button{
-    padding:10px 14px;
-     border-radius:12px;
-      border:1px solid #ddd;
-       background:#fff; 
-       cursor:pointer;
-    transition:.15s ease;
-  }
-  .active{ background:#000; color:#fff; border-color:#000; }
+.tabs{ display:flex; gap:.6rem; justify-content:center; margin:2rem 0 }
+.tabs button{
+  padding:.6rem 1rem; border-radius:14px; border:1px solid #223025; background:transparent; color:var(--sage);
 }
+.tabs button.active{ background:#0b0d0c; color:#e8f2ea; border-color:#0b0d0c }
