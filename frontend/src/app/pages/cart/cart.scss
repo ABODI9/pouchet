@@ -1,6 +1,7 @@
 .container { max-width: 900px; margin: 1.25rem auto; padding: 0 1rem; }
 
 .list { display: grid; gap: .75rem; }
+
 .row {
   display: grid;
   grid-template-columns: 72px 1fr auto auto auto;
@@ -8,22 +9,30 @@
   gap: .75rem;
   padding: .75rem;
   border-radius: .75rem;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.06);
+  background: var(--card);
+  border: 1px solid var(--moss);
+  transition: box-shadow .18s ease, border-color .18s ease;
 }
-.thumb { width: 72px; height: 72px; object-fit: cover; border-radius: .5rem; background:#111; }
-.meta .name { font-weight: 600; margin-bottom: .25rem; }
-.meta .price { opacity: .75; font-size: .9rem; }
+.row:hover { border-color: var(--gold); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+
+.thumb { width: 72px; height: 72px; object-fit: cover; border-radius: .5rem; background: var(--base-2); }
+
+.meta .name { font-weight: 600; margin-bottom: .25rem; color: var(--sage); }
+.meta .price { opacity: .8; font-size: .9rem; color: var(--text); }
 
 .qty { display: inline-flex; align-items: center; gap: .5rem; }
 .qty button {
-  width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(255,255,255,.15);
-  background: transparent; color: inherit; cursor: pointer;
+  width: 28px; height: 28px; border-radius: 6px;
+  border: 1px solid var(--moss);
+  background: var(--card); color: var(--text); cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
 }
-.sum { font-weight: 600; }
+.qty button:hover { border-color: var(--gold); background: color-mix(in oklab, var(--gold), #fff 92%); }
+
+.sum { font-weight: 700; color: var(--sage); }
 
 .remove {
-  border: 0; background: transparent; color: #f66; cursor: pointer; font-size: 1.1rem;
+  border: 0; background: transparent; color: #d24a4a; cursor: pointer; font-size: 1.1rem;
 }
 
 .footer {
@@ -31,11 +40,16 @@
   grid-template-columns: 1fr auto auto;
   gap: 1rem; align-items: center; margin-top: 1rem;
 }
+
 .btn {
-  padding: .6rem .9rem; border-radius: .7rem; border: 1px solid transparent; cursor: pointer;
+  padding: .6rem .9rem; border-radius: .7rem; border: 1px solid var(--moss); cursor: pointer;
+  background: var(--card); color: var(--text);
+  transition: transform .08s ease, border-color .18s ease, background .18s ease, color .18s ease;
 }
-.btn.ghost { background: transparent; border-color: rgba(255,255,255,.15); }
-.btn.primary { background: #0a7; color: #fff; }
+.btn:hover { transform: translateY(-1px); border-color: var(--gold); }
+
+.btn.ghost { background: var(--card); }
+.btn.primary { background: var(--gold); color: var(--sage); border-color: var(--gold); }
 
 @media (max-width: 640px) {
   .row { grid-template-columns: 56px 1fr auto; }

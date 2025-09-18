@@ -1,186 +1,83 @@
-/* ====== Base / Variables ====== */
-$bg: #174813;           // slate-900
-$bg-2: #12d564;         // gray-900
-$fg: #e5e7eb;           // gray-200
-$muted: #9ca3af;        // gray-400
-$primary: #0a5024;      // green-500
-$primary-strong: #0b5024;// green-600
-$border: #1f3725;       // gray-800
-$shadow: 0 6px 18px rgba(0,0,0,.25);
-
-/* جعل الحاوية تأخذ عرض الصفحة وتضبط المسافات */
+/* ====== Cream/Gold/Black Admin Dashboard ====== */
 :host {
   display: block;
-  background: linear-gradient(180deg, $bg 0%, $bg-2 100%);
+  background: linear-gradient(180deg, var(--base) 0%, var(--base-2) 100%);
   min-height: 100vh;
-  color: $fg;
+  color: var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
 }
 
 /* ====== Top Navbar ====== */
 .admin-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 14px 24px;
-  background: rgba(15, 23, 42, 0.85);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #1f2937; /* لا تعتمد على $border لو مش معرّف */
-  box-shadow: 0 6px 18px rgba(0,0,0,.25); /* بدل $shadow إن لم يكن معرّف */
+  background: color-mix(in oklab, var(--card), transparent 15%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  backdrop-filter: blur(10px) saturate(120%);
+  border-bottom: 1px solid var(--moss);
+  box-shadow: 0 6px 18px rgba(0,0,0,.10);
   overflow: visible;
 }
 
-
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.nav-brand {
-  line-height: 1.15;
-}
-
-.brand-title {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: .2px;
-}
-
-.brand-subtitle {
-  display: block;
-  font-size: 12px;
-  color: $muted;
-  margin-top: 2px;
-}
+.nav-left { display:flex; align-items:center; gap:12px; }
+.nav-brand { line-height:1.15; }
+.brand-title { font-size:20px; font-weight:700; letter-spacing:.2px; color:var(--sage); }
+.brand-subtitle { display:block; font-size:12px; color: color-mix(in oklab, var(--text), #fff 55%); margin-top:2px; }
 
 .nav-links {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  display:flex; align-items:center; gap:10px; list-style:none; margin:0; padding:0;
 }
 
-.link,
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all .2s ease;
-  border: 1px solid transparent;
+.link, .btn {
+  display:inline-flex; align-items:center; gap:8px; padding:10px 14px;
+  border-radius:10px; text-decoration:none; font-weight:600; transition:all .2s ease;
+  border:1px solid var(--moss); background: var(--card); color: var(--text);
 }
-
-/* primary button */
 .btn-primary {
-  background: $primary;
-  color: #0b1f13;
-  border-color: rgba(255,255,255,.08);
-
-  &:hover {
-    background: $primary-strong;
-    transform: translateY(-1px);
-  }
+  background: var(--gold); color: var(--sage); border-color: var(--gold);
+  &:hover { background: var(--sage); color: var(--gold); transform: translateY(-1px); }
 }
-
-/* text link */
 .link {
-  color: $fg;
-  background: rgba(255,255,255,0.04);
-  border-color: rgba(255,255,255,0.06);
-
-  &:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-1px);
-  }
+  background: color-mix(in oklab, var(--card), var(--base-2) 30%);
+  &:hover { background: color-mix(in oklab, var(--gold), #fff 90%); border-color: var(--gold); transform: translateY(-1px); }
 }
 
-/* routerLinkActive */
-a.active {
-  outline: 2px solid rgba(34, 197, 94, 0.35);
-}
+a.active { outline: 2px solid color-mix(in oklab, var(--gold), transparent 60%); }
 
 /* ====== Breadcrumb ====== */
 .breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 24px;
-  font-size: 13px;
-  color: $muted;
-  border-bottom: 1px dashed $border;
-
-  .sep {
-    opacity: .6;
-  }
+  display:flex; align-items:center; gap:10px; padding:16px 24px; font-size:13px;
+  color: color-mix(in oklab, var(--text), #fff 55%);
+  border-bottom: 1px dashed var(--moss);
+  .sep { opacity:.6; }
 }
 
 /* ====== Page content ====== */
-.dashboard-content {
-  padding: 24px;
-}
-
-/* ====== Cards / Lists under router-outlet (اختياري تحسين مظهر القوائم) ====== */
+.dashboard-content { padding:24px; }
 .dashboard-content .card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid $border;
+  background: var(--card);
+  border: 1px solid var(--moss);
   border-radius: 14px;
   padding: 18px;
-  box-shadow: $shadow;
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
 }
 
 /* ====== Responsive ====== */
 @media (max-width: 720px) {
-  .admin-navbar {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .brand-title {
-    font-size: 18px;
-  }
-
-  .nav-links {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 8px;
-  }
-
-  .btn,
-  .link {
-    padding: 10px 12px;
-    font-size: 14px;
-  }
-
-  .dashboard-content {
-    padding: 16px;
-  }
+  .admin-navbar { flex-wrap: wrap; gap: 12px; }
+  .brand-title { font-size: 18px; }
+  .nav-links { width:100%; justify-content:flex-start; gap:8px; }
+  .btn, .link { padding:10px 12px; font-size:14px; }
+  .dashboard-content { padding:16px; }
 }
 
-/* ====== RTL support (لو واجهت نص عربي) ====== */
-/* ضع dir="rtl" على عنصر أعلى (مثلاً <body dir="rtl">) وسيُطبّق التنسيق */
+/* ====== RTL ====== */
 :host-context([dir="rtl"]) {
-  .breadcrumb {
-    direction: rtl;
-  }
-  .nav-links {
-    direction: rtl;
-  }
+  .breadcrumb { direction: rtl; }
+  .nav-links { direction: rtl; }
 }
-
 
 .nav-links .divider {
-  width: 1px;
-  height: 24px;
-  background: $border;
-  margin: 0 6px;
+  width:1px; height:24px; background: var(--moss); margin:0 6px;
 }

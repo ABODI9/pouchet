@@ -11,10 +11,12 @@
   .slide-img{
     position:absolute; inset:0; width:100%; height:100%;
     object-fit:cover; transform: scale(1.04); z-index:0;
+    filter: saturate(1) contrast(1.02);
   }
   .overlay{
     position:absolute; inset:0; z-index:1;
-    background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.45) 85%);
+    /* تدرّج ناعم يبرز النص مع أسفل أغمق */
+    background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.55) 88%);
   }
 
   /* مناطق ضغط: تغطي نصف السلايدر */
@@ -25,11 +27,18 @@
   .hot.prev{ left:0 }
   .hot.next{ right:0 }
 
-  /* نقاط (مخفية بصريًا عبر .sr-only في header.scss) */
-  .dots button{ height:8px; width:32px; border:0; background:#335031; opacity:.6 }
-  .dots button.on{ background:#c5a03c; opacity:1 }
+  /* النقاط */
+  .dots{ position:absolute; left:0; right:0; bottom:14px; z-index:3; display:flex; gap:8px; justify-content:center; }
+  .dots button{
+    height:8px; width:32px; border:0; cursor:pointer; border-radius:999px;
+    background: color-mix(in oklab, var(--sage), #fff 80%); opacity:.45; transition:.2s;
+  }
+  .dots button.on{
+    background: var(--gold); opacity:1; box-shadow:0 0 0 3px color-mix(in oklab, var(--gold), transparent 70%);
+  }
 }
 
 .hero--empty{
-  display:grid; place-items:center; color:#cbd5cb; border-bottom:1px solid #1f241f;
+  display:grid; place-items:center; color: color-mix(in oklab, var(--text), #fff 60%);
+  border-bottom:1px solid var(--moss);
 }

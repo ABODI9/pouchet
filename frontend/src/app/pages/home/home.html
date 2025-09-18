@@ -1,44 +1,59 @@
-<!-- سلايدر البنرات العلوي -->
+<!-- 1) Top banners slider -->
 <app-slider></app-slider>
 
+<!-- 2) ONE-ROW horizontal strip -->
 <section class="container products">
-  <!-- Tabs -->
-  <app-tabs [active]="tab()" (tabChange)="onTabChange($event)"></app-tabs>
-
-  <!-- حالة التحميل/الخطأ -->
   <div class="state" *ngIf="loading()">Loading…</div>
   <div class="state error" *ngIf="error()">{{ error() }}</div>
 
-  <!-- شريط المنتجات (صف واحد) -->
-  <div class="row-wrap" *ngIf="!loading() && !error()">
-    <button class="arrow left"  (click)="prev()" aria-label="prev">❮</button>
+  <div class="row-wrap" *ngIf="!loading() && !error() && stripProducts().length">
+    <button class="arrow left" (click)="prev()" aria-label="prev">❮</button>
     <div class="row" #row>
-      <app-product-card *ngFor="let p of filtered()" [product]="p"></app-product-card>
+      <app-product-card *ngFor="let p of stripProducts()" [product]="p"></app-product-card>
     </div>
     <button class="arrow right" (click)="next()" aria-label="next">❯</button>
   </div>
 
-  <!-- لو ما فيه منتجات -->
-  <div class="state" *ngIf="!loading() && !error() && !filtered().length">
+  <div class="state" *ngIf="!loading() && !error() && !stripProducts().length">
     No products yet. Add some from Admin →
   </div>
 </section>
 
-<!-- بنران كبيران أسفل الشريط -->
-<section class="container dual-banners" *ngIf="banners().length; else placeholders">
-  <a class="banner" *ngFor="let b of banners()" [href]="b.productId ? '/product/'+b.productId : '#'" [target]="b.openInNewTab ? '_blank' : null">
+<!-- 3) Two banners grid -->
+<section class="container two-banners" *ngIf="banners().length; else twoBannersPh">
+  <a
+    class="banner"
+    *ngFor="let b of banners() | slice:0:2"
+    [href]="b.productId ? '/product/'+b.productId : '#'"
+    [target]="b.openInNewTab ? '_blank' : null"
+  >
     <img [src]="b.imageUrl" [alt]="b.caption || 'banner'" />
     <div class="caption" *ngIf="b.caption">{{ b.caption }}</div>
   </a>
 </section>
-<ng-template #placeholders>
-  <section class="container dual-banners">
+<ng-template #twoBannersPh>
+  <section class="container two-banners">
     <div class="banner ph"></div>
     <div class="banner ph"></div>
   </section>
 </ng-template>
 
-<!-- فوتر بسيط حديث -->
+<!-- 4) Tabs + FULL GRID (tabs control THIS grid only) -->
+<section class="container filters-and-grid">
+  <div class="tabs-box">
+    <app-tabs [active]="tab()" (tabChange)="onTabChange($event)"></app-tabs>
+  </div>
+
+  <div class="grid">
+    <app-product-card *ngFor="let p of gridProducts()" [product]="p"></app-product-card>
+  </div>
+
+  <div class="state" *ngIf="!gridProducts().length && !loading() && !error()">
+    No results match your selection.
+  </div>
+</section>
+
+<!-- 5) Footer -->
 <footer class="site-footer">
   <div class="container grid">
     <div>
@@ -70,5 +85,5 @@
       </div>
     </div>
   </div>
-<div class="copy">© {{ currentYear }} DEEP TIME — All rights reserved.</div>
+  <div class="copy">© {{ currentYear }} DEEP TIME — All rights reserved.</div>
 </footer>

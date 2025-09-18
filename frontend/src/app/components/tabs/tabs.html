@@ -1,5 +1,12 @@
-<div class="tabs">
-  <button [class.active]="active==='filter'" (click)="tabChange.emit('filter')">Filter</button>
-  <button [class.active]="active==='most'"   (click)="tabChange.emit('most')">Best Sellers</button>
-  <button [class.active]="active==='fav'"    (click)="tabChange.emit('fav')">Favorites</button>
-</div>
+<nav class="tabs" role="tablist" aria-label="Home sections" (keydown)="onKey($event)">
+  <button
+    *ngFor="let t of tabs"
+    type="button"
+    role="tab"
+    class="tab"
+    [class.on]="t.key === active"
+    [attr.aria-selected]="t.key === active"
+    (click)="setTab(t.key)">
+    {{ t.label }}
+  </button>
+</nav>

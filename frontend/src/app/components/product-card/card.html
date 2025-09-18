@@ -8,10 +8,12 @@
   </a>
 
   <a class="name" [routerLink]="['/product', product.id]">{{ product.name }}</a>
-  <div class="price">{{ product.price | currency:'USD' }}</div>
+  <div class="price">{{ product.price | price }}</div>
 
-  <div class="actions">
-    <button class="btn gold"  (click)="addToCart()">Add to cart</button>
-    <button class="btn ghost" (click)="buyNow()">Buy on WhatsApp</button>
-  </div>
+<div class="actions">
+  <button class="btn cart" (click)="addToCart()">Add to cart</button>
+  <button class="btn buy"  (click)="buyNow()">Buy Now</button>
+</div>
+
+
 </article>

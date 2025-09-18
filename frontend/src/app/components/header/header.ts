@@ -1,40 +1,44 @@
-import { Component, HostListener, inject, signal, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { MiniCartService } from '../../services/mini-cart.service';
+import { CurrencyService, CurrencyCode } from '../../services/currency.service';
+import { AuthService } from '../../services/auth.service';
+import { MiniCart } from "../mini-cart/mini-cart";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, MiniCart],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
 export class Header implements OnInit {
-  // Auth
-  public auth = inject(AuthService);
+  private cart = inject(CartService);
+  private mini = inject(MiniCartService);
+  private cur  = inject(CurrencyService);
+  private auth = inject(AuthService);
+
+  count$ = this.cart.count$;
+  code = this.cur.code;
+
   user$ = this.auth.user$;
-
-  // Cart
-  private cartSvc = inject(CartService);
-  count$ = this.cartSvc.count$;
-
-  // قوائم
   menuOpen = signal(false);
-  mobileOpen = signal(false);
+  currOpen = signal(false);
 
-  ngOnInit() { this.cartSvc.syncCount(); }
-  toggleMenu()  { this.menuOpen.update(v => !v); }
-  closeMenu()   { this.menuOpen.set(false); }
-  toggleMobile(){ this.mobileOpen.update(v => !v); }
+  ngOnInit() {
+    this.cart.syncCount();
+    this.cart.syncItems();
+    // If your AuthService exposes a restore method, call it here.
+    // Otherwise user$ should already reflect the current session.
+  }
 
+  openMiniCart(){ this.mini.open(); }
+  toggleCurrencies(){ this.currOpen.update(v => !v); }
+  setCurrency(c: CurrencyCode){ this.cur.set(c); this.currOpen.set(false); }
+  toggleMenu(){ this.menuOpen.update(v => !v); }
+  closeMenu(){ this.menuOpen.set(false); }
   logout(){ this.auth.logout(); this.closeMenu(); }
   initial(email?: string | null){ return (email?.trim()?.[0] ?? 'U').toUpperCase(); }
-
-  @HostListener('document:click', ['$event'])
-  onDocClick(ev: MouseEvent) {
-    const t = ev.target as HTMLElement;
-    if (!t.closest('.userbox')) this.closeMenu();
-  }
 }

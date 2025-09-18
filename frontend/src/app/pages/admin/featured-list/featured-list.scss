@@ -2,18 +2,18 @@
 .fx-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
 .fx-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
 
-.fx-card { background:#111827; border:1px solid #1f2937; border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }
-.fx-img { aspect-ratio: 16/9; background:#0b1220; }
+.fx-card { background: var(--card); border:1px solid var(--moss); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }
+.fx-img { aspect-ratio: 16/9; background: var(--base-2); }
 .fx-img img { width:100%; height:100%; object-fit:cover; }
-.fx-body { padding:12px 14px; color:#e5e7eb; display:grid; gap:6px; }
-.fx-line span { color:#9ca3af; margin-right:6px; }
-.fx-actions { display:flex; gap:8px; padding:12px 14px; border-top:1px solid #1f2937; }
-.on { color:#22c55e; }
+.fx-body { padding:12px 14px; color: var(--text); display:grid; gap:6px; }
+.fx-line span { color: color-mix(in oklab, var(--text), #fff 55%); margin-right:6px; }
+.fx-actions { display:flex; gap:8px; padding:12px 14px; border-top:1px solid var(--moss); }
+.on { color: #16a34a; } /* إبقاء حالة التفعيل خضراء إن رغبت، أو غيّرها للذهبي */
 
-.btn { padding:8px 10px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background:#1f2937; color:#e5e7eb; cursor:pointer; }
-.btn-ghost { background:rgba(255,255,255,.05); }
+.btn { padding:8px 10px; border-radius:10px; border:1px solid var(--moss); background: var(--card); color: var(--text); cursor:pointer; }
+.btn-ghost { background: color-mix(in oklab, var(--card), var(--base-2)); }
 .btn-danger { background:#ef4444; color:#1b0b0b; border-color:#ef4444; }
-.btn-primary { background:#22c55e; color:#052011; border-color:#22c55e; }
+.btn-primary { background: var(--gold); color: var(--sage); border-color: var(--gold); }
 .btn:hover { transform:translateY(-1px); }
 .state { padding: 12px; opacity:.8; }
 .state--err { color:#ef4444; }

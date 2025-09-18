@@ -1,0 +1,25 @@
+<div class="mc-backdrop" *ngIf="open()" (click)="close()"></div>
+
+<aside class="mc" [class.on]="open()">
+  <header class="mc__head">
+    <strong>Shopping Cart</strong>
+    <button class="x" (click)="close()">✕</button>
+  </header>
+
+  <div class="mc__list">
+    <div class="row" *ngFor="let it of (items$ | async)">
+      <img [src]="it.productImage || ''" alt="" />
+      <div class="info">
+        <div class="name">{{ it.productName }}</div>
+        <div class="price">{{ it.unitPrice | price }}</div>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="!(items$ | async)?.length">Your cart is empty.</div>
+  </div>
+
+  <footer class="mc__foot">
+    <button class="btn gold" (click)="checkoutWhatsApp()">Buy via WhatsApp</button>
+    <a routerLink="/cart" class="btn ghost" (click)="close()">View all items</a>
+  </footer>
+</aside>

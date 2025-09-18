@@ -1,145 +1,78 @@
-/* ===== SCOPE على مستوى الكومبوننت ===== */
+/* ===== Component Scope aligned to theme ===== */
 :host {
   display: block;
-  --ap-bg: #0f1722;       /* خلفية البطاقة الداكنة */
-  --ap-border: #233045;   /* حدود خفيفة */
-  --ap-muted: #9aa9bf;    /* نص ثانوي */
-  --ap-text: #e7edf6;     /* نص أساسي */
-  --ap-primary: #2f6df6;  /* زر أساسي */
+  --ap-bg: var(--card);
+  --ap-border: var(--moss);
+  --ap-muted: color-mix(in oklab, var(--text), #fff 55%);
+  --ap-text: var(--text);
+  --ap-primary: var(--gold);
   --ap-danger: #e34b4b;
 }
 
-/* ===== الحاويات العامة ===== */
-.ap-wrap {
-  padding: 24px 20px;
-}
+/* ===== Containers ===== */
+.ap-wrap { padding: 24px 20px; }
 
 .ap-card {
   background: var(--ap-bg);
   border: 1px solid var(--ap-border);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
   color: var(--ap-text);
 }
 
-.ap-card__head {
-  margin-bottom: 18px;
-}
-.ap-title {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: .2px;
-}
-.ap-sub {
-  margin: 6px 0 0;
-  color: var(--ap-muted);
-}
+.ap-card__head { margin-bottom: 18px; }
+.ap-title { margin:0; font-size:28px; font-weight:700; letter-spacing:.2px; color: var(--sage); }
+.ap-sub { margin:6px 0 0; color: var(--ap-muted); }
 
-/* ===== الشبكة ===== */
-.ap-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
+/* ===== Grid ===== */
+.ap-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
 .ap-field--span2 { grid-column: 1 / -1; }
 
 @media (max-width: 900px) {
-  .ap-grid { grid-template-columns: 1fr; }
+  .ap-grid { grid-template-columns:1fr; }
   .ap-field--span2 { grid-column: 1; }
 }
 
-/* ===== التسمية والحقل ===== */
-.ap-field { display: flex; flex-direction: column; gap: 8px; }
-.ap-label { font-weight: 600; }
+/* ===== Fields ===== */
+.ap-field { display:flex; flex-direction:column; gap:8px; }
+.ap-label { font-weight:600; color: var(--ap-text); }
 .ap-input {
-  height: 44px;
-  border-radius: 10px;
-  border: 1px solid var(--ap-border);
-  background: #0b1320;
-  color: var(--ap-text);
-  padding: 0 12px;
-  outline: none;
+  height:44px; border-radius:10px; border:1px solid var(--ap-border);
+  background: var(--base-2); color: var(--ap-text); padding:0 12px; outline:none;
 }
-.ap-input:focus { border-color: var(--ap-primary); }
+.ap-input:focus { border-color: var(--ap-primary); box-shadow:0 0 0 3px color-mix(in oklab, var(--ap-primary), transparent 75%); }
 
-/* ===== منطقة الرفع (دروب-زون) ===== */
-.ap-upload { display: grid; gap: 14px; }
+/* ===== Upload Zone ===== */
+.ap-upload { display:grid; gap:14px; }
 .ap-upload__zone {
-  display: grid;
-  place-items: center;
-  min-height: 220px;
-  border: 2px dashed #2a3a54;
-  border-radius: 14px;
-  color: var(--ap-muted);
-  background: #0b1320;
-  cursor: pointer;
-  transition: border-color .2s ease, background .2s ease;
-  position: relative;
+  display:grid; place-items:center; min-height:220px;
+  border:2px dashed var(--ap-border); border-radius:14px;
+  color: var(--ap-muted); background: var(--base-2); cursor:pointer;
+  transition: border-color .2s ease, background .2s ease; position:relative;
 }
+.ap-upload__zone > input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.ap-upload__zone:hover { border-color: var(--ap-primary); background: color-mix(in oklab, var(--ap-primary), #fff 92%); }
 
-/* 👇 هذا يُخفي input الأصلي ويجعله يغطي المنطقة ككل */
-.ap-upload__zone > input[type="file"] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.ap-upload__zone:hover {
-  border-color: var(--ap-primary);
-  background: #0c1527;
-}
-
-.ap-upload__content { text-align: center; }
-.ap-upload__icon { font-size: 28px; margin-bottom: 8px; }
+.ap-upload__content { text-align:center; }
+.ap-upload__icon { font-size:28px; margin-bottom:8px; }
 .ap-link { color: var(--ap-primary); text-decoration: underline; }
 .ap-muted { color: var(--ap-muted); }
 
-/* ===== المعاينة ===== */
+/* ===== Preview ===== */
 .ap-previewBox {
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--ap-border);
-  background: #0b1320;
+  border-radius:14px; overflow:hidden; border:1px solid var(--ap-border); background: var(--base-2);
 }
-.ap-preview {
-  display: block;
-  width: 100%;
-  height: 320px;
-  object-fit: contain;
-  background: #0b1320;
-}
+.ap-preview { display:block; width:100%; height:320px; object-fit:contain; background: var(--base-2); }
 
-/* ===== الأكشنات ===== */
-.ap-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 4px;
-}
+/* ===== Actions ===== */
+.ap-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:4px; }
 .ap-btn {
-  border: 1px solid var(--ap-border);
-  background: #0b1320;
-  color: var(--ap-text);
-  border-radius: 10px;
-  height: 40px;
-  padding: 0 14px;
-  font-weight: 600;
-  cursor: pointer;
+  border:1px solid var(--ap-border); background: var(--card); color: var(--ap-text);
+  border-radius:10px; height:40px; padding:0 14px; font-weight:600; cursor:pointer;
 }
-.ap-btn--primary {
-  background: var(--ap-primary);
-  border-color: var(--ap-primary);
-  color: #fff;
-}
+.ap-btn--primary { background: var(--ap-primary); border-color: var(--ap-primary); color:#000; }
 .ap-btn--ghost:hover { border-color: var(--ap-primary); }
-.ap-btn:disabled { opacity: .6; cursor: not-allowed; }
+.ap-btn:disabled { opacity:.6; cursor:not-allowed; }
 
-/* ===== رسائل الخطأ ===== */
-.ap-error {
-  margin-top: 6px;
-  color: #ffb4b4;
-  font-size: 13px;
-}
+.ap-error { margin-top:6px; color:#ffb4b4; font-size:13px; }

@@ -1,214 +1,91 @@
-/* === Nova Admin Form (compact, premium, dark-mode ready) === */
-
-/* ---------- Design Tokens ---------- */
-:host {
-  /* Palette */
-  --bg: #f6f8fc;
-  --surface: #ffffff;
-  --surface-2: #f9fbff;
-  --border: #e6e8ee;
-  --text: #0f172a;
-  --muted: #6b7280;
-
-  --brand: #16a34a;
-  --brand-600: #15803d;
-  --ring: 37 99 235; /* rgb for focus ring */
-
-  --shadow-1: 0 10px 30px rgba(18, 28, 45, .10), 0 2px 6px rgba(18, 28, 45, .04);
+/* === Admin Form — Cream/Gold/Black === */
+:host{
+  --bg: var(--base);
+  --surface: var(--card);
+  --surface-2: var(--base-2);
+  --border: var(--moss);
+  --text: var(--text);
+  --muted: color-mix(in oklab, var(--text), #fff 55%);
+  --brand: var(--gold);
+  --brand-600: color-mix(in oklab, var(--gold), #000 22%);
+  --ring: 212 175 55;
+  --shadow-1: 0 10px 30px rgba(18,28,45,.06), 0 2px 6px rgba(18,28,45,.04);
   --radius: 14px;
-
-  /* ---------- Knobs (edit these) ---------- */
-  --card-pad: 50px;          /* padding inside card */
-  --grid-max: 800px;         /* max width for fields grid */
-  --grid-col-gap: 50px;      /* horizontal space between columns */
-  --grid-row-gap: 20px;      /* vertical space between rows */
-
-  /* input sizing */
-  --control-fs: 18px;        /* font-size for inputs */
-  --control-py: 10px;        /* vertical padding => reduces height */
-  --control-px: 10px;        /* horizontal padding */
-  --control-radius: 20px;    /* input corners */
-  --textarea-min: 50px;      /* textarea min height */
+  --card-pad: 50px; --grid-max: 800px; --grid-col-gap: 50px; --grid-row-gap: 20px;
+  --control-fs: 18px; --control-py: 10px; --control-px: 10px; --control-radius: 20px; --textarea-min: 50px;
 }
-
-@media (prefers-color-scheme: dark) {
-  :host {
-    --bg: #0b1220;
-    --surface: #0f172a;
-    --surface-2: #111b2e;
-    --border: #1e293b;
-    --text: #eef2ff;
-    --muted: #9aa1b2;
-    --brand: #22c55e;
-    --brand-600: #16a34a;
-    --ring: 34 197 94;
-    --shadow-1: 0 12px 40px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.04) inset;
+@media (prefers-color-scheme: dark){
+  :host{
+    --bg:#0b0b0b; --surface:#111; --surface-2:#151515; --border:#262626; --text:#eaeaea; --muted:#bdbdbd;
+    --brand:var(--gold); --brand-600: color-mix(in oklab, var(--gold), #000 28%); --ring:212 175 55;
+    --shadow-1:0 12px 40px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.04) inset;
   }
 }
-
-/* ---------- Page & Card ---------- */
-:host { display:block; background: var(--bg); min-height:100vh; }
-
-.ap-wrap { padding: 32px 16px; max-width: 980px; margin: 0 auto; }
-
-.ap-card {
-  position: relative;
+:host{ display:block; background:var(--bg); min-height:100vh; }
+.ap-wrap{ padding:32px 16px; max-width:980px; margin:0 auto; }
+.ap-card{
+  position:relative;
   background:
-    radial-gradient(1200px 500px at 20% -10%, rgba(34,197,94,.06), transparent 60%),
+    radial-gradient(1200px 500px at 20% -10%, color-mix(in oklab, var(--brand), transparent 90%), transparent 60%),
     linear-gradient(180deg, var(--surface), var(--surface-2));
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-1);
-  padding: var(--card-pad);
+  border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-1); padding:var(--card-pad);
 }
-
-.ap-card__head { margin-bottom: 14px; }
-.ap-title { margin:0 0 4px; font-size: 26px; line-height:1.2; color: var(--text); font-weight: 800; }
-.ap-sub   { margin:0; color: var(--muted); font-size: 13px; }
-
-/* subtle divider after header */
-.ap-card__head::after {
-  content: ""; display:block; height:1px; background: var(--border); opacity:.65; margin-top:14px;
-}
-
-/* ---------- Grid ---------- */
-.ap-grid {
-  display:grid;
-  grid-template-columns: 1fr;
-  max-width: var(--grid-max);
-  margin-inline: auto;
-  column-gap: var(--grid-col-gap);
-  row-gap: var(--grid-row-gap);
-}
-@media (min-width: 860px) {
-  .ap-grid { grid-template-columns: 1fr 1fr; }
-}
-.ap-field--span2 { grid-column: 1 / -1; }
-
-/* ---------- Fields ---------- */
-.ap-field { display:flex; flex-direction:column; gap:7px; }
-.ap-label { font-weight:700; color: var(--text); font-size: 13px; }
-
-.ap-input,
-.ap-textarea {
-  width:100%;
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: var(--control-radius);
-  padding: var(--control-py) var(--control-px);
-  font-size: var(--control-fs);
-  color: var(--text);
-  outline: none;
+.ap-card__head{ margin-bottom:14px; }
+.ap-title{ margin:0 0 4px; font-size:26px; line-height:1.2; color:var(--text); font-weight:800; }
+.ap-sub{ margin:0; color:var(--muted); font-size:13px; }
+.ap-card__head::after{ content:""; display:block; height:1px; background:var(--border); opacity:.65; margin-top:14px; }
+.ap-grid{ display:grid; grid-template-columns:1fr; max-width:var(--grid-max); margin-inline:auto; column-gap:var(--grid-col-gap); row-gap:var(--grid-row-gap); }
+@media (min-width:860px){ .ap-grid{ grid-template-columns:1fr 1fr; } }
+.ap-field--span2{ grid-column:1 / -1; }
+.ap-field{ display:flex; flex-direction:column; gap:7px; }
+.ap-label{ font-weight:700; color:var(--text); font-size:13px; }
+.ap-input,.ap-textarea{
+  width:100%; background:var(--surface); border:1px solid var(--border); border-radius:var(--control-radius);
+  padding:var(--control-py) var(--control-px); font-size:var(--control-fs); color:var(--text); outline:none;
   transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease, background .18s ease;
 }
-@media (prefers-color-scheme: dark) {
-  .ap-input, .ap-textarea { background: #0b1220; }
+.ap-textarea{ min-height:var(--textarea-min); resize:vertical; }
+.ap-input:hover,.ap-textarea:hover{ border-color: color-mix(in oklab, var(--border) 70%, var(--brand) 30%); }
+.ap-input:focus,.ap-textarea:focus{ border-color: rgb(var(--ring)); box-shadow:0 0 0 5px rgba(var(--ring), .18); transform:translateY(-1px); }
+.ap-hint{ color:var(--muted); font-size:11.5px; }
+.ap-inputGroup{ position:relative; }
+.ap-prefix{ position:absolute; left:10px; top:0; bottom:0; display:grid; place-items:center; color:var(--muted); font-weight:700; font-size:13px; }
+.ap-input--withPrefix{ padding-left: calc(var(--control-px) + 14px); }
+.ap-upload{ display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center; }
+.ap-upload__zone{
+  display:grid; place-items:center; min-height:130px;
+  border:1.5px dashed color-mix(in oklab, var(--border), var(--brand) 12%); border-radius:12px;
+  background:linear-gradient(180deg, color-mix(in oklab, var(--surface) 85%, #fff), var(--surface-2));
+  cursor:pointer; transition: border-color .18s ease, transform .18s ease, background .18s ease; padding:14px;
 }
-.ap-textarea { min-height: var(--textarea-min); resize: vertical; }
-
-.ap-input:hover,
-.ap-textarea:hover {
-  border-color: color-mix(in oklab, var(--border) 70%, var(--brand) 30%);
+.ap-upload__zone:hover{ border-color: color-mix(in oklab, var(--border), var(--brand) 35%); transform: translateY(-1px); }
+.ap-upload__zone input[type="file"]{ display:none; }
+.ap-upload__content{ display:flex; align-items:center; gap:12px; text-align:left; }
+.ap-upload__icon{ font-size:20px; }
+.ap-upload__text{ color:var(--text); font-size:13px; line-height:1.35; }
+.ap-muted{ color:var(--muted); font-weight:500; }
+.ap-link{ color:var(--brand); text-decoration:underline; text-underline-offset:2px; }
+.ap-previewBox{ display:grid; gap:8px; justify-items:center; }
+.ap-preview{
+  width:120px; height:120px; object-fit:cover; border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow-1); background:var(--surface-2);
 }
-
-.ap-input:focus,
-.ap-textarea:focus {
-  border-color: rgb(var(--ring));
-  box-shadow: 0 0 0 5px rgba(var(--ring), .15);
-  transform: translateY(-1px);
-}
-
-.ap-hint { color: var(--muted); font-size: 11.5px; }
-
-/* Price group */
-.ap-inputGroup { position: relative; }
-.ap-prefix {
-  position:absolute; left:10px; top:0; bottom:0;
-  display:grid; place-items:center;
-  color: var(--muted); font-weight:700; font-size: 13px;
-}
-.ap-input--withPrefix { padding-left: calc(var(--control-px) + 14px); }
-
-/* ---------- Upload ---------- */
-.ap-upload {
-  display:grid;
-  grid-template-columns: 1fr auto;
-  gap:16px;
-  align-items:center;
-}
-.ap-upload__zone {
-  display:grid; place-items:center;
-  min-height: 130px;
-  border: 1.5px dashed color-mix(in oklab, var(--border), var(--brand) 12%);
-  border-radius: 12px;
-  background:
-    linear-gradient(180deg, color-mix(in oklab, var(--surface) 85%, #fff), var(--surface-2));
-  cursor:pointer;
-  transition: border-color .18s ease, transform .18s ease, background .18s ease;
-  padding: 14px;
-}
-.ap-upload__zone:hover {
-  border-color: color-mix(in oklab, var(--border), var(--brand) 35%);
-  transform: translateY(-1px);
-}
-.ap-upload__zone input[type="file"] { display:none; }
-
-.ap-upload__content { display:flex; align-items:center; gap:12px; text-align:left; }
-.ap-upload__icon { font-size: 20px; }
-.ap-upload__text { color: var(--text); font-size: 13px; line-height:1.35; }
-.ap-muted { color: var(--muted); font-weight:500; }
-.ap-link { color: var(--brand); text-decoration: underline; text-underline-offset: 2px; }
-
-/* Preview */
-.ap-previewBox { display:grid; gap:8px; justify-items:center; }
-.ap-preview {
-  width: 120px; height: 120px; object-fit: cover;
-  border: 1px solid var(--border); border-radius: 10px;
-  box-shadow: var(--shadow-1);
-  background:
-    linear-gradient(45deg, #eee 25%, transparent 25%) -8px 0/16px 16px,
-    linear-gradient(-45deg, #eee 25%, transparent 25%) -8px 0/16px 16px,
-    linear-gradient(45deg, transparent 75%, #eee 75%) -8px 0/16px 16px,
-    linear-gradient(-45deg, transparent 75%, #eee 75%) -8px 0/16px 16px;
-}
-@media (prefers-color-scheme: dark) {
-  .ap-preview { background: #0b1220; }
-}
-
-/* ---------- Buttons ---------- */
-.ap-actions { display:flex; gap:10px; justify-content:flex-end; margin-top: 6px; }
-.ap-btn {
-  appearance:none; border:0; cursor:pointer;
-  padding: 10px 14px; border-radius: 10px; font-weight:800; font-size: 13px;
+.ap-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:6px; }
+.ap-btn{
+  appearance:none; border:0; cursor:pointer; padding:10px 14px; border-radius:10px; font-weight:800; font-size:13px;
   transition: transform .18s ease, box-shadow .18s ease, background .18s ease, opacity .18s ease;
 }
-.ap-btn:active { transform: translateY(0); }
-
-.ap-btn--primary {
-  background: linear-gradient(180deg, var(--brand), var(--brand-600));
-  color:#fff;
-  box-shadow: 0 10px 18px rgba(22,163,74,.22), inset 0 1px 0 rgba(255,255,255,.25);
+.ap-btn:active{ transform: translateY(0); }
+.ap-btn--primary{
+  background: linear-gradient(180deg, var(--brand), var(--brand-600)); color:#000;
+  box-shadow: 0 10px 18px color-mix(in oklab, var(--brand), transparent 78%), inset 0 1px 0 rgba(255,255,255,.25);
 }
-.ap-btn--primary:hover { transform: translateY(-1px); }
-
-.ap-btn--ghost {
-  background: color-mix(in oklab, var(--surface) 80%, var(--border));
-  color: var(--text); border: 1px solid var(--border);
-}
-.ap-btn--ghost:hover { transform: translateY(-1px); }
-
-.ap-btn--sm { padding: 6px 10px; font-size: 12px; }
-
-/* ---------- Errors ---------- */
-.ap-error { color: #ef4444; font-size: 13px; font-weight: 600; }
-
-/* ---------- Utilities ---------- */
-/* Make a single field narrower than its column */
-.ap-field.narrow { max-width: 420px; justify-self: start; }
-
-/* Extra compact mode: add class .ap--compact to .ap-card if you want denser UI */
-.ap--compact .ap-input,
-.ap--compact .ap-textarea { padding: 8px 10px; font-size: 13.5px; }
-.ap--compact .ap-textarea { min-height: 80px; }
-.ap--compact .ap-title { font-size: 24px; }
-.ap--compact .ap-grid { max-width: 840px; column-gap: 16px; row-gap: 16px; }
+.ap-btn--primary:hover{ transform: translateY(-1px); }
+.ap-btn--ghost{ background: color-mix(in oklab, var(--surface) 80%, var(--border)); color:var(--text); border:1px solid var(--border); }
+.ap-btn--ghost:hover{ transform: translateY(-1px); }
+.ap-btn--sm{ padding:6px 10px; font-size:12px; }
+.ap-error{ color:#ef4444; font-size:13px; font-weight:600; }
+.ap-field.narrow{ max-width:420px; justify-self:start; }
+.ap--compact .ap-input,.ap--compact .ap-textarea{ padding:8px 10px; font-size:13.5px; }
+.ap--compact .ap-textarea{ min-height:80px; }
+.ap--compact .ap-title{ font-size:24px; }
+.ap--compact .ap-grid{ max-width:840px; column-gap:16px; row-gap:16px; }

@@ -9,7 +9,7 @@
 
           <div class="meta">
             <div class="name">{{ it.productName }}</div>
-            <div class="price">{{ toNum(it.unitPrice) | currency:'USD' }}</div>
+            <div class="price">{{ it.unitPrice | price }}</div>
           </div>
 
           <div class="qty">
@@ -19,7 +19,7 @@
           </div>
 
           <div class="sum">
-            {{ lineTotal(it) | currency:'USD' }}
+            {{ lineTotal(it) | price }}
           </div>
 
           <button class="remove" (click)="remove(it)">✕</button>
@@ -29,18 +29,13 @@
       <div class="footer">
         <button class="btn ghost" (click)="clear()">Clear</button>
         <div class="total">
-          Total: <strong>{{ total() | currency:'USD' }}</strong>
+          Total: <strong>{{ total() | price }}</strong>
         </div>
         <button class="btn primary" (click)="checkoutWhatsApp()">Checkout on WhatsApp</button>
       </div>
     </ng-container>
   </ng-container>
 
-  <ng-template #loadingTpl>
-    <p>Loading…</p>
-  </ng-template>
-
-  <ng-template #emptyTpl>
-    <p>Your cart is empty.</p>
-  </ng-template>
+  <ng-template #loadingTpl><p>Loading…</p></ng-template>
+  <ng-template #emptyTpl><p>Your cart is empty.</p></ng-template>
 </main>
