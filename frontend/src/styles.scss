@@ -1,34 +1,38 @@
 :root {
-  --base: #fdfaf5;      /* خلفية أساسية كريمية فاتحة */
-  --base-2: #f6f1e9;    /* طبقة ثانية كريمية أدكن شوي */
-  --moss: #e0d8c7;      /* حدود كريمي رملي */
-  --sage: #111;         /* أسود قوي */
-  --gold: #d4af37;      /* ذهبي ملكي */
+  --base: #fdfaf5; /* خلفية أساسية كريمية فاتحة */
+  --base-2: #f6f1e9; /* طبقة ثانية كريمية أدكن شوي */
+  --moss: #e0d8c7; /* حدود كريمي رملي */
+  --sage: #111; /* أسود قوي */
+  --gold: #d4af37; /* ذهبي ملكي */
 
-  --card: #ffffff;      /* الكروت أبيض أنيق */
-  --text: #1a1a1a;      /* نص داكن واضح */
+  --card: #ffffff; /* الكروت أبيض أنيق */
+  --text: #1a1a1a; /* نص داكن واضح */
 }
 
 /* الأزرار */
-button, .btn {
+button,
+.btn {
   background: var(--gold);
   color: #fff;
   border: 1px solid var(--sage);
   font-weight: 600;
-  letter-spacing: .5px;
-  padding: .6rem 1.2rem;
-  transition: all .3s ease;
+  letter-spacing: 0.5px;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s ease;
 }
-button:hover, .btn:hover {
+button:hover,
+.btn:hover {
   background: var(--sage);
   color: var(--gold);
 }
 
 /* الروابط */
-header a, .admin-navbar a {
+header a,
+.admin-navbar a {
   color: var(--text);
 }
-header a:hover, .admin-navbar a:hover {
+header a:hover,
+.admin-navbar a:hover {
   color: var(--gold);
 }
 
@@ -36,11 +40,11 @@ header a:hover, .admin-navbar a:hover {
 .row-wrap .row app-product-card {
   background: var(--card);
   border: 1px solid var(--moss);
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 .row-wrap .row app-product-card:hover {
   border-color: var(--gold);
-  box-shadow: 0 6px 16px rgba(0,0,0,.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* البانر */
@@ -49,7 +53,7 @@ header a:hover, .admin-navbar a:hover {
   background: var(--card);
 }
 .banner .caption {
-  background: rgba(0,0,0,.65);
+  background: rgba(0, 0, 0, 0.65);
   color: #fff;
   font-weight: 600;
 }
@@ -65,14 +69,16 @@ header a:hover, .admin-navbar a:hover {
 .site-footer h5 {
   color: #fff;
 }
-.site-footer p, .site-footer li, .site-footer a {
+.site-footer p,
+.site-footer li,
+.site-footer a {
   color: #ddd;
 }
 .site-footer .social a {
   border: 1px solid var(--gold);
   background: #000;
   color: #fff;
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 .site-footer .social a:hover {
   background: var(--gold);

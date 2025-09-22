@@ -1,6 +1,12 @@
 // C:\Users\abodi\OneDrive\Desktop\pouchet\pouchet\frontend\src\app\pages\home\home.ts
 import {
-  Component, OnInit, inject, signal, computed, ViewChild, ElementRef
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -30,7 +36,7 @@ export class Home implements OnInit {
 
   // State
   loading = signal<boolean>(false);
-  error   = signal<string | null>(null);
+  error = signal<string | null>(null);
 
   // All products in UI model
   all = signal<UiProductModel[]>([]);
@@ -52,7 +58,7 @@ export class Home implements OnInit {
       case 'most':
         return list.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
       case 'fav':
-        return list.filter(p => (p.rating ?? 0) >= 4.5);
+        return list.filter((p) => (p.rating ?? 0) >= 4.5);
       default:
         return list; // 'filter' => show all (or keep your own baseline policy)
     }
@@ -73,21 +79,21 @@ export class Home implements OnInit {
     this.error.set(null);
 
     this.api.list().subscribe({
-      next: res => {
-        const ui = (res || []).map(p => this.toUi(p));
+      next: (res) => {
+        const ui = (res || []).map((p) => this.toUi(p));
         this.all.set(ui);
         this.loading.set(false);
       },
       error: () => {
         this.error.set('Failed to load products.');
         this.loading.set(false);
-      }
+      },
     });
   }
 
   private fetchBanners() {
     this.featuredApi.list().subscribe({
-      next: res => this.banners.set((res || []).slice(0, 4)),
+      next: (res) => this.banners.set((res || []).slice(0, 4)),
       error: () => this.banners.set([]),
     });
   }
@@ -113,8 +119,12 @@ export class Home implements OnInit {
   private scrollBy(px: number) {
     this.row?.nativeElement.scrollBy({ left: px, behavior: 'smooth' });
   }
-  next() { this.scrollBy(800); }
-  prev() { this.scrollBy(-800); }
+  next() {
+    this.scrollBy(800);
+  }
+  prev() {
+    this.scrollBy(-800);
+  }
 
   // Footer year
   currentYear = new Date().getFullYear();

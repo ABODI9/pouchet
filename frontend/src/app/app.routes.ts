@@ -8,15 +8,18 @@ export const routes: Routes = [
   {
     path: '',
     title: 'Home',
-    loadComponent: () => import('./pages/home/home').then(m => m.Home),
+    loadComponent: () => import('./pages/home/home').then((m) => m.Home),
   },
 
   // صفحة تفاصيل المنتج — رابطها سيكون /product/123
   {
-      path: 'product/:id',
-      title: 'Product',
+    path: 'product/:id',
+    title: 'Product',
     // إن أنشأت barrel (index.ts) داخل مجلد product-detail استخدم السطر التالي:
-    loadComponent: () =>    import('./pages/product-detail/product-detail').then(m => m.ProductDetailPage),
+    loadComponent: () =>
+      import('./pages/product-detail/product-detail').then(
+        (m) => m.ProductDetailPage,
+      ),
 
     // لو ما عندك index.ts استخدم هذا بدلًا من السطر السابق:
     // loadComponent: () => import('./pages/product-detail/product-detail').then(m => m.ProductDetailPage),
@@ -25,7 +28,7 @@ export const routes: Routes = [
   {
     path: 'cart',
     title: 'Cart',
-    loadComponent: () => import('./pages/cart/cart').then(m => m.CartPage),
+    loadComponent: () => import('./pages/cart/cart').then((m) => m.CartPage),
   },
 
   // صفحات الضيوف
@@ -33,13 +36,14 @@ export const routes: Routes = [
     path: 'login',
     title: 'Sign in',
     canMatch: [guestOnlyGuard],
-    loadComponent: () => import('./pages/login/login').then(m => m.Login),
+    loadComponent: () => import('./pages/login/login').then((m) => m.Login),
   },
   {
     path: 'register',
     title: 'Create account',
     canMatch: [guestOnlyGuard],
-    loadComponent: () => import('./pages/register/register').then(m => m.Register),
+    loadComponent: () =>
+      import('./pages/register/register').then((m) => m.Register),
   },
 
   // لوحة التحكم
@@ -49,7 +53,8 @@ export const routes: Routes = [
     canMatch: [adminOnlyGuard],
     canActivate: [authGuard, roleGuard],
     data: { roles: ['admin'] },
-    loadComponent: () => import('./pages/admin/dashboard/dashboard').then(m => m.Dashboard),
+    loadComponent: () =>
+      import('./pages/admin/dashboard/dashboard').then((m) => m.Dashboard),
     children: [
       {
         path: '',
@@ -61,37 +66,49 @@ export const routes: Routes = [
         path: 'products',
         title: 'Admin • Products',
         loadComponent: () =>
-          import('./pages/admin/product-list/product-list').then(m => m.ProductList),
+          import('./pages/admin/product-list/product-list').then(
+            (m) => m.ProductList,
+          ),
       },
       {
         path: 'products/add',
         title: 'Admin • Add product',
         loadComponent: () =>
-          import('./pages/admin/product-add/product-add').then(m => m.ProductAdd),
+          import('./pages/admin/product-add/product-add').then(
+            (m) => m.ProductAdd,
+          ),
       },
       {
         path: 'products/:id/edit',
         title: 'Admin • Edit product',
         loadComponent: () =>
-          import('./pages/admin/product-edit/product-edit').then(m => m.ProductEdit),
+          import('./pages/admin/product-edit/product-edit').then(
+            (m) => m.ProductEdit,
+          ),
       },
       {
         path: 'featured',
         title: 'Admin • Banners',
         loadComponent: () =>
-          import('./pages/admin/featured-list/featured-list').then(m => m.FeaturedList),
+          import('./pages/admin/featured-list/featured-list').then(
+            (m) => m.FeaturedList,
+          ),
       },
       {
         path: 'featured/add',
         title: 'Admin • Add Banner',
         loadComponent: () =>
-          import('./pages/admin/featured-add/featured-add').then(m => m.FeaturedAddSimple),
+          import('./pages/admin/featured-add/featured-add').then(
+            (m) => m.FeaturedAddSimple,
+          ),
       },
       {
         path: 'featured/:id/edit',
         title: 'Admin • Edit Banner',
         loadComponent: () =>
-          import('./pages/admin/featured-edit/featured-edit').then(m => m.FeaturedEdit),
+          import('./pages/admin/featured-edit/featured-edit').then(
+            (m) => m.FeaturedEdit,
+          ),
       },
     ],
   },
@@ -100,6 +117,7 @@ export const routes: Routes = [
   {
     path: '**',
     title: 'Not Found',
-    loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound),
+    loadComponent: () =>
+      import('./pages/not-found/not-found').then((m) => m.NotFound),
   },
 ];

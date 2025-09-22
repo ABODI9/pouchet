@@ -18,8 +18,14 @@ export class ProductList {
 
   ngOnInit() {
     this.api.list().subscribe({
-      next: (res) => { this.products = res; this.loading = false; },
-      error: () => { this.error = 'Failed to load products'; this.loading = false; }
+      next: (res) => {
+        this.products = res;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Failed to load products';
+        this.loading = false;
+      },
     });
   }
 
@@ -28,8 +34,8 @@ export class ProductList {
     if (!confirm(`Delete "${p.title}"?`)) return;
 
     this.api.remove(p.id).subscribe({
-      next: () => this.products = this.products.filter(x => x.id !== p.id),
-      error: () => alert('Delete failed')
+      next: () => (this.products = this.products.filter((x) => x.id !== p.id)),
+      error: () => alert('Delete failed'),
     });
   }
 

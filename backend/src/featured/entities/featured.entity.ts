@@ -1,4 +1,10 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('featured')
 export class Featured {
@@ -13,7 +19,7 @@ export class Featured {
     type: 'bigint',
     default: () => '0',
     transformer: {
-      to: (v?: number | null) => (v ?? 0),
+      to: (v?: number | null) => v ?? 0,
       from: (v: string) => Number(v),
     },
   })

@@ -10,8 +10,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: cfg.get<string>('JWT_SECRET', 'dev_secret_change_me'),
-      ...(cfg.get('JWT_ISSUER')?.trim() ? { issuer: cfg.get('JWT_ISSUER')!.trim() } : {}),
-      ...(cfg.get('JWT_AUDIENCE')?.trim() ? { audience: cfg.get('JWT_AUDIENCE')!.trim() } : {}),
+      ...(cfg.get('JWT_ISSUER')?.trim()
+        ? { issuer: cfg.get('JWT_ISSUER')!.trim() }
+        : {}),
+      ...(cfg.get('JWT_AUDIENCE')?.trim()
+        ? { audience: cfg.get('JWT_AUDIENCE')!.trim() }
+        : {}),
       algorithms: ['HS256'],
     });
   }

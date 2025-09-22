@@ -1,6 +1,12 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column,
-  CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, Index
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
+  Index,
 } from 'typeorm';
 
 export type UserRole = 'user' | 'admin';
@@ -23,7 +29,8 @@ export class User {
   @Column({ type: 'enum', enum: ['user', 'admin'], default: 'user' })
   role: UserRole;
 
-  @CreateDateColumn() @Index()
+  @CreateDateColumn()
+  @Index()
   createdAt: Date;
 
   @UpdateDateColumn()

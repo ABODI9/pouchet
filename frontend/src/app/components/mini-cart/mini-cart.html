@@ -7,7 +7,7 @@
   </header>
 
   <div class="mc__list">
-    <ng-container *ngFor="let it of (items$ | async)">
+    <ng-container *ngFor="let it of items$ | async">
       <div class="row" *ngIf="qty(it) > 0">
         <img [src]="it.productImage || ''" alt="" />
         <div class="info">
@@ -25,11 +25,15 @@
       </div>
     </ng-container>
 
-    <div class="empty" *ngIf="!(items$ | async)?.length">Your cart is empty.</div>
+    <div class="empty" *ngIf="!(items$ | async)?.length">
+      Your cart is empty.
+    </div>
   </div>
 
   <footer class="mc__foot">
-    <button class="btn gold" (click)="checkoutWhatsApp()">Buy via WhatsApp</button>
+    <button class="btn gold" (click)="checkoutWhatsApp()">
+      Buy via WhatsApp
+    </button>
     <a routerLink="/cart" class="btn ghost" (click)="close()">View all items</a>
   </footer>
 </aside>

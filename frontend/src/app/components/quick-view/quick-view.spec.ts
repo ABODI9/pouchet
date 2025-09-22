@@ -8,9 +8,8 @@ describe('QuickView', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuickView]
-    })
-    .compileComponents();
+      imports: [QuickView],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(QuickView);
     component = fixture.componentInstance;

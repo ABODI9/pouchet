@@ -24,7 +24,11 @@ export class CartService {
     return this.repo.save(row);
   }
 
-  async findAll(filter?: { userId?: string | null; sessionId?: string | null; status?: 'open'|'checked_out'|'abandoned' }) {
+  async findAll(filter?: {
+    userId?: string | null;
+    sessionId?: string | null;
+    status?: 'open' | 'checked_out' | 'abandoned';
+  }) {
     const where: FindOptionsWhere<CartItem> = {};
     if (filter?.userId != null) where.userId = filter.userId;
     if (filter?.sessionId != null) where.sessionId = filter.sessionId;
@@ -45,7 +49,8 @@ export class CartService {
     if (dto.notes !== undefined) row.notes = dto.notes ?? null;
     // يسمح بتعديل معلومات المنتج لو حبيت
     if (dto.productName !== undefined) row.productName = dto.productName;
-    if (dto.productImage !== undefined) row.productImage = dto.productImage ?? null;
+    if (dto.productImage !== undefined)
+      row.productImage = dto.productImage ?? null;
     if (dto.unitPrice !== undefined) row.unitPrice = dto.unitPrice;
     return this.repo.save(row);
   }

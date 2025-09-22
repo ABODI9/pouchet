@@ -15,18 +15,20 @@
 <header class="header">
   <!-- Brand -->
   <a class="brand" routerLink="/" aria-label="POUCHET">
-    <img src="assets/logo-pouchet.png" alt="POUCHET" />
+    <img src="logo-pouchet.png" alt="POUCHET" />
   </a>
 
   <!-- Tools -->
   <div class="tools">
     <button class="btn ghost" (click)="openMiniCart()">
-      🛒 Cart <span class="badge" *ngIf="(count$ | async) as c">{{ c }}</span>
+      🛒 Cart <span class="badge" *ngIf="count$ | async as c">{{ c }}</span>
     </button>
 
     <!-- Currency -->
     <div class="select">
-      <button (click)="toggleCurrencies()">{{ code() }} <span class="chev">▾</span></button>
+      <button (click)="toggleCurrencies()">
+        {{ code() }} <span class="chev">▾</span>
+      </button>
       <div class="menu" *ngIf="currOpen()">
         <button (click)="setCurrency('SAR')">SAR</button>
         <button (click)="setCurrency('TRY')">TRY</button>
@@ -36,7 +38,14 @@
 
     <!-- Search (visual only) -->
     <div class="search">
-      <svg viewBox="0 0 24 24" class="i"><path d="M21 21l-4.3-4.3m1.8-5.2a7 7 0 11-14 0 7 7 0 0114 0z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <svg viewBox="0 0 24 24" class="i">
+        <path
+          d="M21 21l-4.3-4.3m1.8-5.2a7 7 0 11-14 0 7 7 0 0114 0z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </svg>
       <input placeholder="Search products…" />
     </div>
   </div>
@@ -44,11 +53,17 @@
   <!-- Right side: Login / User menu / Admin -->
   <div class="right">
     <ng-container *ngIf="user$ | async as u; else loggedOut">
-      <span class="role" [class.admin]="u?.role === 'admin'">{{ u?.role || 'user' }}</span>
-      <button class="avatar" (click)="toggleMenu()">{{ initial(u?.email) }}</button>
+      <span class="role" [class.admin]="u?.role === 'admin'">{{
+        u?.role || "user"
+      }}</span>
+      <button class="avatar" (click)="toggleMenu()">
+        {{ initial(u?.email) }}
+      </button>
       <div class="menu" *ngIf="menuOpen()">
         <a routerLink="/profile" (click)="closeMenu()">Profile</a>
-        <a *ngIf="u?.role === 'admin'" routerLink="/admin" (click)="closeMenu()">Admin</a>
+        <a *ngIf="u?.role === 'admin'" routerLink="/admin" (click)="closeMenu()"
+          >Admin</a
+        >
         <button (click)="logout()">Logout</button>
       </div>
     </ng-container>

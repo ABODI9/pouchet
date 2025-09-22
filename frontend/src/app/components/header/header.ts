@@ -5,7 +5,7 @@ import { CartService } from '../../services/cart.service';
 import { MiniCartService } from '../../services/mini-cart.service';
 import { CurrencyService, CurrencyCode } from '../../services/currency.service';
 import { AuthService } from '../../services/auth.service';
-import { MiniCart } from "../mini-cart/mini-cart";
+import { MiniCart } from '../mini-cart/mini-cart';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +17,7 @@ import { MiniCart } from "../mini-cart/mini-cart";
 export class Header implements OnInit {
   private cart = inject(CartService);
   private mini = inject(MiniCartService);
-  private cur  = inject(CurrencyService);
+  private cur = inject(CurrencyService);
   private auth = inject(AuthService);
 
   count$ = this.cart.count$;
@@ -34,11 +34,27 @@ export class Header implements OnInit {
     // Otherwise user$ should already reflect the current session.
   }
 
-  openMiniCart(){ this.mini.open(); }
-  toggleCurrencies(){ this.currOpen.update(v => !v); }
-  setCurrency(c: CurrencyCode){ this.cur.set(c); this.currOpen.set(false); }
-  toggleMenu(){ this.menuOpen.update(v => !v); }
-  closeMenu(){ this.menuOpen.set(false); }
-  logout(){ this.auth.logout(); this.closeMenu(); }
-  initial(email?: string | null){ return (email?.trim()?.[0] ?? 'U').toUpperCase(); }
+  openMiniCart() {
+    this.mini.open();
+  }
+  toggleCurrencies() {
+    this.currOpen.update((v) => !v);
+  }
+  setCurrency(c: CurrencyCode) {
+    this.cur.set(c);
+    this.currOpen.set(false);
+  }
+  toggleMenu() {
+    this.menuOpen.update((v) => !v);
+  }
+  closeMenu() {
+    this.menuOpen.set(false);
+  }
+  logout() {
+    this.auth.logout();
+    this.closeMenu();
+  }
+  initial(email?: string | null) {
+    return (email?.trim()?.[0] ?? 'U').toUpperCase();
+  }
 }

@@ -27,7 +27,10 @@ export class CurrencyService {
   format(amountUSD: number): string {
     const code = this.code();
     const n = this.convertFromUSD(amountUSD);
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: code }).format(n);
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: code,
+    }).format(n);
   }
 
   private read(): CurrencyCode {

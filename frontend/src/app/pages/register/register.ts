@@ -16,19 +16,28 @@ export class Register {
   private auth = inject(AuthService);
   private router = inject(Router);
 
-  name = ''; email = ''; password = ''; confirm = '';
-  loading = false; error = '';
+  name = '';
+  email = '';
+  password = '';
+  confirm = '';
+  loading = false;
+  error = '';
 
   submit() {
     this.error = '';
-    if (this.password !== this.confirm) { this.error = 'Passwords do not match'; return; }
+    if (this.password !== this.confirm) {
+      this.error = 'Passwords do not match';
+      return;
+    }
     this.loading = true;
-    this.auth.register({ name: this.name, email: this.email, password: this.password }).subscribe({
-      next: () => this.router.navigateByUrl('/'),
-      error: (err: HttpErrorResponse) => {
-        this.error = err.error?.message ?? 'Registration failed';
-        this.loading = false;
-      },
-    });
+    this.auth
+      .register({ name: this.name, email: this.email, password: this.password })
+      .subscribe({
+        next: () => this.router.navigateByUrl('/'),
+        error: (err: HttpErrorResponse) => {
+          this.error = err.error?.message ?? 'Registration failed';
+          this.loading = false;
+        },
+      });
   }
 }

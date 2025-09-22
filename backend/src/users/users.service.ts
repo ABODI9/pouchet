@@ -17,7 +17,7 @@ export class UsersService {
     this.rounds = Number(this.cfg.get('BCRYPT_ROUNDS', '10'));
   }
 
-  async create(dto: CreateUserDto, role: 'user'|'admin' = 'user') {
+  async create(dto: CreateUserDto, role: 'user' | 'admin' = 'user') {
     const email = dto.email.trim().toLowerCase();
     const name = dto.name.trim();
 
@@ -29,7 +29,9 @@ export class UsersService {
 
     const passwordHash = await bcrypt.hash(dto.password, this.rounds);
 
-    const saved = await this.repo.save(this.repo.create({ email, name, role, passwordHash }));
+    const saved = await this.repo.save(
+      this.repo.create({ email, name, role, passwordHash }),
+    );
     const { passwordHash: _, ...safe } = saved as any;
     return safe;
   }
@@ -38,7 +40,9 @@ export class UsersService {
     return this.repo
       .createQueryBuilder('u')
       .addSelect('u.passwordHash') // لأن select:false
-      .where('LOWER(u.email) = LOWER(:email)', { email: email.trim().toLowerCase() })
+      .where('LOWER(u.email) = LOWER(:email)', {
+        email: email.trim().toLowerCase(),
+      })
       .getOne();
   }
 
@@ -54,7 +58,9 @@ export class UsersService {
   }
 
   async seedAdmin() {
-    const email = (process.env.ADMIN_EMAIL || 'admin@demo.local').trim().toLowerCase();
+    const email = (process.env.ADMIN_EMAIL || 'admin@demo.local')
+      .trim()
+      .toLowerCase();
     const password = process.env.ADMIN_PASSWORD || 'Admin123!';
     const name = (process.env.ADMIN_NAME || 'Admin').trim();
 

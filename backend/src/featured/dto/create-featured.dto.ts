@@ -9,7 +9,7 @@ function toBool(v: any): boolean {
 
 export class CreateFeaturedDto {
   @IsOptional()
-  @Type(() => Number)            // يحوّل "100" => 100
+  @Type(() => Number) // يحوّل "100" => 100
   @IsInt()
   order?: number;
 

@@ -1,7 +1,9 @@
 <div class="pl-wrap">
   <div class="pl-head">
     <h1>Products</h1>
-    <a class="btn btn-primary" routerLink="/admin/products/add">+ Add Product</a>
+    <a class="btn btn-primary" routerLink="/admin/products/add"
+      >+ Add Product</a
+    >
   </div>
 
   <div *ngIf="loading" class="state">Loading…</div>
@@ -15,13 +17,21 @@
 
       <div class="pl-body">
         <div class="pl-title">{{ p.title }}</div>
-        <div class="pl-price">{{ p.price | currency:'USD' }}</div>
-        <div class="pl-rating" *ngIf="p.rating !== undefined">⭐ {{ p.rating }}</div>
+        <div class="pl-price">{{ p.price | currency: "USD" }}</div>
+        <div class="pl-rating" *ngIf="p.rating !== undefined">
+          ⭐ {{ p.rating }}
+        </div>
       </div>
 
       <div class="pl-actions">
-        <a class="btn btn-ghost" [routerLink]="['/admin/products', p.id, 'edit']">Edit</a>
-        <button class="btn btn-danger" (click)="confirmDelete(p)">Delete</button>
+        <a
+          class="btn btn-ghost"
+          [routerLink]="['/admin/products', p.id, 'edit']"
+          >Edit</a
+        >
+        <button class="btn btn-danger" (click)="confirmDelete(p)">
+          Delete
+        </button>
       </div>
     </div>
   </div>

@@ -11,13 +11,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
 
   // نضيف الهيدر فقط لطلبات الـ API
-  const isApi = req.url.startsWith('/api') || req.url.startsWith(environment.api);
-  const isAuthCall = isApi && (req.url.endsWith('/auth/login') || req.url.endsWith('/auth/register'));
+  const isApi =
+    req.url.startsWith('/api') || req.url.startsWith(environment.api);
+  const isAuthCall =
+    isApi &&
+    (req.url.endsWith('/auth/login') || req.url.endsWith('/auth/register'));
 
   const token = auth.token;
-  const authReq = (isApi && token)
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
-    : req;
+  const authReq =
+    isApi && token
+      ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+      : req;
 
   return next(authReq).pipe(
     catchError((err: HttpErrorResponse) => {
@@ -26,6 +30,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         // router.navigate(['/login'], { queryParams: { returnUrl: router.url }});
       }
       return throwError(() => err);
-    })
+    }),
   );
 };

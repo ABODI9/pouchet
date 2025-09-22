@@ -26,9 +26,9 @@ import { CartModule } from './cart/cart.module';
 
     // تقديم ملفات الرفع (صور المنتجات)
     ServeStaticModule.forRoot({
-        rootPath: join(process.cwd(), 'uploads'), // ✅ ثابت في dev/prod
-        serveRoot: '/uploads',
-      }),
+      rootPath: join(process.cwd(), 'uploads'), // ✅ ثابت في dev/prod
+      serveRoot: '/uploads',
+    }),
 
     // قاعدة البيانات
     TypeOrmModule.forRootAsync({

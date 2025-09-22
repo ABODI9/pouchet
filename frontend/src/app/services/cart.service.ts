@@ -30,7 +30,10 @@ export class CartService {
 
   get sessionId(): string {
     let sid = localStorage.getItem('sid');
-    if (!sid) { sid = crypto.randomUUID(); localStorage.setItem('sid', sid); }
+    if (!sid) {
+      sid = crypto.randomUUID();
+      localStorage.setItem('sid', sid);
+    }
     return sid;
   }
 
@@ -55,35 +58,74 @@ export class CartService {
       quantity: input.quantity,
       notes: input.notes ?? null,
     };
-    return this.http.post<CartItem>(`${this.base}/${this.path}`, body)
-      .pipe(tap(() => { this.syncCount(); this.syncItems(); }));
+    return this.http.post<CartItem>(`${this.base}/${this.path}`, body).pipe(
+      tap(() => {
+        this.syncCount();
+        this.syncItems();
+      }),
+    );
   }
 
-  update(id: string, body: Partial<{ quantity: number; notes: string; status: 'open' | 'ordered' }>) {
-    return this.http.put<CartItem>(`${this.base}/${this.path}/${id}`, body)
-      .pipe(tap(() => { this.syncCount(); this.syncItems(); }));
+  update(
+    id: string,
+    body: Partial<{
+      quantity: number;
+      notes: string;
+      status: 'open' | 'ordered';
+    }>,
+  ) {
+    return this.http
+      .put<CartItem>(`${this.base}/${this.path}/${id}`, body)
+      .pipe(
+        tap(() => {
+          this.syncCount();
+          this.syncItems();
+        }),
+      );
   }
 
   remove(id: string) {
-    return this.http.delete<{ ok: true }>(`${this.base}/${this.path}/${id}`)
-      .pipe(tap(() => { this.syncCount(); this.syncItems(); }));
+    return this.http
+      .delete<{ ok: true }>(`${this.base}/${this.path}/${id}`)
+      .pipe(
+        tap(() => {
+          this.syncCount();
+          this.syncItems();
+        }),
+      );
   }
 
   clear(filter: { sessionId: string }) {
-    return this.http.post<{ ok: true }>(`${this.base}/${this.path}/clear`, filter)
-      .pipe(tap(() => { this.syncCount(); this.syncItems(); }));
+    return this.http
+      .post<{ ok: true }>(`${this.base}/${this.path}/clear`, filter)
+      .pipe(
+        tap(() => {
+          this.syncCount();
+          this.syncItems();
+        }),
+      );
   }
 
   // ===== مزامنة عدّاد وعناصر السلة =====
   syncCount(): void {
     this.list({ sessionId: this.sessionId, status: 'open' })
-      .pipe(map(items => items?.reduce((sum, it) => sum + (it.quantity ?? 0), 0) ?? 0))
-      .subscribe({ next: c => this._count.next(c), error: () => this._count.next(0) });
+      .pipe(
+        map(
+          (items) =>
+            items?.reduce((sum, it) => sum + (it.quantity ?? 0), 0) ?? 0,
+        ),
+      )
+      .subscribe({
+        next: (c) => this._count.next(c),
+        error: () => this._count.next(0),
+      });
   }
 
   syncItems(): void {
-    this.list({ sessionId: this.sessionId, status: 'open' })
-      .subscribe({ next: items => this._items.next(items || []), error: () => this._items.next([]) });
+    this.list({ sessionId: this.sessionId, status: 'open' }).subscribe({
+      next: (items) => this._items.next(items || []),
+      error: () => this._items.next([]),
+    });
   }
 
   // ===== الجديد: إضافة أو زيادة الكمية بدل تكرار السطر =====
@@ -98,14 +140,16 @@ export class CartService {
     const qtyToAdd = Math.max(1, Number(input.quantity ?? 1));
     return this.list({ sessionId: this.sessionId, status: 'open' }).pipe(
       take(1),
-      switchMap(items => {
-        const existing = (items || []).find(it => it.productId === input.productId);
+      switchMap((items) => {
+        const existing = (items || []).find(
+          (it) => it.productId === input.productId,
+        );
         if (existing) {
           const newQty = (existing.quantity || 0) + qtyToAdd;
           return this.update(existing.id, { quantity: newQty });
         }
         return this.add({ ...input, quantity: qtyToAdd });
-      })
+      }),
     );
   }
 }

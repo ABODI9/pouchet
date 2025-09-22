@@ -23,7 +23,7 @@ h2 {
 /* Labels */
 label {
   display: block;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   font-weight: 600;
   color: var(--text);
 }
@@ -32,13 +32,16 @@ label {
 input {
   display: block;
   width: 100%;
-  padding: .55rem .7rem;
+  padding: 0.55rem 0.7rem;
   border: 1px solid var(--moss);
   border-radius: 8px;
-  margin: .25rem 0 .6rem;
+  margin: 0.25rem 0 0.6rem;
   background: var(--card);
   color: var(--text);
-  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
 
   &:focus {
     outline: none;
@@ -50,26 +53,45 @@ input {
 
 /* Button */
 button {
-  margin-top: .5rem;
-  padding: .6rem 1rem;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
   border-radius: 10px;
   border: 1px solid var(--gold);
   background: var(--gold);
   color: var(--sage);
   cursor: pointer;
   font-weight: 700;
-  transition: opacity .15s ease, transform .04s ease, background .18s ease, color .18s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.04s ease,
+    background 0.18s ease,
+    color 0.18s ease;
 
-  &:hover { opacity: .95; }
-  &:active { transform: translateY(1px); }
-  &:disabled { opacity: .6; cursor: not-allowed; }
+  &:hover {
+    opacity: 0.95;
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
 /* Error text */
-.err { color: #c00; margin-bottom: .75rem; font-weight: 600; }
+.err {
+  color: #c00;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
 
 /* Small hint */
-.hint { margin-top: .75rem; font-size: .95rem; color: color-mix(in oklab, var(--text), #fff 55%); }
+.hint {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: color-mix(in oklab, var(--text), #fff 55%);
+}
 
 /* Links inside hint */
 .hint a {
@@ -78,10 +100,16 @@ button {
   color: var(--gold);
   font-weight: 600;
 }
-.hint a:hover { text-decoration: underline; }
+.hint a:hover {
+  text-decoration: underline;
+}
 
 /* Responsive */
 @media (max-width: 480px) {
-  .auth-wrap { margin: 2rem auto; }
-  .card { padding: 14px; }
+  .auth-wrap {
+    margin: 2rem auto;
+  }
+  .card {
+    padding: 14px;
+  }
 }

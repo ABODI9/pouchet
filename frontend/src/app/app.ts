@@ -10,13 +10,7 @@ import { Toasts } from './components/toast/toasts';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    Header,
-  
-    Toasts,
-  ],
+  imports: [CommonModule, RouterOutlet, Header, Toasts],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],
 })

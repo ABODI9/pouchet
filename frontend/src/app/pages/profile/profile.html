@@ -9,7 +9,7 @@
     </div>
     <div class="row">
       <span class="label">Role</span>
-      <span class="value badge" [class.admin]="(me$ | async)?.role==='admin'">
+      <span class="value badge" [class.admin]="(me$ | async)?.role === 'admin'">
         {{ (me$ | async)?.role }}
       </span>
     </div>
@@ -20,7 +20,7 @@
     <div class="row">
       <span class="label">Expiration</span>
       <span class="value">
-        {{ ((user$ | async)?.exp || 0) * 1000 | date:'medium' }}
+        {{ ((user$ | async)?.exp || 0) * 1000 | date: "medium" }}
       </span>
     </div>
   </div>

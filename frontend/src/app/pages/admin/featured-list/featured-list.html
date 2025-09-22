@@ -9,19 +9,38 @@
 
   <div class="fx-grid" *ngIf="!loading && !error">
     <div class="fx-card" *ngFor="let b of items; trackBy: trackById">
-      <div class="fx-img"><img [src]="b.imageUrl || 'assets/placeholder.png'" alt="" /></div>
+      <div class="fx-img">
+        <img [src]="b.imageUrl || 'assets/placeholder.png'" alt="" />
+      </div>
       <div class="fx-body">
-        <div class="fx-line"><span>Product:</span> <code>{{ b.productId }}</code></div>
-        <div class="fx-line" *ngIf="b.caption"><span>Caption:</span> {{ b.caption }}</div>
+        <div class="fx-line">
+          <span>Product:</span> <code>{{ b.productId }}</code>
+        </div>
+        <div class="fx-line" *ngIf="b.caption">
+          <span>Caption:</span> {{ b.caption }}
+        </div>
         <div class="fx-line"><span>Order:</span> {{ b.order }}</div>
-        <div class="fx-line"><span>Status:</span> <strong [class.on]="b.active">{{ b.active ? 'Active' : 'Hidden' }}</strong></div>
+        <div class="fx-line">
+          <span>Status:</span>
+          <strong [class.on]="b.active">{{
+            b.active ? "Active" : "Hidden"
+          }}</strong>
+        </div>
       </div>
       <div class="fx-actions">
-        <button class="btn" (click)="move(b,'up')">↑</button>
-        <button class="btn" (click)="move(b,'down')">↓</button>
-        <a class="btn btn-ghost" [routerLink]="['/admin/featured', b.id, 'edit']">Edit</a>
-        <button class="btn" (click)="toggle(b)">{{ b.active ? 'Hide' : 'Show' }}</button>
-        <button class="btn btn-danger" (click)="confirmDelete(b)">Delete</button>
+        <button class="btn" (click)="move(b, 'up')">↑</button>
+        <button class="btn" (click)="move(b, 'down')">↓</button>
+        <a
+          class="btn btn-ghost"
+          [routerLink]="['/admin/featured', b.id, 'edit']"
+          >Edit</a
+        >
+        <button class="btn" (click)="toggle(b)">
+          {{ b.active ? "Hide" : "Show" }}
+        </button>
+        <button class="btn btn-danger" (click)="confirmDelete(b)">
+          Delete
+        </button>
       </div>
     </div>
   </div>

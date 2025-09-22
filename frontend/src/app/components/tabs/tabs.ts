@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, signal, effect } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  signal,
+  effect,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type HomeTab = 'filter' | 'most' | 'fav';
@@ -8,7 +15,7 @@ export type HomeTab = 'filter' | 'most' | 'fav';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './tabs.html',
-  styleUrls: ['./tabs.scss']
+  styleUrls: ['./tabs.scss'],
 })
 export class Tabs {
   /** currently active tab (controlled by parent) */
@@ -24,8 +31,8 @@ export class Tabs {
 
   tabs: { key: HomeTab; label: string }[] = [
     { key: 'filter', label: 'Filter' },
-    { key: 'most',   label: 'Best Sellers' },
-    { key: 'fav',    label: 'Favorites' },
+    { key: 'most', label: 'Best Sellers' },
+    { key: 'fav', label: 'Favorites' },
   ];
 
   setTab(key: HomeTab) {
@@ -36,7 +43,11 @@ export class Tabs {
   onKey(e: KeyboardEvent) {
     const order: HomeTab[] = ['filter', 'most', 'fav'];
     const idx = order.indexOf(this.active);
-    if (e.key === 'ArrowLeft')  { this.setTab(order[(idx + order.length - 1) % order.length]); }
-    if (e.key === 'ArrowRight') { this.setTab(order[(idx + 1) % order.length]); }
+    if (e.key === 'ArrowLeft') {
+      this.setTab(order[(idx + order.length - 1) % order.length]);
+    }
+    if (e.key === 'ArrowRight') {
+      this.setTab(order[(idx + 1) % order.length]);
+    }
   }
 }

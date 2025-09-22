@@ -9,10 +9,22 @@
     <input [(ngModel)]="email" name="email" required type="email" />
 
     <label>Password</label>
-    <input [(ngModel)]="password" name="password" required type="password" minlength="6" />
+    <input
+      [(ngModel)]="password"
+      name="password"
+      required
+      type="password"
+      minlength="6"
+    />
 
     <label>Confirm password</label>
-    <input [(ngModel)]="confirm" name="confirm" required type="password" minlength="6" />
+    <input
+      [(ngModel)]="confirm"
+      name="confirm"
+      required
+      type="password"
+      minlength="6"
+    />
 
     <button type="submit" [disabled]="loading">Create account</button>
     <p class="err" *ngIf="error">{{ error }}</p>

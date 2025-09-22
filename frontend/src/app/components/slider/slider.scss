@@ -1,44 +1,96 @@
-.hero{
+.hero {
   position: relative;
   height: 58vh;
-  @media (min-width: 900px){ height: 72vh; }
+  @media (min-width: 900px) {
+    height: 72vh;
+  }
   background: var(--base);
   overflow: hidden;
 
-  .slides{ height:100%; position:relative; }
-  .slide{ position:absolute; inset:0; opacity:0; transition: opacity .6s ease; }
-  .slide.active{ opacity:1; }
-  .slide-img{
-    position:absolute; inset:0; width:100%; height:100%;
-    object-fit:cover; transform: scale(1.04); z-index:0;
+  .slides {
+    height: 100%;
+    position: relative;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .slide.active {
+    opacity: 1;
+  }
+  .slide-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.04);
+    z-index: 0;
     filter: saturate(1) contrast(1.02);
   }
-  .overlay{
-    position:absolute; inset:0; z-index:1;
+  .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     /* تدرّج ناعم يبرز النص مع أسفل أغمق */
-    background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.55) 88%);
+    background: linear-gradient(
+      180deg,
+      transparent 35%,
+      rgba(0, 0, 0, 0.55) 88%
+    );
   }
 
   /* مناطق ضغط: تغطي نصف السلايدر */
-  .hot{
-    position:absolute; top:0; bottom:0; width:50%;
-    background:transparent; border:0; cursor:pointer; z-index:2;
+  .hot {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    z-index: 2;
   }
-  .hot.prev{ left:0 }
-  .hot.next{ right:0 }
+  .hot.prev {
+    left: 0;
+  }
+  .hot.next {
+    right: 0;
+  }
 
   /* النقاط */
-  .dots{ position:absolute; left:0; right:0; bottom:14px; z-index:3; display:flex; gap:8px; justify-content:center; }
-  .dots button{
-    height:8px; width:32px; border:0; cursor:pointer; border-radius:999px;
-    background: color-mix(in oklab, var(--sage), #fff 80%); opacity:.45; transition:.2s;
+  .dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    z-index: 3;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
   }
-  .dots button.on{
-    background: var(--gold); opacity:1; box-shadow:0 0 0 3px color-mix(in oklab, var(--gold), transparent 70%);
+  .dots button {
+    height: 8px;
+    width: 32px;
+    border: 0;
+    cursor: pointer;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sage), #fff 80%);
+    opacity: 0.45;
+    transition: 0.2s;
+  }
+  .dots button.on {
+    background: var(--gold);
+    opacity: 1;
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--gold), transparent 70%);
   }
 }
 
-.hero--empty{
-  display:grid; place-items:center; color: color-mix(in oklab, var(--text), #fff 60%);
-  border-bottom:1px solid var(--moss);
+.hero--empty {
+  display: grid;
+  place-items: center;
+  color: color-mix(in oklab, var(--text), #fff 60%);
+  border-bottom: 1px solid var(--moss);
 }

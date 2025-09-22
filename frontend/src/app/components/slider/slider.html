@@ -1,23 +1,37 @@
-<section class="hero"
-         (mouseenter)="pause()"
-         (mouseleave)="resume()"
-         (touchstart)="onTouchStart($event)"
-         (touchend)="onTouchEnd($event)">
-
+<section
+  class="hero"
+  (mouseenter)="pause()"
+  (mouseleave)="resume()"
+  (touchstart)="onTouchStart($event)"
+  (touchend)="onTouchEnd($event)"
+>
   <div class="slides">
-    <ng-container *ngFor="let b of banners; trackBy: trackById; let idx = index">
+    <ng-container
+      *ngFor="let b of banners; trackBy: trackById; let idx = index"
+    >
       <!-- مع رابط -->
-      <a *ngIf="b.productId; else plain"
-         class="slide" [class.active]="idx === i"
-         [routerLink]="['/product', b.productId]">
-        <img class="slide-img" [src]="b.imageUrl" [alt]="b.caption || 'banner'">
+      <a
+        *ngIf="b.productId; else plain"
+        class="slide"
+        [class.active]="idx === i"
+        [routerLink]="['/product', b.productId]"
+      >
+        <img
+          class="slide-img"
+          [src]="b.imageUrl"
+          [alt]="b.caption || 'banner'"
+        />
         <div class="overlay"></div>
       </a>
 
       <!-- بدون رابط -->
       <ng-template #plain>
         <div class="slide" [class.active]="idx === i">
-          <img class="slide-img" [src]="b.imageUrl" [alt]="b.caption || 'banner'">
+          <img
+            class="slide-img"
+            [src]="b.imageUrl"
+            [alt]="b.caption || 'banner'"
+          />
           <div class="overlay"></div>
         </div>
       </ng-template>
@@ -30,8 +44,10 @@
 
   <!-- النقاط (مخفية بصريًا) -->
   <div class="dots sr-only">
-    <button *ngFor="let _ of banners; index as d"
-            [class.on]="d === i"
-            (click)="go(d)"></button>
+    <button
+      *ngFor="let _ of banners; index as d"
+      [class.on]="d === i"
+      (click)="go(d)"
+    ></button>
   </div>
 </section>

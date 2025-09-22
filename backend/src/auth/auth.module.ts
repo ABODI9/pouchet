@@ -13,23 +13,22 @@ import { JwtStrategy } from './jwt.strategy';
     UsersModule,
     PassportModule,
     JwtModule.registerAsync({
-  inject: [ConfigService],
-  useFactory: (cfg: ConfigService) => {
-    const issuer = (cfg.get<string>('JWT_ISSUER') || '').trim();
-    const audience = (cfg.get<string>('JWT_AUDIENCE') || '').trim();
+      inject: [ConfigService],
+      useFactory: (cfg: ConfigService) => {
+        const issuer = (cfg.get<string>('JWT_ISSUER') || '').trim();
+        const audience = (cfg.get<string>('JWT_AUDIENCE') || '').trim();
 
-    return {
-      secret: cfg.get<string>('JWT_SECRET', 'dev_secret_change_me'),
-      signOptions: {
-        expiresIn: cfg.get<string>('JWT_EXPIRES', '2h'),
-        ...(issuer ? { issuer } : {}),
-        ...(audience ? { audience } : {}),
-        algorithm: 'HS256',
+        return {
+          secret: cfg.get<string>('JWT_SECRET', 'dev_secret_change_me'),
+          signOptions: {
+            expiresIn: cfg.get<string>('JWT_EXPIRES', '2h'),
+            ...(issuer ? { issuer } : {}),
+            ...(audience ? { audience } : {}),
+            algorithm: 'HS256',
+          },
+        };
       },
-    };
-  },
-})
-
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

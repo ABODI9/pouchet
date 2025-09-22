@@ -25,46 +25,53 @@ export class MiniCart {
   private quantities = new Map<string, number>();
   private sub?: Subscription;
 
-  constructor(){
+  constructor() {
     this.sub = (this.items$ as any).subscribe((items: CartItem[] = []) => {
       const seen = new Set<string>();
-      for (const it of items){
+      for (const it of items) {
         seen.add(it.id);
-        if (!this.quantities.has(it.id)){
+        if (!this.quantities.has(it.id)) {
           this.quantities.set(it.id, Math.max(1, it.quantity ?? 1));
         }
       }
-      for (const k of Array.from(this.quantities.keys())){
+      for (const k of Array.from(this.quantities.keys())) {
         if (!seen.has(k)) this.quantities.delete(k);
       }
     });
   }
-  ngOnDestroy(){ this.sub?.unsubscribe(); }
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+  }
 
-  close(){ this.mini.close(); }
+  close() {
+    this.mini.close();
+  }
 
   private toNumber(v: any): number {
-    const n = typeof v === 'number' ? v : parseFloat((v || '0').toString().replace(/[^0-9.]/g,''));
+    const n =
+      typeof v === 'number'
+        ? v
+        : parseFloat((v || '0').toString().replace(/[^0-9.]/g, ''));
     return isNaN(n) ? 0 : n;
   }
 
   qty(it: CartItem): number {
-    return this.quantities.get(it.id) ?? (it.quantity ?? 1);
+    return this.quantities.get(it.id) ?? it.quantity ?? 1;
   }
 
   // زيادة
-  inc(it: CartItem){
+  inc(it: CartItem) {
     const newQ = this.qty(it) + 1;
-    this.quantities.set(it.id, newQ);            // UI فوري
+    this.quantities.set(it.id, newQ); // UI فوري
     this.cart.update(it.id, { quantity: newQ }).subscribe(); // يحدث الخادم + يزامن
   }
 
   // نقصان: لو صارت 0 نحذف (صغير وأساسي)
-  dec(it: CartItem){
+  dec(it: CartItem) {
     const newQ = this.qty(it) - 1;
-    if (newQ <= 0){
-      this.quantities.set(it.id, 0);             // إخفاء فوري
-      this.cart.remove(it.id).subscribe();       // حذف من الخادم
+    if (newQ <= 0) {
+      this.quantities.set(it.id, 0); // إخفاء فوري
+      this.cart.remove(it.id).subscribe(); // حذف من الخادم
       return;
     }
     this.quantities.set(it.id, newQ);
@@ -72,18 +79,25 @@ export class MiniCart {
   }
 
   // زر ✕
-  remove(it: CartItem){
-    this.quantities.set(it.id, 0);               // إخفاء فوري
+  remove(it: CartItem) {
+    this.quantities.set(it.id, 0); // إخفاء فوري
     this.cart.remove(it.id).subscribe();
   }
 
-  async checkoutWhatsApp(){
+  async checkoutWhatsApp() {
     const items = await firstValueFrom(this.items$);
     if (!items?.length) return;
     const phone = (environment as any).whatsappPhone || '966555555555';
-    const lines = items.map(i => `• ${i.productName} x${this.qty(i)} — ${i.unitPrice}`).join('\n');
-    const total = items.reduce((s,i)=> s + (this.toNumber(i.unitPrice) * this.qty(i)), 0);
-    const text = encodeURIComponent(`Hello, I want to order:\n${lines}\n\nTotal: $${total.toFixed(2)} (USD base)`);
+    const lines = items
+      .map((i) => `• ${i.productName} x${this.qty(i)} — ${i.unitPrice}`)
+      .join('\n');
+    const total = items.reduce(
+      (s, i) => s + this.toNumber(i.unitPrice) * this.qty(i),
+      0,
+    );
+    const text = encodeURIComponent(
+      `Hello, I want to order:\n${lines}\n\nTotal: $${total.toFixed(2)} (USD base)`,
+    );
     window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
   }
 }

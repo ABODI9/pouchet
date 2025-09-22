@@ -20,8 +20,12 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  me(@Req() req: any) { return req.user; }
+  me(@Req() req: any) {
+    return req.user;
+  }
 
   @Get('test')
-  test() { return { ok: true, at: '/auth/test' }; }
+  test() {
+    return { ok: true, at: '/auth/test' };
+  }
 }

@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, Query, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  Query,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
@@ -17,9 +27,13 @@ export class CartController {
   findAll(
     @Query('userId') userId?: string,
     @Query('sessionId') sessionId?: string,
-    @Query('status') status?: 'open'|'checked_out'|'abandoned',
+    @Query('status') status?: 'open' | 'checked_out' | 'abandoned',
   ) {
-    return this.cartService.findAll({ userId: userId ?? undefined, sessionId: sessionId ?? undefined, status });
+    return this.cartService.findAll({
+      userId: userId ?? undefined,
+      sessionId: sessionId ?? undefined,
+      status,
+    });
   }
 
   @Get(':id')
@@ -28,7 +42,10 @@ export class CartController {
   }
 
   @Put(':id')
-  update(@Param('id', new ParseUUIDPipe()) id: string, @Body() updateCartDto: UpdateCartDto) {
+  update(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() updateCartDto: UpdateCartDto,
+  ) {
     return this.cartService.update(id, updateCartDto);
   }
 
@@ -42,6 +59,9 @@ export class CartController {
     @Query('userId') userId?: string,
     @Query('sessionId') sessionId?: string,
   ) {
-    return this.cartService.clear({ userId: userId ?? null, sessionId: sessionId ?? null });
+    return this.cartService.clear({
+      userId: userId ?? null,
+      sessionId: sessionId ?? null,
+    });
   }
 }

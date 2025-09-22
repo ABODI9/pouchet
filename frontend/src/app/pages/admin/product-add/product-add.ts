@@ -13,7 +13,12 @@ import { ProductsService } from '../../../services/products.service';
 export class ProductAdd {
   private productsService = inject(ProductsService);
 
-  product = { title: '', description: '', price: 0, image: null as File | null };
+  product = {
+    title: '',
+    description: '',
+    price: 0,
+    image: null as File | null,
+  };
   fileError = '';
   preview: string | null = null;
 
@@ -42,7 +47,12 @@ export class ProductAdd {
   }
 
   addProduct() {
-    if (!this.product.title || !this.product.price || !this.product.image || this.fileError) {
+    if (
+      !this.product.title ||
+      !this.product.price ||
+      !this.product.image ||
+      this.fileError
+    ) {
       alert('Please fill in all required fields.');
       return;
     }

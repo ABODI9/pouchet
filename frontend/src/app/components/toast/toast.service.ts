@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-export interface ToastMsg { text: string; kind?: 'ok'|'warn'|'err'; }
+export interface ToastMsg {
+  text: string;
+  kind?: 'ok' | 'warn' | 'err';
+}
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {

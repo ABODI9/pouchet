@@ -2,7 +2,9 @@
   <a class="img" [routerLink]="['/product', product.id]">
     <img [src]="product.image || ''" [alt]="product.name" />
     <div class="flags">
-      <span class="badge" *ngIf="product?.rating">{{ product.rating | number:'1.1-1' }}★</span>
+      <span class="badge" *ngIf="product?.rating"
+        >{{ product.rating | number: "1.1-1" }}★</span
+      >
       <span class="badge in">In stock</span>
     </div>
   </a>
@@ -10,10 +12,8 @@
   <a class="name" [routerLink]="['/product', product.id]">{{ product.name }}</a>
   <div class="price">{{ product.price | price }}</div>
 
-<div class="actions">
-  <button class="btn cart" (click)="addToCart()">Add to cart</button>
-  <button class="btn buy"  (click)="buyNow()">Buy Now</button>
-</div>
-
-
+  <div class="actions">
+    <button class="btn cart" (click)="addToCart()">Add to cart</button>
+    <button class="btn buy" (click)="buyNow()">Buy Now</button>
+  </div>
 </article>

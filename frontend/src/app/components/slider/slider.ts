@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, HostListener, inject } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  HostListener,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FeaturedService, FeaturedItem } from '../../services/featured.service';
@@ -37,12 +43,14 @@ export class Slider implements OnInit, OnDestroy {
     this.api.list().subscribe({
       next: (res) => {
         this.banners = (res || [])
-          .filter(b => b.active)
+          .filter((b) => b.active)
           .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
         this.i = 0;
         this.startAuto();
       },
-      error: () => { this.banners = []; }
+      error: () => {
+        this.banners = [];
+      },
     });
   }
 
@@ -53,26 +61,53 @@ export class Slider implements OnInit, OnDestroy {
       this.timer = setInterval(() => this.next(), this.intervalMs);
     }
   }
-  stopAuto() { if (this.timer) { clearInterval(this.timer); this.timer = null; } }
-  pause()  { this.hovering = true;  this.stopAuto(); }
-  resume() { this.hovering = false; this.startAuto(); }
+  stopAuto() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+  pause() {
+    this.hovering = true;
+    this.stopAuto();
+  }
+  resume() {
+    this.hovering = false;
+    this.startAuto();
+  }
 
-  prev() { if (this.banners.length) this.i = (this.i + this.banners.length - 1) % this.banners.length; }
-  next() { if (this.banners.length) this.i = (this.i + 1) % this.banners.length; }
-  go(k: number) { this.i = k % (this.banners.length || 1); this.startAuto(); }
+  prev() {
+    if (this.banners.length)
+      this.i = (this.i + this.banners.length - 1) % this.banners.length;
+  }
+  next() {
+    if (this.banners.length) this.i = (this.i + 1) % this.banners.length;
+  }
+  go(k: number) {
+    this.i = k % (this.banners.length || 1);
+    this.startAuto();
+  }
 
-  onTouchStart(e: TouchEvent) { this.touchStartX = e.changedTouches[0].clientX; }
+  onTouchStart(e: TouchEvent) {
+    this.touchStartX = e.changedTouches[0].clientX;
+  }
   onTouchEnd(e: TouchEvent) {
     const dx = e.changedTouches[0].clientX - this.touchStartX;
-    if (Math.abs(dx) > 40) (dx > 0 ? this.prev() : this.next());
+    if (Math.abs(dx) > 40) dx > 0 ? this.prev() : this.next();
     this.startAuto();
   }
 
   @HostListener('document:keydown', ['$event'])
   onKey(e: KeyboardEvent) {
     if (!this.banners.length) return;
-    if (e.key === 'ArrowLeft')  { this.prev(); this.startAuto(); }
-    if (e.key === 'ArrowRight') { this.next(); this.startAuto(); }
+    if (e.key === 'ArrowLeft') {
+      this.prev();
+      this.startAuto();
+    }
+    if (e.key === 'ArrowRight') {
+      this.next();
+      this.startAuto();
+    }
   }
 
   // استخدمها فقط عندما يوجد productId
@@ -82,5 +117,8 @@ export class Slider implements OnInit, OnDestroy {
 
   trackById = (_: number, b: FeaturedItem) => b.id;
 
-  ngOnDestroy() { this.stopAuto(); this.sub?.unsubscribe(); }
+  ngOnDestroy() {
+    this.stopAuto();
+    this.sub?.unsubscribe();
+  }
 }

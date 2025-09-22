@@ -2,7 +2,9 @@
   <div class="ap-card ap-card--compact">
     <div class="ap-card__head">
       <h1 class="ap-title">Edit Product</h1>
-      <p class="ap-sub">Update product details and upload an image (max 2MB).</p>
+      <p class="ap-sub">
+        Update product details and upload an image (max 2MB).
+      </p>
     </div>
 
     <form (ngSubmit)="save()" class="ap-grid" novalidate>
@@ -22,7 +24,7 @@
       </div>
 
       <!-- Price -->
-      <div class="ap-field ap-field--span ">
+      <div class="ap-field ap-field--span">
         <label class="ap-label" for="price">Price</label>
         <div class="ap-inputGroup">
           <span class="ap-prefix">$</span>
@@ -94,7 +96,11 @@
       <!-- Actions -->
       <div class="ap-actions ap-field--span2">
         <a class="ap-btn ap-btn--ghost" routerLink="/admin/products">Cancel</a>
-        <button type="submit" class="ap-btn ap-btn--primary" [disabled]="!!fileError">
+        <button
+          type="submit"
+          class="ap-btn ap-btn--primary"
+          [disabled]="!!fileError"
+        >
           Save Changes
         </button>
       </div>

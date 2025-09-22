@@ -5,7 +5,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Product, ProductsService } from '../../../services/products.service';
 
 // Product في بعض الحالات الباك ممكن يرجع description=null، فنجعلها اختيارية هنا
-type EditableProduct = Omit<Product, 'description'> & { description?: string | null };
+type EditableProduct = Omit<Product, 'description'> & {
+  description?: string | null;
+};
 
 @Component({
   selector: 'app-product-edit',
@@ -47,7 +49,7 @@ export class ProductEdit {
         this.loading = false;
         alert('Product not found');
         this.router.navigate(['/admin/products']);
-      }
+      },
     });
   }
 
@@ -58,14 +60,19 @@ export class ProductEdit {
 
     // فحص بسيط
     const max = 2 * 1024 * 1024;
-    if (file.size > max) { this.fileError = 'Image exceeds 2MB'; return; }
+    if (file.size > max) {
+      this.fileError = 'Image exceeds 2MB';
+      return;
+    }
     this.fileError = '';
 
     // تم اختيار ملف جديد → ألغِ فلاغ الإزالة
     this.removeExistingImage = false;
 
     const reader = new FileReader();
-    reader.onload = () => { this.preview = reader.result as string; };
+    reader.onload = () => {
+      this.preview = reader.result as string;
+    };
     reader.readAsDataURL(file);
   }
 
@@ -85,12 +92,16 @@ export class ProductEdit {
     const fd = new FormData();
     fd.append('title', this.product.title);
     fd.append('price', String(this.product.price));
-    if (this.product.rating != null) fd.append('rating', String(this.product.rating));
+    if (this.product.rating != null)
+      fd.append('rating', String(this.product.rating));
     // أرسل الوصف كسلسلة، وحوّل null إلى ''
-    if (this.product.description != null) fd.append('description', String(this.product.description ?? ''));
+    if (this.product.description != null)
+      fd.append('description', String(this.product.description ?? ''));
 
     // إذا المستخدم اختار ملف
-    const fileInput = document.getElementById('image') as HTMLInputElement | null;
+    const fileInput = document.getElementById(
+      'image',
+    ) as HTMLInputElement | null;
     const file = fileInput?.files?.[0];
     if (file) {
       fd.append('image', file);

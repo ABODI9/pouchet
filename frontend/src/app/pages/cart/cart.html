@@ -5,7 +5,11 @@
     <ng-container *ngIf="items.length; else emptyTpl">
       <div class="list">
         <div class="row" *ngFor="let it of items">
-          <img class="thumb" [src]="it.productImage || ''" [alt]="it.productName" />
+          <img
+            class="thumb"
+            [src]="it.productImage || ''"
+            [alt]="it.productName"
+          />
 
           <div class="meta">
             <div class="name">{{ it.productName }}</div>
@@ -31,7 +35,9 @@
         <div class="total">
           Total: <strong>{{ total() | price }}</strong>
         </div>
-        <button class="btn primary" (click)="checkoutWhatsApp()">Checkout on WhatsApp</button>
+        <button class="btn primary" (click)="checkoutWhatsApp()">
+          Checkout on WhatsApp
+        </button>
       </div>
     </ng-container>
   </ng-container>

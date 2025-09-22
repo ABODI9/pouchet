@@ -21,8 +21,8 @@ export class FeaturedAddSimple {
   model: {
     order: number;
     active: boolean;
-    productId: string;      // فارغة = ما نرسلها
-    caption: string;        // فارغة = ما نرسلها
+    productId: string; // فارغة = ما نرسلها
+    caption: string; // فارغة = ما نرسلها
     openInNewTab: boolean;
   } = {
     order: Math.floor(Date.now() / 1000),
@@ -44,8 +44,14 @@ export class FeaturedAddSimple {
     input.value = '';
   }
 
-  onDragOver(e: DragEvent) { e.preventDefault(); this.dragging = true; }
-  onDragLeave(e: DragEvent) { e.preventDefault(); this.dragging = false; }
+  onDragOver(e: DragEvent) {
+    e.preventDefault();
+    this.dragging = true;
+  }
+  onDragLeave(e: DragEvent) {
+    e.preventDefault();
+    this.dragging = false;
+  }
   onDrop(e: DragEvent) {
     e.preventDefault();
     this.dragging = false;
@@ -54,10 +60,17 @@ export class FeaturedAddSimple {
 
   private consumeFiles(picked: File[]) {
     if (!picked.length) return;
-    const ALLOWED_MIME = new Set(['image/jpeg','image/png','image/webp','image/avif']);
-    const ALLOWED_EXT  = new Set(['.jpg','.jpeg','.png','.webp','.avif']);
+    const ALLOWED_MIME = new Set([
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/avif',
+    ]);
+    const ALLOWED_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
 
-    const valid: File[] = [], tooBig: string[] = [], badType: string[] = [];
+    const valid: File[] = [],
+      tooBig: string[] = [],
+      badType: string[] = [];
     for (const f of picked) {
       const ext = (f.name.match(/\.[^.]+$/)?.[0] || '').toLowerCase();
       const okType = ALLOWED_MIME.has(f.type) || ALLOWED_EXT.has(ext);
@@ -74,31 +87,39 @@ export class FeaturedAddSimple {
     }
 
     const msgs: string[] = [];
-    if (badType.length) msgs.push(`Skipped: only JPG/PNG/WebP/AVIF → ${badType.join(', ')}`);
+    if (badType.length)
+      msgs.push(`Skipped: only JPG/PNG/WebP/AVIF → ${badType.join(', ')}`);
     if (tooBig.length) msgs.push(`Skipped >2MB: ${tooBig.join(', ')}`);
     this.fileError = msgs.join(' • ');
   }
 
-  removeAt(i: number) { this.files.splice(i, 1); this.previews.splice(i, 1); }
+  removeAt(i: number) {
+    this.files.splice(i, 1);
+    this.previews.splice(i, 1);
+  }
 
   save() {
-    if (!this.files.length) { alert('Select at least one image'); return; }
+    if (!this.files.length) {
+      alert('Select at least one image');
+      return;
+    }
     this.loading = true;
 
     // ✅ حوّل القيم الفارغة لما يناسب API
     const productId = this.model.productId.trim();
-    const caption   = this.model.caption.trim();
+    const caption = this.model.caption.trim();
 
     const opts = {
       order: this.model.order,
       active: this.model.active,
-      productId: productId ? productId : null,   // API يقبل null هنا
-      caption: caption || undefined,             // وأما هنا فلا نرسل شيئًا
+      productId: productId ? productId : null, // API يقبل null هنا
+      caption: caption || undefined, // وأما هنا فلا نرسل شيئًا
       openInNewTab: this.model.openInNewTab || undefined,
     };
 
-    this.api.createMany(this.files, opts)
-      .pipe(finalize(() => this.loading = false))
+    this.api
+      .createMany(this.files, opts)
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: () => this.router.navigateByUrl('/admin/featured'),
         error: (e) => alert(e?.error?.message || 'Upload failed'),

@@ -1,16 +1,22 @@
 // src/app/guards/admin-only.guard.ts
 import { inject } from '@angular/core';
-import { CanMatchFn, Router, UrlTree, UrlSegment, Route } from '@angular/router';
+import {
+  CanMatchFn,
+  Router,
+  UrlTree,
+  UrlSegment,
+  Route,
+} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 export const adminOnlyGuard: CanMatchFn = (
   route: Route,
-  segments: UrlSegment[]
+  segments: UrlSegment[],
 ): true | UrlTree => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  const target = '/' + segments.map(s => s.path).join('/'); // e.g. /admin/products
+  const target = '/' + segments.map((s) => s.path).join('/'); // e.g. /admin/products
 
   if (!auth.isAuthenticated) {
     const returnUrl = encodeURIComponent(target || '/admin');

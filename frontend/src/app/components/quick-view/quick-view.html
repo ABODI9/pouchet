@@ -3,12 +3,12 @@
   <button class="qv-close" (click)="close.emit()">✕</button>
   <div class="qv-grid">
     <div class="qv-media">
-      <img [src]="p.image || ''" [alt]="p.name || 'product'">
+      <img [src]="p.image || ''" [alt]="p.name || 'product'" />
     </div>
     <div class="qv-body">
       <h3 class="qv-title">{{ p.name }}</h3>
-      <div class="qv-price">{{ p.price | currency:'USD' }}</div>
-      <p class="qv-desc">{{ p.description || '—' }}</p>
+      <div class="qv-price">{{ p.price | currency: "USD" }}</div>
+      <p class="qv-desc">{{ p.description || "—" }}</p>
       <div class="qv-specs">
         <div>Brand: <strong>—</strong></div>
         <div>Movement: <strong>—</strong></div>

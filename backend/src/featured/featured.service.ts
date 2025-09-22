@@ -45,7 +45,8 @@ export class FeaturedService {
     if (body.active != null) row.active = body.active;
     if (body.productId !== undefined) row.productId = body.productId ?? null;
     if (body.caption !== undefined) row.caption = body.caption ?? null;
-    if (body.openInNewTab !== undefined) row.openInNewTab = body.openInNewTab ?? null;
+    if (body.openInNewTab !== undefined)
+      row.openInNewTab = body.openInNewTab ?? null;
     if (body.newFileName) row.imageUrl = this.toPublicUrl(body.newFileName);
     return this.repo.save(row);
   }
@@ -58,10 +59,10 @@ export class FeaturedService {
 
   async reorder(items: { id: string; order: number }[]) {
     if (!items?.length) return [];
-    const ids = items.map(i => i.id);
+    const ids = items.map((i) => i.id);
     const rows = await this.repo.find({ where: { id: In(ids) } });
 
-    const map = new Map(items.map(i => [i.id, i.order]));
+    const map = new Map(items.map((i) => [i.id, i.order]));
     for (const r of rows) {
       const newOrder = map.get(r.id);
       if (typeof newOrder === 'number') r.order = newOrder;

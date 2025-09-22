@@ -3,7 +3,10 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FeaturedService, FeaturedItem } from '../../../services/featured.service';
+import {
+  FeaturedService,
+  FeaturedItem,
+} from '../../../services/featured.service';
 
 @Component({
   selector: 'app-featured-edit',
@@ -24,7 +27,12 @@ export class FeaturedEdit {
   loading = true;
 
   // قيود الرفع
-  private readonly ALLOWED_MIME = new Set(['image/jpeg','image/png','image/webp','image/avif']);
+  private readonly ALLOWED_MIME = new Set([
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/avif',
+  ]);
   private readonly MAX_SIZE = 2 * 1024 * 1024; // 2MB
 
   ngOnInit() {
@@ -39,7 +47,7 @@ export class FeaturedEdit {
         this.loading = false;
         alert('Not found');
         this.router.navigate(['/admin/featured']);
-      }
+      },
     });
   }
 
@@ -49,7 +57,9 @@ export class FeaturedEdit {
     if (!f) return;
 
     // فحص النوع والحجم
-    const okType = this.ALLOWED_MIME.has(f.type) || /\.(jpg|jpeg|png|webp|avif)$/i.test(f.name);
+    const okType =
+      this.ALLOWED_MIME.has(f.type) ||
+      /\.(jpg|jpeg|png|webp|avif)$/i.test(f.name);
     if (!okType) {
       this.fileError = 'Only JPG / PNG / WEBP / AVIF are allowed';
       input.value = '';
@@ -63,7 +73,7 @@ export class FeaturedEdit {
 
     this.fileError = '';
     const r = new FileReader();
-    r.onload = () => this.preview = r.result as string;
+    r.onload = () => (this.preview = r.result as string);
     r.readAsDataURL(f);
   }
 
@@ -72,7 +82,8 @@ export class FeaturedEdit {
     fd.append('order', String(this.model.order ?? 0));
     fd.append('active', String(!!this.model.active));
 
-    const file = (document.getElementById('image') as HTMLInputElement | null)?.files?.[0];
+    const file = (document.getElementById('image') as HTMLInputElement | null)
+      ?.files?.[0];
     if (file) fd.append('image', file);
 
     this.api.update(this.id, fd).subscribe({

@@ -75,7 +75,9 @@ export class ProductsController {
     }
 
     const base = `${req.protocol}://${req.get('host')}`;
-    const imageUrl = file ? `${base}/uploads/${file.filename}` : body.imageUrl || '';
+    const imageUrl = file
+      ? `${base}/uploads/${file.filename}`
+      : body.imageUrl || '';
 
     const numericPrice = Number(price);
     if (Number.isNaN(numericPrice)) {
@@ -104,7 +106,8 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Delete(':id')
-  remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) { // ✅
+  remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    // ✅
     return this.svc.remove(id);
   }
 }

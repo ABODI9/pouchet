@@ -22,11 +22,10 @@ export class ProductsService {
     return this.http.get<Product[]>(`${this.base}/products`);
   }
 
-getOne(id: string | number) {
-  const safe = encodeURIComponent(String(id));           // ← يمنع أي مسافات/أحرف
-  return this.http.get<Product>(`${this.base}/products/${safe}`);
-}
-
+  getOne(id: string | number) {
+    const safe = encodeURIComponent(String(id)); // ← يمنع أي مسافات/أحرف
+    return this.http.get<Product>(`${this.base}/products/${safe}`);
+  }
 
   create(body: FormData): Observable<Product> {
     return this.http.post<Product>(`${this.base}/products`, body);
@@ -40,4 +39,3 @@ getOne(id: string | number) {
     return this.http.delete<void>(`${this.base}/products/${id}`);
   }
 }
-

@@ -1,62 +1,169 @@
 /* Align with global theme (remove local palette) */
-*{box-sizing:border-box}
-.ap-wrap{ padding: 24px; }
-.ap-title{ margin:0; font-size:24px; font-weight:800; color: var(--sage) }
-.ap-sub{ margin:.35rem 0 0; color: color-mix(in oklab, var(--text), #fff 55%); }
+* {
+  box-sizing: border-box;
+}
+.ap-wrap {
+  padding: 24px;
+}
+.ap-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--sage);
+}
+.ap-sub {
+  margin: 0.35rem 0 0;
+  color: color-mix(in oklab, var(--text), #fff 55%);
+}
 
-.ap-card{
+.ap-card {
   background: var(--card);
   border: 1px solid var(--moss);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
-.ap-card__head{ margin-bottom: 12px; }
+.ap-card__head {
+  margin-bottom: 12px;
+}
 
-.ap-grid{
-  display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+.ap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
 }
-.ap-field{ display:grid; gap:6px; }
-.ap-field--span2{ grid-column: 1 / -1; }
-.ap-label{ color: var(--text); font-weight:700; }
-.ap-input, .ap-checkbox input{
+.ap-field {
+  display: grid;
+  gap: 6px;
+}
+.ap-field--span2 {
+  grid-column: 1 / -1;
+}
+.ap-label {
+  color: var(--text);
+  font-weight: 700;
+}
+.ap-input,
+.ap-checkbox input {
   background: transparent;
-  border:1px solid var(--moss);
-  border-radius:10px; color: var(--text);
-  padding:.6rem .8rem; outline:none;
+  border: 1px solid var(--moss);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 0.6rem 0.8rem;
+  outline: none;
 }
-.ap-input:focus{ border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in oklab, var(--gold), transparent 75%); }
-
-.ap-checkbox{ display:flex; gap:.5rem; align-items:center; color: var(--text) }
-.ap-hint{ color: color-mix(in oklab, var(--text), #fff 55%); font-size:.85rem }
-
-.ap-upload__zone{
-  display:block; border:1px dashed var(--moss); border-radius:14px;
-  padding:22px; text-align:center; background: var(--base-2);
-  cursor:pointer; position:relative; transition: border-color .2s ease, background .2s ease;
+.ap-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--gold), transparent 75%);
 }
-.ap-upload__zone:hover{ border-color: var(--gold); background: color-mix(in oklab, var(--gold), #fff 92%); }
-.ap-upload__zone input[type="file"]{ position:absolute; inset:0; opacity:0; cursor:pointer; }
-.ap-upload__content{ display:flex; gap:12px; align-items:center; justify-content:center; color: var(--text) }
-.ap-upload__icon{ font-size:22px }
-.ap-link{ color: var(--gold); text-decoration:underline; cursor:pointer }
-.ap-muted{ color: color-mix(in oklab, var(--text), #fff 55%); }
 
-.fa-grid{ display:grid; gap:10px; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); }
-.fa-item{ background: var(--card); border:1px solid var(--moss); border-radius:12px; overflow:hidden; }
-.fa-item img{ width:100%; height:140px; object-fit:cover; display:block }
-.ap-error{ color:#ef4444 }
-
-.ap-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:6px; }
-.ap-btn{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:.6rem .9rem; border-radius:999px; border:1px solid var(--moss);
-  color: var(--text); background:var(--card); cursor:pointer; transition:.15s;
+.ap-checkbox {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--text);
 }
-.ap-btn--primary{ background: var(--gold); color: var(--sage); border-color: var(--gold) }
-.ap-btn--ghost:hover{ background: color-mix(in oklab, var(--gold), #fff 92%); }
-.ap-btn--sm{ padding:.4rem .65rem; font-size:.9rem }
+.ap-hint {
+  color: color-mix(in oklab, var(--text), #fff 55%);
+  font-size: 0.85rem;
+}
 
-@media (max-width: 860px){
-  .ap-grid{ grid-template-columns: 1fr; }
+.ap-upload__zone {
+  display: block;
+  border: 1px dashed var(--moss);
+  border-radius: 14px;
+  padding: 22px;
+  text-align: center;
+  background: var(--base-2);
+  cursor: pointer;
+  position: relative;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.ap-upload__zone:hover {
+  border-color: var(--gold);
+  background: color-mix(in oklab, var(--gold), #fff 92%);
+}
+.ap-upload__zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.ap-upload__content {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+}
+.ap-upload__icon {
+  font-size: 22px;
+}
+.ap-link {
+  color: var(--gold);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.ap-muted {
+  color: color-mix(in oklab, var(--text), #fff 55%);
+}
+
+.fa-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.fa-item {
+  background: var(--card);
+  border: 1px solid var(--moss);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.fa-item img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+.ap-error {
+  color: #ef4444;
+}
+
+.ap-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+.ap-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--moss);
+  color: var(--text);
+  background: var(--card);
+  cursor: pointer;
+  transition: 0.15s;
+}
+.ap-btn--primary {
+  background: var(--gold);
+  color: var(--sage);
+  border-color: var(--gold);
+}
+.ap-btn--ghost:hover {
+  background: color-mix(in oklab, var(--gold), #fff 92%);
+}
+.ap-btn--sm {
+  padding: 0.4rem 0.65rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 860px) {
+  .ap-grid {
+    grid-template-columns: 1fr;
+  }
 }

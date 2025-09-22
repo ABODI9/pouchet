@@ -44,7 +44,8 @@ export class Login implements OnInit {
 
   submitLogin(form: NgForm) {
     if (this.loading || form.invalid) return;
-    this.loading = true; this.error = '';
+    this.loading = true;
+    this.error = '';
 
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
@@ -56,7 +57,9 @@ export class Login implements OnInit {
       error: (err: HttpErrorResponse) => {
         this.error =
           err.error?.message ||
-          (err.status === 401 ? 'Invalid email or password' : 'Unexpected error');
+          (err.status === 401
+            ? 'Invalid email or password'
+            : 'Unexpected error');
         this.loading = false;
       },
     });
@@ -73,7 +76,12 @@ export class Login implements OnInit {
 
     this.loading = true;
 
-    this.auth.register({ name: this.rname.trim(), email: this.remail.trim(), password: this.rpassword })
+    this.auth
+      .register({
+        name: this.rname.trim(),
+        email: this.remail.trim(),
+        password: this.rpassword,
+      })
       .subscribe({
         next: () => {
           this.loading = false;

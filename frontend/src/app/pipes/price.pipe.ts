@@ -6,6 +6,6 @@ export class PricePipe implements PipeTransform {
   private cur = inject(CurrencyService);
   transform(v: number | string | null | undefined): string {
     const n = typeof v === 'string' ? parseFloat(v) : (v ?? 0);
-    return this.cur.format(Number.isFinite(n) ? n as number : 0);
+    return this.cur.format(Number.isFinite(n) ? (n as number) : 0);
   }
 }

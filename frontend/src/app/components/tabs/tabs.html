@@ -1,4 +1,9 @@
-<nav class="tabs" role="tablist" aria-label="Home sections" (keydown)="onKey($event)">
+<nav
+  class="tabs"
+  role="tablist"
+  aria-label="Home sections"
+  (keydown)="onKey($event)"
+>
   <button
     *ngFor="let t of tabs"
     type="button"
@@ -6,7 +11,8 @@
     class="tab"
     [class.on]="t.key === active"
     [attr.aria-selected]="t.key === active"
-    (click)="setTab(t.key)">
+    (click)="setTab(t.key)"
+  >
     {{ t.label }}
   </button>
 </nav>

@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, Index } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  Index,
+} from 'typeorm';
 
 export type CartStatus = 'open' | 'checked_out' | 'abandoned';
 
@@ -16,7 +23,7 @@ export class CartItem {
   sessionId!: string | null; // للزوّار غير المسجلين
 
   @Column({ type: 'varchar' })
-  productId!: string;         // اربطه بجدول المنتجات عندك لو حبيت
+  productId!: string; // اربطه بجدول المنتجات عندك لو حبيت
 
   @Column({ type: 'varchar' })
   productName!: string;
@@ -25,7 +32,7 @@ export class CartItem {
   productImage!: string | null;
 
   @Column({ type: 'numeric', precision: 12, scale: 2 })
-  unitPrice!: string;         // string للحفاظ على الدقة (numeric)
+  unitPrice!: string; // string للحفاظ على الدقة (numeric)
 
   @Column({ type: 'int', default: 1 })
   quantity!: number;
