@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import { BehaviorSubject, map, tap, switchMap, take } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface CartItem {
@@ -10,7 +10,7 @@ export interface CartItem {
   productId: string;
   productName: string;
   productImage?: string | null;
-  unitPrice: string;   // يبقى كنص
+  unitPrice: string;
   quantity: number;
   notes?: string | null;
   status?: 'open' | 'ordered';
@@ -22,24 +22,18 @@ export class CartService {
   private base = environment.api.replace(/\/$/, '');
   private path = 'cart';
 
-  // ====== عداد العناصر في الأيقونة ======
   private _count = new BehaviorSubject<number>(0);
-  /** Observable بعدد المنتجات في السلة لعرضه كبادج في الهيدر */
   count$ = this._count.asObservable();
 
-  // ====== عناصر السلة المفتوحة لعرضها في السلة الجانبية ======
   private _items = new BehaviorSubject<CartItem[]>([]);
-  /** عناصر السلة المفتوحة (signal/observable) */
   items$ = this._items.asObservable();
 
-  /** نولّد/نقرأ sessionId محليًا */
   get sessionId(): string {
     let sid = localStorage.getItem('sid');
     if (!sid) { sid = crypto.randomUUID(); localStorage.setItem('sid', sid); }
     return sid;
   }
 
-  // ====== عمليات REST الأساسية ======
   list(params: { sessionId: string; status?: 'open' | 'ordered' }) {
     return this.http.get<CartItem[]>(`${this.base}/${this.path}`, { params });
   }
@@ -80,23 +74,38 @@ export class CartService {
       .pipe(tap(() => { this.syncCount(); this.syncItems(); }));
   }
 
-  // ====== مزامنة عداد السلة مع الخادم ======
-  /** يقرأ عناصر السلة المفتوحة ويحدّث البادج */
+  // ===== مزامنة عدّاد وعناصر السلة =====
   syncCount(): void {
     this.list({ sessionId: this.sessionId, status: 'open' })
       .pipe(map(items => items?.reduce((sum, it) => sum + (it.quantity ?? 0), 0) ?? 0))
-      .subscribe({
-        next: c => this._count.next(c),
-        error: () => this._count.next(0),
-      });
+      .subscribe({ next: c => this._count.next(c), error: () => this._count.next(0) });
   }
 
-  /** يقرأ عناصر السلة المفتوحة ويحدّث قائمة العناصر (للميني كارت) */
   syncItems(): void {
     this.list({ sessionId: this.sessionId, status: 'open' })
-      .subscribe({
-        next: items => this._items.next(items || []),
-        error: () => this._items.next([]),
-      });
+      .subscribe({ next: items => this._items.next(items || []), error: () => this._items.next([]) });
+  }
+
+  // ===== الجديد: إضافة أو زيادة الكمية بدل تكرار السطر =====
+  addOrIncrement(input: {
+    productId: string;
+    productName: string;
+    productImage?: string | null;
+    unitPrice: string | number;
+    quantity?: number; // افتراضي 1
+    notes?: string;
+  }) {
+    const qtyToAdd = Math.max(1, Number(input.quantity ?? 1));
+    return this.list({ sessionId: this.sessionId, status: 'open' }).pipe(
+      take(1),
+      switchMap(items => {
+        const existing = (items || []).find(it => it.productId === input.productId);
+        if (existing) {
+          const newQty = (existing.quantity || 0) + qtyToAdd;
+          return this.update(existing.id, { quantity: newQty });
+        }
+        return this.add({ ...input, quantity: qtyToAdd });
+      })
+    );
   }
 }

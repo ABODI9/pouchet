@@ -22,14 +22,14 @@ export class Card {
 
   addToCart() {
     if (!this.product) return;
-    this.cart.add({
+    this.cart.addOrIncrement({
       productId: String(this.product.id),
       productName: this.product.name,
       productImage: this.product.image ?? null,
-      unitPrice: String(this.product.price), // keep USD on server
-      quantity: 1,
+      unitPrice: String(this.product.price),
+      quantity: 1, // ضغطة = +1 فقط
     }).subscribe({
-      next: () => { this.cart.syncCount(); this.cart.syncItems(); this.toast?.show?.('Added to cart ✅', 'ok'); },
+      next: () => this.toast?.show?.('Added to cart ✅', 'ok'),
       error: () => this.toast?.show?.('Failed to add to cart', 'err'),
     });
   }

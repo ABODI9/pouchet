@@ -7,13 +7,23 @@
   </header>
 
   <div class="mc__list">
-    <div class="row" *ngFor="let it of (items$ | async)">
-      <img [src]="it.productImage || ''" alt="" />
-      <div class="info">
-        <div class="name">{{ it.productName }}</div>
-        <div class="price">{{ it.unitPrice | price }}</div>
+    <ng-container *ngFor="let it of (items$ | async)">
+      <div class="row" *ngIf="qty(it) > 0">
+        <img [src]="it.productImage || ''" alt="" />
+        <div class="info">
+          <div class="name">{{ it.productName }}</div>
+          <div class="price">{{ it.unitPrice | price }}</div>
+        </div>
+
+        <button class="remove" (click)="remove(it)">✕</button>
+
+        <div class="qty-fab">
+          <button class="qbtn" (click)="dec(it)">−</button>
+          <span class="qval">{{ qty(it) }}</span>
+          <button class="qbtn" (click)="inc(it)">+</button>
+        </div>
       </div>
-    </div>
+    </ng-container>
 
     <div class="empty" *ngIf="!(items$ | async)?.length">Your cart is empty.</div>
   </div>
